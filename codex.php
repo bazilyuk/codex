@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
-
+Maksim test
 -------------------------------------------- ОДИНОЧНЫЕ КОМАНДЫ ХЕДЕРА----------------------------------------------------------------------------------
 
     <meta name="viewport" content="width=device-width"> для мобыльных
@@ -10,7 +10,7 @@
 тайтл - <title><?php echo (get_post_meta($post->ID, 'title', true)); ?></title>
 IE - <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 дескрипшн - <meta name="description" content="<?php echo (get_post_meta($post->ID, 'description', true)); ?>"/> 
-
+git config --
 ключевые слова - <meta name="keywords" content="<?php echo (get_post_meta($post->ID, 'keywords', true)); ?>"/>
 
 вид кодировки - <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/> 
