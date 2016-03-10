@@ -2,26 +2,26 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
-Maksim test
-
--------------------------------------------- ОДИНОЧНЫЕ КОМАНДЫ ХЕДЕРА----------------------------------------------------------------------------------
+    Ilya test
+    test2
+    -------------------------------------------- ОДИНОЧНЫЕ КОМАНДЫ ХЕДЕРА----------------------------------------------------------------------------------
 
     <meta name="viewport" content="width=device-width"> для мобыльных
 
-тайтл - <title><?php echo (get_post_meta($post->ID, 'title', true)); ?></title>
-IE - <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-дескрипшн - <meta name="description" content="<?php echo (get_post_meta($post->ID, 'description', true)); ?>"/> 
-git config --
-ключевые слова - <meta name="keywords" content="<?php echo (get_post_meta($post->ID, 'keywords', true)); ?>"/>
+    тайтл - <title><?php echo (get_post_meta($post->ID, 'title', true)); ?></title>
+    IE - <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    дескрипшн - <meta name="description" content="<?php echo (get_post_meta($post->ID, 'description', true)); ?>"/>
 
-вид кодировки - <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/> 
+    ключевые слова - <meta name="keywords" content="<?php echo (get_post_meta($post->ID, 'keywords', true)); ?>"/>
 
-сслка на явая скрипт - <script type="text/javascript" src="<?php bloginfo('template_url');?>/js/...." />
+    вид кодировки - <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
 
-ссылка на цсс - <link rel="stylesheet" href="<?php bloginfo('stylesheet_url'); ?>" type="text/css" media="screen" /> 
+    сслка на явая скрипт - <script type="text/javascript" src="<?php bloginfo('template_url');?>/js/...." />
 
-ссылка на фавикон - <link rel="shortcut icon" href="<?php bloginfo('template_url');?>/favicon.ico"/>
-<link href="<?php bloginfo('template_url');?>/favicon.ico" rel="icon" type="image/x-icon" /> 
+    ссылка на цсс - <link rel="stylesheet" href="<?php bloginfo('stylesheet_url'); ?>" type="text/css" media="screen" />
+
+    ссылка на фавикон - <link rel="shortcut icon" href="<?php bloginfo('template_url');?>/favicon.ico"/>
+    <link href="<?php bloginfo('template_url');?>/favicon.ico" rel="icon" type="image/x-icon" />
 
 </head>
 
@@ -75,7 +75,7 @@ define( 'CONCATENATE_SCRIPTS', false );
 <?php wp_head(); ?>
 команда вставляется в футер для поддержки яваскриптов <?php wp_footer(); ?>
 
-команда подключить садбар - <?php require('sidebar.php'); ?> 
+команда подключить садбар - <?php require('sidebar.php'); ?>
 
 команда выдать футер - <?php require('footer.php'); ?>
 
@@ -93,25 +93,25 @@ the_post_thumbnail( array(100,100) );  // Другие размеры
     'alt' => trim(strip_tags( $wp_postmeta->_wp_attachment_image_alt )),
 ) ); ?>
 вывод миниатюры записи со ссылкой на исходник изображения <?php
- if ( has_post_thumbnail()) {
-   $large_image_url = wp_get_attachment_image_src( get_post_thumbnail_id(), 'large');
-   echo '<a href="' . $large_image_url[0] . '" title="' . the_title_attribute('echo=0') . '" >';
-   the_post_thumbnail('thumbnail');
-   echo '</a>';
- }
- ?>
-команда выдать заголовок - <?php the_title(); ?> 
+if ( has_post_thumbnail()) {
+    $large_image_url = wp_get_attachment_image_src( get_post_thumbnail_id(), 'large');
+    echo '<a href="' . $large_image_url[0] . '" title="' . the_title_attribute('echo=0') . '" >';
+    the_post_thumbnail('thumbnail');
+    echo '</a>';
+}
+?>
+команда выдать заголовок - <?php the_title(); ?>
 
 команда выдатать контента - <?php the_content(); ?>
 
 команда вовод анотации- <?php the_excerpt(); ?>
-function do_excerpt($string, $word_limit) {  
-  $words = explode(' ', $string, ($word_limit + 1));  
-  if (count($words) > $word_limit)  
-  array_pop($words);  
-  echo implode(' ', $words).' ...';  
-} 
-<?php do_excerpt(get_the_excerpt(), 50); ?>  
+function do_excerpt($string, $word_limit) {
+$words = explode(' ', $string, ($word_limit + 1));
+if (count($words) > $word_limit)
+array_pop($words);
+echo implode(' ', $words).' ...';
+}
+<?php do_excerpt(get_the_excerpt(), 50); ?>
 команда вывода категорий к посту <?php _e('Категории&#58;'); ?> <?php the_category(', ') ?>
 
 следующая / предидущая страница <?php posts_nav_link(); ?>
@@ -119,22 +119,22 @@ function do_excerpt($string, $word_limit) {
 вывод команд из плагинов <?php echo do_shortcode('[contact-form-7 id="4" title="Lending!!!!!!"]'); ?>
 
 --------------------------------------------------- ЦИКЛЫ --------------------------------------------------------
-цикл вывода главной страници - 
+цикл вывода главной страници -
 <?php if (is_home()) {
-			global $wpdb;
-			$p = $wpdb->get_results("SELECT ID FROM $wpdb->posts WHERE post_name = 'o-kompanii'");
-   		if ($p) {
-				 foreach ( $p as $post ) {
-     		 $ID = $post->ID;
-     		 $post = get_post($ID);
- 				 setup_postdata($post);
-				 }
-			}
-?>
-	  
-<?php the_title(); ?> 
+    global $wpdb;
+    $p = $wpdb->get_results("SELECT ID FROM $wpdb->posts WHERE post_name = 'o-kompanii'");
+    if ($p) {
+        foreach ( $p as $post ) {
+            $ID = $post->ID;
+            $post = get_post($ID);
+            setup_postdata($post);
+        }
+    }
+    ?>
 
-<?php the_content() ?>
+    <?php the_title(); ?>
+
+    <?php the_content() ?>
 <?php } ?>
 ---------------------------------------get info from widget or db data---------------------------------------------------------
 <?php
@@ -173,10 +173,10 @@ query_posts(‘meta_key=cars&meta_value=volvo’) - выводит список 
 --------------------------------------------------------
 цикл вывода главной страници, WP_Query (также подходит для вывода двух статических страниц одновременно) -
 <?php
-$query1 = new WP_Query('page_id=8'); 
+$query1 = new WP_Query('page_id=8');
 while($query1->have_posts()){ $query1->the_post(); ?>
-<h1><?php the_title(); ?></h1>
-	<?php the_content() ?>
+    <h1><?php the_title(); ?></h1>
+    <?php the_content() ?>
 <?php } ?>
 
 
@@ -184,10 +184,10 @@ while($query1->have_posts()){ $query1->the_post(); ?>
 --------------------------------вывод анонса поста----------------------------------------------------------------------------
 -------этот код мы прописываем в файле functions.php,:----
 <?php function do_excerpt($string, $word_limit) {
-$words = explode(' ', $string, ($word_limit + 1));
-if (count($words) > $word_limit)
-array_pop($words);
-echo implode(' ', $words).' ...';
+    $words = explode(' ', $string, ($word_limit + 1));
+    if (count($words) > $word_limit)
+        array_pop($words);
+    echo implode(' ', $words).' ...';
 }
 ?>
 
@@ -207,22 +207,22 @@ if(is_page(42)){
 ?>
 -------------------------------------------------------------стандартный цикл луп -----------------------------------------------------------------
 стандартный цикл луп - <?php if(have_posts()) : ?>
-<?php while(have_posts())  : the_post(); ?>
-------
-заголовок поста в ссылке - <a href="<?php the_permalink(); ?>" title="<?php the_title(); ?>"><?php the_title(); ?></a> 
+    <?php while(have_posts())  : the_post(); ?>
+        ------
+        заголовок поста в ссылке - <a href="<?php the_permalink(); ?>" title="<?php the_title(); ?>"><?php the_title(); ?></a>
 
-<?php the_content(); ?>
-<?php endwhile; ?>
+        <?php the_content(); ?>
+    <?php endwhile; ?>
 <?php else : ?>
 
-<p><?php _e('Новости компании пока не опубликованы...'); ?></p>
+    <p><?php _e('Новости компании пока не опубликованы...'); ?></p>
 
 <?php endif; ?>
 ---------------------------------------------------------------------------------------------------------------------
 вывод на статической странице -
 <?php if (have_posts()) : the_post() ?>
- <?php the_title(); ?>
-      <?php the_content() ?>
+    <?php the_title(); ?>
+    <?php the_content() ?>
 <?php endif ?>
 ---------------------------------------------------------------------------------------------------------------------
 цикл  query_posts -
@@ -272,57 +272,57 @@ $queryObject = new WP_Query($pages);
         <!-- Loop or custom code goes here -->
     <?php endwhile; ?>
 --------------------------------------------------------------------
-					<?php query_posts('cat=8&posts_per_page=3'); ?>
-						<?php if (have_posts()) : ?>
-						<?php
-							$a = 0;
-							$maksactive[0]="active";
-						?>
-							<?php while (have_posts()) : the_post(); ?>
-								<div class="item <?php echo $maksactive[$a] ?>">
-									<h3><?php echo get_cat_name(8); ?></h3>
-									<div>
-										<figure class="pull-left">
-											<a href="<?php the_permalink(); ?>" class="thumbnail"><?php the_post_thumbnail(); ?></a>
-										</figure>
-										<a href="<?php the_permalink(); ?>" title="<?php the_title(); ?>"><h4><?php the_title(); ?></h4></a>
-										<?php the_excerpt(); ?>
-									</div>
-								</div>							
-								<?php $a++ ?>
-							<?php endwhile; ?>
-						<?php endif; ?>
-						<?php wp_reset_query(); ?>	
+<?php query_posts('cat=8&posts_per_page=3'); ?>
+<?php if (have_posts()) : ?>
+    <?php
+    $a = 0;
+    $maksactive[0]="active";
+    ?>
+    <?php while (have_posts()) : the_post(); ?>
+        <div class="item <?php echo $maksactive[$a] ?>">
+            <h3><?php echo get_cat_name(8); ?></h3>
+            <div>
+                <figure class="pull-left">
+                    <a href="<?php the_permalink(); ?>" class="thumbnail"><?php the_post_thumbnail(); ?></a>
+                </figure>
+                <a href="<?php the_permalink(); ?>" title="<?php the_title(); ?>"><h4><?php the_title(); ?></h4></a>
+                <?php the_excerpt(); ?>
+            </div>
+        </div>
+        <?php $a++ ?>
+    <?php endwhile; ?>
+<?php endif; ?>
+<?php wp_reset_query(); ?>
 -----------------------------------------------вывод категории------------------------------------------------------------------
 
-                    <?php
-                    $args = array('cat' =>'3', 'showposts' =>'5');
-                    $posts = get_posts($args);
-                    foreach( $posts as $post ){
-                        setup_postdata($post);
-                        ?>
-                        <li><a href="<?php the_permalink(); ?>"><?php echo the_title(); ?></a></li>
-                    <?php
-                    }
-                    wp_reset_postdata();
-                    ?>
+<?php
+$args = array('cat' =>'3', 'showposts' =>'5');
+$posts = get_posts($args);
+foreach( $posts as $post ){
+    setup_postdata($post);
+    ?>
+    <li><a href="<?php the_permalink(); ?>"><?php echo the_title(); ?></a></li>
+<?php
+}
+wp_reset_postdata();
+?>
 -----------------------------------------------------вывод записей в 2 колонки---------------------------------------------------------------
 
 <?php $col = 0; ?>
-	<?php if(have_posts()) : ?>
-<?php while(have_posts())  : the_post(); ?>
-присвоение уникального id для каждой записи-<div class="..." id="post-<?php the_ID(); ?>">
-<h2><a href="#" title="<?php the_title(); ?>"><?php the_title(); ?></a></h2>
-<?php the_content() ?>
-<?php $col++; 
-if ($col == 1) echo "<div style=\"width: 10px; float:left; \">&nbsp;</div>"; 
-if ($col == 2) {
-	echo "<div style=\"clear: left; padding-top: 0px;  height: 0;\"></div>";
-	$col=0;
-}
-?>
-</div>
-<?php endwhile; ?>
+<?php if(have_posts()) : ?>
+    <?php while(have_posts())  : the_post(); ?>
+        присвоение уникального id для каждой записи-<div class="..." id="post-<?php the_ID(); ?>">
+            <h2><a href="#" title="<?php the_title(); ?>"><?php the_title(); ?></a></h2>
+            <?php the_content() ?>
+            <?php $col++;
+            if ($col == 1) echo "<div style=\"width: 10px; float:left; \">&nbsp;</div>";
+            if ($col == 2) {
+                echo "<div style=\"clear: left; padding-top: 0px;  height: 0;\"></div>";
+                $col=0;
+            }
+            ?>
+        </div>
+    <?php endwhile; ?>
 
 <?php else : ?>
 --------------------------------------------------------вывод определенной рубрики с количеством записей на странице-------------------------------------------------------------
@@ -333,27 +333,27 @@ global $post;
 $args = array( 'posts_per_page' => 2, 'category' => 1 );
 $myposts = get_posts( $args );
 foreach( $myposts as $post ) :	setup_postdata($post); ?>
-	<h2><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
-	<?php the_content() ?>
+    <h2><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
+    <?php the_content() ?>
 <?php endforeach; ?>
 ---------------------------------------------добавление количества просмотров в постах-------------------------------
 --function.php--
 <?php
 function wpb_set_post_views($postID) {
-$count_key = 'wpb_post_views_count';
-$count = get_post_meta($postID, $count_key, true);
-if($count==''){
-$count = 0;
-delete_post_meta($postID, $count_key);
-add_post_meta($postID, $count_key, '0');
-}else{
-$count++;
-update_post_meta($postID, $count_key, $count);
-}
+    $count_key = 'wpb_post_views_count';
+    $count = get_post_meta($postID, $count_key, true);
+    if($count==''){
+        $count = 0;
+        delete_post_meta($postID, $count_key);
+        add_post_meta($postID, $count_key, '0');
+    }else{
+        $count++;
+        update_post_meta($postID, $count_key, $count);
+    }
 }
 //To keep the count accurate, lets get rid of prefetching
 remove_action( 'wp_head', 'adjacent_posts_rel_link_wp_head', 10, 0);
- ?>
+?>
 ---single.php---
 <?php wpb_set_post_views(get_the_ID()); ?>
 --------------------------------------------------------------ppost type-----------------------------------------------
@@ -516,12 +516,12 @@ page.php:
 function add_referenssit_meta_box() {
 
     add_meta_box (
-    'referenssit_meta_box',
-    'Content titles',
-    'show_referenssit_meta_box',
-    'referenssit',
-    'normal',
-    'high'
+        'referenssit_meta_box',
+        'Content titles',
+        'show_referenssit_meta_box',
+        'referenssit',
+        'normal',
+        'high'
     );
 
 }
@@ -530,111 +530,139 @@ add_action('add_meta_boxes', 'add_referenssit_meta_box');
 
 // Field Array
 $prefix = 'custom_';
+global $Clinic_skills_array,$Clinic_languages_array,$Clinic_position_array;
+$Clinic_skills_array = array('Anestesia ja tehohoito','Ihosairaudet / Dermatologia','Tuki- ja liikuntaelinsairaudet / Ortopedia','Diagnostinen kuvantaminen','Fysiatriset hoidot','Hammashoidot','Sydänsairaudet / Kardiologia','Ortopedinen kirurgia','Pehmytosakirurgia','Yleiskirurgia','Kissalääketiede','Lisääntyminen','Hermosairaudet / Neurologia','Silmäsairaudet / Oftalmologia','Syöpäsairaudet / Onkologia','Sisätaudit','Yleislääketiede','Eksoottisten eläinten lääketiede','Hevosten akuuttihoito','Hevosten','ammashoito','Hevosten kirurgia','Hevosten ortopedinen kirurgia','Hevosten diagnostinen kuvantaminen','Hevosten ortopedia','Hevosten sisätaudit');
+$Clinic_languages_array = array('Suomi','Svenska','English','Deutsch','Russki','Eesti','Polski','Español','Français','Italiano','Norsk','Nederlands');
 $referenssit_meta_fields = array(
     array(
-    'label'=> 'Comment',
-    'id'    => $prefix.'comment',
-    'type'  => 'textarea'
+        'label'=> 'Position',
+        'name'=> 'position',
+        'id'    => $prefix.'position',
+        'type'  => 'radio',
+        'options' => $Clinic_position_array,
     ),
     array(
-    'label'=> 'Name and Surname',
-    'id'    => $prefix.'name',
-    'type'  => 'text'
+        'label'=> 'PEREHTYNEISYYS',
+        'name'=> 'skills',
+        'id'    => $prefix.'skills',
+        'type'  => 'multicheckbox',
+        'options' => $Clinic_skills_array,
     ),
     array(
-    'label'=> 'Position and company',
-    'id'    => $prefix.'position',
-    'type'  => 'text'
+        'label'=> 'Comment',
+        'id'    => $prefix.'comment',
+        'type'  => 'textarea'
     ),
     array(
-    'label'=> 'Youtube video embeded code',
-    'id'    => $prefix.'video',
-    'type'  => 'text'
+        'label'=> 'Name and Surname',
+        'id'    => $prefix.'name',
+        'type'  => 'text'
+    ),
+    array(
+        'label'=> 'Position and company',
+        'id'    => $prefix.'position',
+        'type'  => 'text'
+    ),
+    array(
+        'label'=> 'Youtube video embeded code',
+        'id'    => $prefix.'video',
+        'type'  => 'text'
     ),
 );
 
 // The Callback
 function show_referenssit_meta_box() {
-global $referenssit_meta_fields, $post;
+    global $referenssit_meta_fields, $post;
 // Use nonce for verification
-echo '<input type="hidden" name="custom_meta_box_nonce1" value="'.wp_create_nonce(basename(__FILE__)).'" />';
+    echo '<input type="hidden" name="custom_meta_box_nonce1" value="'.wp_create_nonce(basename(__FILE__)).'" />';
 
 // Begin the field table and loop
-echo '<table class="form-table">';
+    echo '<table class="form-table">';
     foreach ($referenssit_meta_fields as $field) {
-    // get value of this field if it exists for this post
-    $meta = get_post_meta($post->ID, $field['id'], true);
-    // begin a table row with
-    echo '<tr>
+        // get value of this field if it exists for this post
+        $meta = get_post_meta($post->ID, $field['id'], true);
+        // begin a table row with
+        echo '<tr>
         <th><label for="'.$field['id'].'">'.$field['label'].'</label></th>
         <td>';
-            switch($field['type']) {
-                // case items will go here
-                case 'text':
-                    echo '<input type="text" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$meta.'" style="width: 100%; height: 40px;" />
+        switch($field['type']) {
+            // case items will go here
+            case 'text':
+                echo '<input type="text" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$meta.'" style="width: 100%; height: 40px;" />
             <br /><span class="description">'.$field['desc'].'</span>';
-                    break;
-                case 'textarea':
-                    echo '<textarea name="'.$field['id'].'" id="'.$field['id'].'" style="width: 100% !important; max-width: 100%; height: 80px;" />'.$meta.'</textarea>
+                break;
+            case 'textarea':
+                echo '<textarea name="'.$field['id'].'" id="'.$field['id'].'" style="width: 100% !important; max-width: 100%; height: 80px;" />'.$meta.'</textarea>
             <br /><span class="description">'.$field['desc'].'</span>';
-                    break;
-                case 'select':
-                    echo '<select name="', $field['id'], '" id="', $field['id'], '">';
-                    foreach ($field['options'] as $option) {
-                        echo '<option ', $meta == $option ? ' selected="selected"' : '', '>', $option, '</option>';
-                    }
-                    echo '</select>';
-                    break;
-                case 'radio':
-                    foreach ($field['options'] as $option) {
-                        echo '<input type="radio" name="', $field['id'], '" value="', $option['value'], '"', $meta == $option['value'] ? ' checked="checked"' : '', ' />', $option['name'];
-                    }
-                    break;
-                case 'checkbox':
-                    echo '<input type="checkbox" name="', $field['id'], '" id="', $field['id'], '"', $meta ? ' checked="checked"' : '', ' />';
-                    break;
-                case 'upload':
-                    echo '<p class="image-upload"><img src="'.$meta.'" name="'.$field['id'].'" style="max-width: 300px; max-height: 200px;" /><input type="text" class="custom_media_url hidden" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$meta.'" style="width: 100%; height: 40px;" /><br />
+                break;
+            case 'select':
+                echo '<select name="', $field['id'], '" id="', $field['id'], '">';
+                foreach ($field['options'] as $option) {
+                    echo '<option ', $meta == $option ? ' selected="selected"' : '', '>', $option, '</option>';
+                }
+                echo '</select>';
+                break;
+            case 'multicheckbox':
+                $meta == "" ? $meta = array() : '';
+                foreach ( $field['options'] as $value => $name ) {
+                    // Append `[]` to the name to get multiple values
+                    // Use in_array() to check whether the current option should be checked
+                    echo '<input type="checkbox" name="', $field['id'], '[]" id="', $field['id'], '" value="', $value, '"', in_array( $value, $meta ) ? ' checked="checked"' : '', ' /> ', $name, '<br/>';
+                }
+                break;
+            case 'radio':
+                $meta == "" ? $meta = array('0,0') : '';
+                foreach ( $field['options'] as $value => $name ) {
+                    // Append `[]` to the name to get multiple values
+                    // Use in_array() to check whether the current option should be checked
+                    echo '<input type="radio" name="', $field['id'], '[]" id="', $field['id'], '" value="', $value, '"', in_array( $value, $meta ) ? ' checked="checked"' : '', ' /> ', $name, '<br/>';
+                }
+                break;
+            case 'checkbox':
+                echo '<input type="checkbox" name="', $field['id'], '" id="', $field['id'], '"', $meta ? ' checked="checked"' : '', ' />';
+                break;
+            case 'upload':
+                echo '<p class="image-upload"><img src="'.$meta.'" name="'.$field['id'].'" style="max-width: 300px; max-height: 200px;" /><input type="text" class="custom_media_url hidden" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$meta.'" style="width: 100%; height: 40px;" /><br />
         <input type="button" class="button button-primary custom_media_button" name="'. $field['id'] .'" value="Upload Image" style="margin-top:5px;" /></p>';
-                    break;
-                case 'editor':
-                    wp_editor( htmlspecialchars_decode($meta), $field['id'] );
-                    break;
-                case 'separate':
-                    echo '<hr />';
-                    break;
-            } //end switch
-            echo '</td></tr>';
+                break;
+            case 'editor':
+                wp_editor( htmlspecialchars_decode($meta), $field['id'] );
+                break;
+            case 'separate':
+                echo '<hr />';
+                break;
+        } //end switch
+        echo '</td></tr>';
     } // end foreach
     echo '</table>'; // end table
 }
 
 // Save the Data
 function save_referenssit_meta($post_id) {
-global $referenssit_meta_fields;
+    global $referenssit_meta_fields;
 
 // verify nonce
-if (!wp_verify_nonce($_POST['custom_meta_box_nonce1'], basename(__FILE__)))
-return $post_id;
+    if (!wp_verify_nonce($_POST['custom_meta_box_nonce1'], basename(__FILE__)))
+        return $post_id;
 // check autosave
-if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE)
-    return $post_id;
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE)
+        return $post_id;
 // check permissions
-if ('page' == $_POST['post_type']) {
-    if (!current_user_can('edit_page', $post_id))
-    return $post_id;
-} elseif (!current_user_can('edit_post', $post_id)) {
-    return $post_id;
-}
+    if ('page' == $_POST['post_type']) {
+        if (!current_user_can('edit_page', $post_id))
+            return $post_id;
+    } elseif (!current_user_can('edit_post', $post_id)) {
+        return $post_id;
+    }
 
     // loop through fields and save the data
     foreach ($referenssit_meta_fields as $field) {
         $old = get_post_meta($post_id, $field['id'], true);
         $new = $_POST[$field['id']];
         if ($new && $new != $old) {
-        update_post_meta($post_id, $field['id'], $new);
+            update_post_meta($post_id, $field['id'], $new);
         } elseif ('' == $new && $old) {
-        delete_post_meta($post_id, $field['id'], $old);
+            delete_post_meta($post_id, $field['id'], $old);
         }
     } // end foreach
 }
@@ -923,6 +951,205 @@ if ($slideArray) {
     <?php }
 }
 ?>
+---------------------dynamic in dynamic metafield---------------
+<?php
+add_action( 'add_meta_boxes', 'add_clinics_price_post_type_meta_box' );
+/* Do something with the data entered */
+add_action( 'save_post', 'clinics_price_save_postdata' );
+
+function add_clinics_price_post_type_meta_box() {
+    add_meta_box(
+        'clinics_post_price_type',
+        'Clinic price',
+        'clinics_price_fields_box',
+        'clinics',
+        'normal',
+        'high'
+    );
+}
+
+/* Prints the box content */
+function clinics_price_fields_box()
+{
+    global $post;
+    // Use nonce for verification
+    wp_nonce_field(plugin_basename(__FILE__), 'priceMeta_noncename');
+    ?>
+    <div id="meta_inner4" class="slides-wrap">
+    <?php
+
+    //get the saved meta as an array
+    $service = get_post_meta($post->ID, 'clinics_service', true);
+    $price = get_post_meta($post->ID, 'clinics_price', true);
+    if ($price) {
+        array_unshift($price, 'removed');
+        unset($price[0]);
+    }
+    $count = get_post_meta($post->ID, 'clinics_count', true);
+    if ($count) {
+        array_unshift($count, "0");
+    }
+//    unset($count[0]);
+    $s = 0;
+    $p = 0;
+    if (is_array($service)) {
+        foreach ($service as $slide) {
+            if (isset($slide['service'])) {
+                echo '<div class="dragNdrop" style="position: relative; margin-bottom: 40px;" data-num="'.$s.'">
+            <label style="display: inline-block; float: left; margin: 0 10px;">Palvelu esim Terveydenhoito: </label><br />
+            <input type="text" name="clinics_service[' . $s . '][service]" value="' . $slide['service'] . '" style="display: inline-block; float: left; margin: 0 10px;" /><br />
+            <div class="innerblock" style="position: relative; display: inline-block;width: 100%;margin: 20px 15px 40px;">';
+                $p= 0;
+                for($i=$count[$s]['count'];$i<($count[$s]['count']+$count[$s+1]['count']);$i++) {
+                    echo '<div class="newRow" data-row="' . $p . '">Palvelu,esim rokotus: <input type="text" name="clinics_price[' . $s . '_' . $p . '][name]" value="' . $price[$s . '_' . $p]['name'] . '" style="display: inline-block; margin: 10px;" />   ';
+                    echo '   Hinta: <input type="text" name="clinics_price[' . $s . '_' . $p . '][price]" value="' . $price[$s . '_' . $p]['price'] . '" style="display: inline-block; margin: 10px;" />   ';
+                    echo '   Lisämääre esim. Lääkkeet: <input type="text" name="clinics_price[' . $s . '_' . $p . '][options]" value="' . $price[$s . '_' . $p]['options'] . '" style="display: inline-block; margin: 10px;" /><br />
+                    <div class="button-primary removeRow" style="display: inline-block; margin: 10px;">Remove row</div>
+                    </div>';
+                    $p++;
+                }
+                echo '<div class="addrow button-primary" style="position: absolute; bottom: -40px; left: 0;">add row</div>
+<input type="text" class="hidden" name="clinics_count[' . $s . '][count]" value="'.$count[$s+1]['count'].'" style="display: none;" />
+            </div>
+            <input type="button" class="button remove4 button-primary" value="Remove services" style="margin-left:270px; position: absolute; bottom: 3px;" /></div>';
+                $s++;
+            }
+        }
+    }
+    ?>
+    <span id="here4"></span>
+    <div class="add4 button button-primary"><?php _e('Add services'); ?></div>
+    <script>
+        var $ = jQuery.noConflict();
+        $(document).ready(function () {
+            var countService = <?php echo $s; ?>;
+            $('.add4').click(function(){
+                countService += 1;
+                var num = $(this).parent().find('.dragNdrop').size();
+                $('#here4').append('' +
+                '<div class="dragNdrop" style="position: relative; margin-bottom: 30px;" data-num="'+ num +'">' +
+                '<label style="display: inline-block; float: left; margin: 0 10px;">Palvelu esim Terveydenhoito: </label><br />' +
+                '<input type="text" name="clinics_service[' + countService + '][service]" value="" style="display: inline-block; float: left; margin: 0 10px;" /><br />' +
+                '<div class="innerblock" style="position: relative; display: inline-block;width: 100%;margin: 20px 15px 40px";>' +
+                '<div class="addrow button-primary" style="position: absolute; bottom: -40px; left: 0;">add row</div>' +
+                '<input type="text" class="hidden" name="clinics_count[' + countService + '][count]" value="0" style="display: none;" />' +
+                '</div>' +
+                '<input type="button" class="button remove4 button-primary" value="Remove services" style="margin-left:270px; position: absolute; bottom: 3px;" /><div/>');
+                return false;
+            });
+            $('#meta_inner4').on("click",".addrow",function(){
+                var numServ = $(this).parent().parent().attr("data-num");
+                var num = $(this).parent().find('.newRow').size();
+                $(this).parent().find('.hidden').val(num+1);
+                $(this).before(''+
+                '<div class="newRow" data-row="' + num + '">Palvelu,esim rokotus: <input type="text" name="clinics_price['+ numServ + '_' + num +'][name]" value="" style="display: inline-block; margin: 10px;" />   ' +
+                '   Hinta: <input type="text" name="clinics_price['+ numServ + '_' + num +'][price]" value="" style="display: inline-block; margin: 10px;" />   ' +
+                '   Lisämääre esim. Lääkkeet: <input type="text" name="clinics_price['+ numServ + '_' + num +'][options]" value="" style="display: inline-block; margin: 10px;" /><br />'+
+                '<div class="button-primary removeRow" style="display: inline-block; margin: 10px;">Remove row</div></div>');
+                return false;
+            });
+            $('#meta_inner4').on("click",".removeRow",function(){
+                var thisRow = $(this).parent().attr("data-row");
+                $(this).parent().parent().find('.newRow').each(function(){
+                    var row = $(this).attr("data-row");
+                    if (thisRow<row) {
+                        $(this).find('input:not(.hidden)').each(function(){
+                            var name = $(this).attr("name");
+                            var nameArray = name.split("[");
+                            var serv = nameArray[1].split("_");
+                            serv[1] = serv[1].slice(0,-1)-1;
+                            var newName = nameArray[0] + '[' + serv[0] + '_' + serv[1] + '][' + nameArray[2];
+                            $(this).attr("name",newName);
+                        });
+                        $(this).attr("data-row",(row-1));
+                    }
+                });
+                var count = $(this).parent().parent().find('.newRow').size() - 1;
+                $(this).parent().parent().find('.hidden').val(count);
+                $(this).parent().remove();
+            });
+            $('#meta_inner4').on("click",".remove4",function(){
+                var num = $(this).parent().attr("data-num");
+                $('.dragNdrop').each(function(){
+                    var count = $(this).attr("data-num");
+                    if (count>num) {
+                        $(this).find('.innerblock input:not(.hidden)').each(function(){
+                            var name = $(this).attr("name");
+                            var nameArray = name.split("[");
+                            var serv = nameArray[1].split("_");
+                            serv[0] = serv[0]-1;
+                            var newName = nameArray[0] + '[' + serv[0] + '_' + serv[1] + '[' + nameArray[2];
+                            $(this).attr("name",newName);
+                        });
+                        var countNew = count - 1;
+                        $(this).attr("data-num",countNew);
+                    }
+                });
+                $(this).parent().remove();
+            });
+        });
+    </script>
+    </div><?php
+}
+/* When the post is saved, saves our custom data */
+function clinics_price_save_postdata( $post_id ) {
+    // verify if this is an auto save routine.
+    // If it is our form has not been submitted, so we dont want to do anything
+    if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
+        return;
+    // verify this came from the our screen and with proper authorization,
+    // because save_post can be triggered at other times
+    if ( !isset( $_POST['priceMeta_noncename'] ) )
+        return;
+    if ( !wp_verify_nonce( $_POST['priceMeta_noncename'], plugin_basename( __FILE__ ) ) )
+        return;
+    // OK, we're authenticated: we need to find and save the data
+    $service = $_POST['clinics_service'];
+    $price = $_POST['clinics_price'];
+    $count = $_POST['clinics_count'];
+    update_post_meta($post_id,'clinics_service',$service);
+    update_post_meta($post_id,'clinics_price',$price);
+    update_post_meta($post_id,'clinics_count',$count);
+}
+?>
+--page.php:---
+<?php
+$service = get_post_meta($post->ID, 'clinics_service', true);
+$price = get_post_meta($post->ID, 'clinics_price', true);
+if ($price) {
+    array_unshift($price, 'removed');
+    unset($price[0]);
+}
+$count = get_post_meta($post->ID, 'clinics_count', true);
+if ($count) {
+    array_unshift($count, "0");
+}
+$s = 0;
+$p = 0;
+?>
+<div class="price-list">
+    <?php
+    if (is_array($service)) {
+        foreach ($service as $slide) {
+            if (isset($slide['service'])) {
+                echo '<div class="service">
+                                            <h4>' . $slide['service'] . '</h4>';
+                $p= 0;
+                for($i=$count[$s]['count'];$i<($count[$s]['count']+$count[$s+1]['count']);$i++) {
+                    echo '<div class="prices row"><div class="col-md-9 name"><p>' . $price[$s . '_' . $p]['name'] . '</p></div>';
+                    echo '<div class="col-md-3 price"><p>' . $price[$s . '_' . $p]['price'] . ' €</p>';
+                    if ($price[$s . '_' . $p]['options']) {echo '<span class="options">' . $price[$s . '_' . $p]['options'] . '</span>'; }
+                    echo '</div>
+                                            </div>';
+                    $p++;
+                }
+                echo '</div>';
+                $s++;
+            }
+        }
+    }
+    ?>
+</div>
 --------------------widgets----------------------------
 <?php
 function slider_enqueue()
@@ -1219,13 +1446,13 @@ function.php:
 /* meta field */
 function wpse_85236_add_photo_field(){
 
-global $post;
-$photoquery = new WP_Query('posts_per_page=-1');
-while ( $photoquery->have_posts() ) : $photoquery->the_post();
-if ( in_category( 'vote' )) {
-add_post_meta($post->ID, 'votes_count', '0', true);
-}
-endwhile;
+    global $post;
+    $photoquery = new WP_Query('posts_per_page=-1');
+    while ( $photoquery->have_posts() ) : $photoquery->the_post();
+        if ( in_category( 'vote' )) {
+            add_post_meta($post->ID, 'votes_count', '0', true);
+        }
+    endwhile;
 }
 add_action( 'init', 'wpse_85236_add_photo_field' );
 /* end meta field */
@@ -1253,125 +1480,24 @@ function add_pricing_meta_box() {
 }
 
 add_action('add_meta_boxes', 'add_pricing_meta_box');
-
-// Field Array
-$prefix = 'custom_';
-$pricing_meta_fields = array(
-    array(
-        'label'=> 'Plan image',
-        'id'    => $prefix.'img',
-        'type'  => 'img'
-    ),
-    array(
-        'label'=> 'Price',
-        'id'    => $prefix.'price',
-        'type'  => 'text'
-    ),
-    array(
-        'label'=> 'People and time',
-        'id'    => $prefix.'time',
-        'type'  => 'text'
-    ),
-    array(
-        'label'=> 'Condition',
-        'id'    => $prefix.'condition',
-        'type'  => 'text'
-    ),
-    array(
-        'label'=> 'Features description',
-        'id'    => $prefix.'desc',
-        'type'  => 'textarea'
-    ),
-    array(
-        'label'=> 'Video link',
-        'id'    => $prefix.'video',
-        'type'  => 'text'
-    ),
-);
-
-// The Callback
-function show_pricing_meta_box() {
-    global $pricing_meta_fields, $post;
-// Use nonce for verification
-    echo '<input type="hidden" name="custom_meta_box_nonce" value="'.wp_create_nonce(basename(__FILE__)).'" />';
-
-    // Begin the field table and loop
-    echo '<table class="form-table">';
-    foreach ($pricing_meta_fields as $field) {
-        // get value of this field if it exists for this post
-        $meta = get_post_meta($post->ID, $field['id'], true);
-        // begin a table row with
-        echo '<tr>
-                <th><label for="'.$field['id'].'">'.$field['label'].'</label></th>
-                <td>';
-        switch($field['type']) {
-            // case items will go here
-            case 'text':
-                echo '<input type="text" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$meta.'" style="width: 100%; height: 40px;" />
-        <br /><span class="description">'.$field['desc'].'</span>';
-                break;
-            case 'textarea':
-                echo '<textarea name="'.$field['id'].'" id="'.$field['id'].'" style="width: 100%; height: 80px;" />'.$meta.'</textarea>
-        <br /><span class="description">'.$field['desc'].'</span>';
-                break;
-            case 'img':
-                echo '<p><input type="text" class="custom_media_url" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$meta.'" style="width: 100%; height: 40px;" /><br />
-        <input type="button" class="button button-primary custom_media_button" name="'. $field['id'] .'" value="Upload Image" style="margin-top:5px;" /></p>';
-                break;
-        } //end switch
-        echo '</td></tr>';
-    } // end foreach
-    echo '</table>'; // end table
-}
-
-// Save the Data
-function save_pricing_meta($post_id) {
-    global $pricing_meta_fields;
-
-    // verify nonce
-    if (!wp_verify_nonce($_POST['custom_meta_box_nonce'], basename(__FILE__)))
-        return $post_id;
-    // check autosave
-    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE)
-        return $post_id;
-    // check permissions
-    if ('page' == $_POST['post_type']) {
-        if (!current_user_can('edit_page', $post_id))
-            return $post_id;
-    } elseif (!current_user_can('edit_post', $post_id)) {
-        return $post_id;
-    }
-
-    // loop through fields and save the data
-    foreach ($pricing_meta_fields as $field) {
-        $old = get_post_meta($post_id, $field['id'], true);
-        $new = $_POST[$field['id']];
-        if ($new && $new != $old) {
-            update_post_meta($post_id, $field['id'], $new);
-        } elseif ('' == $new && $old) {
-            delete_post_meta($post_id, $field['id'], $old);
-        }
-    } // end foreach
-}
-add_action('save_post', 'save_pricing_meta');
 ?>
 -----------------------------------------------------------------------add meta field in template--------------------------------------
 <?php
 function add_coaches_meta_box() {
 
-$post_id = $_GET['post'] ? $_GET['post'] : $_POST['post_ID'] ;
-$template_file = get_post_meta($post_id,'_wp_page_template',TRUE);
+    $post_id = $_GET['post'] ? $_GET['post'] : $_POST['post_ID'] ;
+    $template_file = get_post_meta($post_id,'_wp_page_template',TRUE);
 // check for a template type
-if ($template_file == 'template-coaches.php') {
-add_meta_box(
-'coaches_meta_box',
-'Content titles',
-'show_coaches_meta_box',
-'page',
-'normal',
-'high'
-);
-}
+    if ($template_file == 'template-coaches.php') {
+        add_meta_box(
+            'coaches_meta_box',
+            'Content titles',
+            'show_coaches_meta_box',
+            'page',
+            'normal',
+            'high'
+        );
+    }
 
 }
 
@@ -1400,9 +1526,9 @@ Description: This part is optional, but helpful for describing the Post Template
 что бы все картинки открывались как медиафайл(в белом окне на весь размер), то нужно создать image.php с таким кодом:
 <?php
 while ( have_posts() ) {
-the_post();
-$metadata = wp_get_attachment_metadata();
-wp_redirect(home_url('/').'wp-content/uploads/'.$metadata['file']);
+    the_post();
+    $metadata = wp_get_attachment_metadata();
+    wp_redirect(home_url('/').'wp-content/uploads/'.$metadata['file']);
 }
 ?>
 ------------------------------------------------sidebar-------------------------------------------------------------------------
@@ -1419,46 +1545,46 @@ wp_redirect(home_url('/').'wp-content/uploads/'.$metadata['file']);
 А потом уже в теме его вызвать:
 
 <?php if ( !function_exists('dynamic_sidebar') || !dynamic_sidebar('Left Sidebar') ) : ?>
-        /* СЮДА все то, что должно выводиться если сайдбар не существует */
+    /* СЮДА все то, что должно выводиться если сайдбар не существует */
 <?php endif; ?>
 -----------------------------------------------------sidebar2--------------------------------------------------------------
 <?php
 /**
-* Register widget area.
-*
-* @link http://codex.wordpress.org/Function_Reference/register_sidebar
-*/
+ * Register widget area.
+ *
+ * @link http://codex.wordpress.org/Function_Reference/register_sidebar
+ */
 function ukr_widgets_init() {
-register_sidebar( array(
-'name'          => __( 'Sidebar', 'ukr' ),
-'id'            => 'sidebar-1',
-'description'   => '',
-'before_widget' => '<aside id="%1$s" class="widget %2$s">',
-    'after_widget'  => '</aside>',
-) );
+    register_sidebar( array(
+        'name'          => __( 'Sidebar', 'ukr' ),
+        'id'            => 'sidebar-1',
+        'description'   => '',
+        'before_widget' => '<aside id="%1$s" class="widget %2$s">',
+        'after_widget'  => '</aside>',
+    ) );
 
-register_sidebar( array(
-'name'          => __( 'Sidebar form 2'),
-'id'            => 'sidebar-2',
-'description'   => '',
-'before_widget' => '<aside id="%1$s" class="widget %2$s">',
-    'after_widget'  => '</aside>',
-) );
+    register_sidebar( array(
+        'name'          => __( 'Sidebar form 2'),
+        'id'            => 'sidebar-2',
+        'description'   => '',
+        'before_widget' => '<aside id="%1$s" class="widget %2$s">',
+        'after_widget'  => '</aside>',
+    ) );
 
-register_sidebar( array(
-'name'          => __( 'Sidebar form 3'),
-'id'            => 'sidebar-3',
-'description'   => '',
-'before_widget' => '<aside id="%1$s" class="widget %2$s">',
-    'after_widget'  => '</aside>',
-) );
+    register_sidebar( array(
+        'name'          => __( 'Sidebar form 3'),
+        'id'            => 'sidebar-3',
+        'description'   => '',
+        'before_widget' => '<aside id="%1$s" class="widget %2$s">',
+        'after_widget'  => '</aside>',
+    ) );
 
-/* Phone number in header */
-register_sidebar(array(
-'name'=>'Counter_Lvov',
-'before_widget' => '',
-'after_widget'  => '',
-));
+    /* Phone number in header */
+    register_sidebar(array(
+        'name'=>'Counter_Lvov',
+        'before_widget' => '',
+        'after_widget'  => '',
+    ));
 
 
 }
@@ -1614,35 +1740,35 @@ if ( $childrens )
 <?php } ?>
 --------------------------------------category.php------------------------------------------------------
 <div class="grid_12">
-		<h3 class="head2"><?php printf(__ (' %s '), single_cat_title("", false))?></h3>
-	</div>
-	<div class="clear"></div>
-	<div class="grid_8">
-		<div class="block2">
-			<?php if (have_posts()) : ?>
-			<?php while (have_posts()) : the_post(); ?>	
-				<div class="grid_6">
-					<?php the_post_thumbnail( array( 270,201 ), $default_attr = array(
-									'class' => "img_inner fleft",
-									'alt' => trim(strip_tags( $wp_postmeta->_wp_attachment_image_alt )),
-								) ); ?>						
-					<div class="extra_wrapper">
-						<div class="text1">
-							<a href="<?php the_permalink(); ?>"><?php echo the_title(); ?></a>
-						</div>
-						<?php the_excerpt(); ?>
-					</div>
-				</div>
-			<?php endwhile; ?>
-			<?php endif; ?>		
-		</div>
-	</div>
+    <h3 class="head2"><?php printf(__ (' %s '), single_cat_title("", false))?></h3>
+</div>
+<div class="clear"></div>
+<div class="grid_8">
+    <div class="block2">
+        <?php if (have_posts()) : ?>
+            <?php while (have_posts()) : the_post(); ?>
+                <div class="grid_6">
+                    <?php the_post_thumbnail( array( 270,201 ), $default_attr = array(
+                        'class' => "img_inner fleft",
+                        'alt' => trim(strip_tags( $wp_postmeta->_wp_attachment_image_alt )),
+                    ) ); ?>
+                    <div class="extra_wrapper">
+                        <div class="text1">
+                            <a href="<?php the_permalink(); ?>"><?php echo the_title(); ?></a>
+                        </div>
+                        <?php the_excerpt(); ?>
+                    </div>
+                </div>
+            <?php endwhile; ?>
+        <?php endif; ?>
+    </div>
+</div>
 ----------------------------------------------------------вывод на статической странице ---------------------------------------------------------------
 <?php if (have_posts()) : the_post() ?>
-            <h1><?php the_title(); ?></h1>
-			<?php the_content(); ?>
-			<?php else: ?>
-<p><?php _e('Извините, ничего не найдено...') ?></p>
+    <h1><?php the_title(); ?></h1>
+    <?php the_content(); ?>
+<?php else: ?>
+    <p><?php _e('Извините, ничего не найдено...') ?></p>
 <?php endif ?>
 -----------------------------------------------------CSS-WP---------------------------------------------------------------
 @charset "utf-8";
@@ -1660,45 +1786,45 @@ Author URI: http://raskrutka-v-google.com.ua/
 переважно так:
 1. Реєструю меню (щоб було доступне з адмінки)
 //Меню
- register_nav_menus(array(  
-    'top' => 'Верхнее меню' 
-    ,'bottom' => 'Нижнее меню'  
-));  
-function my_wp_nav_menu_args($args=''){  
-    $args['container'] = '';  
-    return $args;  
-} 
-add_filter( 'wp_nav_menu_args', 'my_wp_nav_menu_args' ); 
+register_nav_menus(array(
+'top' => 'Верхнее меню'
+,'bottom' => 'Нижнее меню'
+));
+function my_wp_nav_menu_args($args=''){
+$args['container'] = '';
+return $args;
+}
+add_filter( 'wp_nav_menu_args', 'my_wp_nav_menu_args' );
 
 2. Створюю меню в адмінці
 3. В потрібне місце додаю наступний код:
-     <?php
-    wp_nav_menu( array( 
-    'menu'              => 'TOP', 
-	'theme_location'    => 'Right',
-    'container_class'   => 'menu', 
-    'menu_class'        => '', 
-    'menu_id'           => 'main-menu' ) 
-    );
-   ?>
+<?php
+wp_nav_menu( array(
+        'menu'              => 'TOP',
+        'theme_location'    => 'Right',
+        'container_class'   => 'menu',
+        'menu_class'        => '',
+        'menu_id'           => 'main-menu' )
+);
+?>
 //
 <?php
 $args = array(
-'theme_location'  => '',
-'menu'            => '',
-'container'       => 'div',
-'container_class' => '',
-'container_id'    => '',
-'menu_class'      => 'menu',
-'menu_id'         => '',
-'echo'            => true,
-'fallback_cb'     => 'wp_page_menu',
-'before'          => '',
-'after'           => '',
-'link_before'     => '',
-'link_after'      => '',
-'items_wrap'      => '<ul id="%1$s" class="%2$s">%3$s</ul>',
-'depth'           => 0
+    'theme_location'  => '',
+    'menu'            => '',
+    'container'       => 'div',
+    'container_class' => '',
+    'container_id'    => '',
+    'menu_class'      => 'menu',
+    'menu_id'         => '',
+    'echo'            => true,
+    'fallback_cb'     => 'wp_page_menu',
+    'before'          => '',
+    'after'           => '',
+    'link_before'     => '',
+    'link_after'      => '',
+    'items_wrap'      => '<ul id="%1$s" class="%2$s">%3$s</ul>',
+    'depth'           => 0
 );
 ?>
 <?php wp_nav_menu( $args ); ?>
@@ -1755,44 +1881,44 @@ if ( $childrens )
 function.php:
 -----------
 <?php
- function navigation() {
-global $wp_query, $wp_rewrite;
-$pages = '';
-$max = $wp_query->max_num_pages;
-if (!$current = get_query_var('paged')) $current = 1;
-$a['base'] = str_replace(999999999, '%#%', get_pagenum_link(999999999));
-$a['total'] = $max;
-$a['current'] = $current;
-$total = 0; //1 - выводить текст "Страница N из N", 0 - не выводить
-$a['mid_size'] = 1; //сколько ссылок показывать слева и справа от текущей
-$a['end_size'] = 1; //сколько ссылок показывать в начале и в конце
-$a['prev_text'] = '&laquo;'; //текст ссылки "Предыдущая страница"
-$a['next_text'] = '&raquo;'; //текст ссылки "Следующая страница"
-if ($max > 1) echo '<div>';
-if ($total = 1 && $max > 1) $pages = '<span>Страница ' . $current . ' из ' . $max . '</span>'."\r\n";
-echo $pages . paginate_links($a);
-if ($max > 1) echo '</div>';
+function navigation() {
+    global $wp_query, $wp_rewrite;
+    $pages = '';
+    $max = $wp_query->max_num_pages;
+    if (!$current = get_query_var('paged')) $current = 1;
+    $a['base'] = str_replace(999999999, '%#%', get_pagenum_link(999999999));
+    $a['total'] = $max;
+    $a['current'] = $current;
+    $total = 0; //1 - выводить текст "Страница N из N", 0 - не выводить
+    $a['mid_size'] = 1; //сколько ссылок показывать слева и справа от текущей
+    $a['end_size'] = 1; //сколько ссылок показывать в начале и в конце
+    $a['prev_text'] = '&laquo;'; //текст ссылки "Предыдущая страница"
+    $a['next_text'] = '&raquo;'; //текст ссылки "Следующая страница"
+    if ($max > 1) echo '<div>';
+    if ($total = 1 && $max > 1) $pages = '<span>Страница ' . $current . ' из ' . $max . '</span>'."\r\n";
+    echo $pages . paginate_links($a);
+    if ($max > 1) echo '</div>';
 }
 ?>
 ------------
 page.php:
 ------------
 <?php
-										if ( get_query_var('paged') ) { $paged = get_query_var('paged'); }
-											elseif ( get_query_var('page') ) { $paged = get_query_var('page'); }
-												else { $paged = 1; }
-										query_posts('posts_per_page=5&cat=7&paged=' . $paged);
-									?> <!-- выводит 5 постов из 7 категории  -->
-									<?php if (have_posts()) : ?>
-										<?php while (have_posts()) : the_post(); ?>
-					             				<div class="box2">             
-													<h4><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h4>	
-														<?php the_content(); ?>													
-		            			                </div>
+if ( get_query_var('paged') ) { $paged = get_query_var('paged'); }
+elseif ( get_query_var('page') ) { $paged = get_query_var('page'); }
+else { $paged = 1; }
+query_posts('posts_per_page=5&cat=7&paged=' . $paged);
+?> <!-- выводит 5 постов из 7 категории  -->
+<?php if (have_posts()) : ?>
+    <?php while (have_posts()) : the_post(); ?>
+        <div class="box2">
+            <h4><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h4>
+            <?php the_content(); ?>
+        </div>
 
-   										 <?php endwhile; ?>
-									<?php endif; ?>
-								<div class="navig"><?php navigation(); ?></div>
+    <?php endwhile; ?>
+<?php endif; ?>
+<div class="navig"><?php navigation(); ?></div>
 ----------------------------------------------------------devide content in two part--with help more----------------------------------
 -------page.php-------
 <?php global $post; ?>
@@ -1803,9 +1929,9 @@ page.php:
 <?php
 // split content at the more tag and return an array
 function split_content() {
-global $more;
-$more = true;
-$content = preg_split('/<span id="more-\d+"><\/span>/i', get_the_content('more'));
+    global $more;
+    $more = true;
+    $content = preg_split('/<span id="more-\d+"><\/span>/i', get_the_content('more'));
     for($c = 0, $csize = count($content); $c < $csize; $c++) {
         $content[$c] = apply_filters('the_content', $content[$c]);
     }
@@ -1836,7 +1962,7 @@ if ($parent_id) {
 ----------------------------------------------------------локализация сайта----------------------------------------------------
 плагин qTranslate
 ----вставить значки с языками---------
-<?php qtrans_generateLanguageSelectCode($type='both');	?>	
+<?php qtrans_generateLanguageSelectCode($type='both');	?>
 ------------------------------------------------------коментарии вк и фейсбук---------------------------------------------------------
 <!------------------------------------------------Код комментов ВК----------------------------------------->
 
@@ -1844,13 +1970,13 @@ if ($parent_id) {
 <script type="text/javascript" src="//vk.com/js/api/openapi.js?105"></script>
 
 <script type="text/javascript">
-  VK.init({apiId: 4149333, onlyWidgets: true});
+    VK.init({apiId: 4149333, onlyWidgets: true});
 </script>
 
 <!-- Этот код добавить в место для комментариев -->
 <div id="vk_comments"></div>
 <script type="text/javascript">
-VK.Widgets.Comments("vk_comments", {limit: 5, width: "350", attach: "*"});
+    VK.Widgets.Comments("vk_comments", {limit: 5, width: "350", attach: "*"});
 </script>
 
 <!-------------------------------------------Код комментов Фейсбук------------------------------------------>
@@ -1858,12 +1984,12 @@ VK.Widgets.Comments("vk_comments", {limit: 5, width: "350", attach: "*"});
 <!--Этот скрипт добавить в в теге body-->
 <div id="fb-root"></div>
 <script>(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) return;
-  js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/ru_RU/all.js#xfbml=1";
-  fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));</script>
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/ru_RU/all.js#xfbml=1";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));</script>
 
 <!-- Этот код добавить в место для комментариев -->
 <div class="fb-comments" data-href="http://site2b.com.ua/" data-width="350" data-numposts="5" data-colorscheme="light"></div>
@@ -1953,7 +2079,7 @@ VK.Widgets.Comments("vk_comments", {limit: 5, width: "350", attach: "*"});
     });
 </script>
 
------------------текст скрипта-----------------------	 
+-----------------текст скрипта-----------------------
 ---------css--------------
 <style>
     /*popup*/
@@ -1991,9 +2117,9 @@ VK.Widgets.Comments("vk_comments", {limit: 5, width: "350", attach: "*"});
 <span class="popup_t" data-name="f1">закажите звонок</span>
 
 <div class="popup_bg"></div>
-	<div class="popup sl_form f1">
-		<?php echo do_shortcode('[contact-form-7 id="320" title="Форма для контакта 1"]'); ?> 							
-	</div>
+<div class="popup sl_form f1">
+    <?php echo do_shortcode('[contact-form-7 id="320" title="Форма для контакта 1"]'); ?>
+</div>
 -----bootstrap----------
 <!-- Small modal -->
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-sm">Small modal</button>
@@ -2005,55 +2131,55 @@ VK.Widgets.Comments("vk_comments", {limit: 5, width: "350", attach: "*"});
         </div>
     </div>
 </div>
-	-----------------------placeholder-------------------
-	placeholder "Ваш номер телефона"
+-----------------------placeholder-------------------
+placeholder "Ваш номер телефона"
 -----------------------------------------------scrol with ankor------------------------------------------------
 <script type="text/javascript">
-$(document).ready(function() {
-$('a[href*=#]:not([href=#])').click(function() {
-var target = $(this.hash);
-if (target.length == 0) target = $('a[name="' + this.hash.substr(1) + '"]');
-if (target.length == 0) target = $('html');
-$('html, body').animate({ scrollTop: target.offset().top }, 500);
-return false;
-});
-});
+    $(document).ready(function() {
+        $('a[href*=#]:not([href=#])').click(function() {
+            var target = $(this.hash);
+            if (target.length == 0) target = $('a[name="' + this.hash.substr(1) + '"]');
+            if (target.length == 0) target = $('html');
+            $('html, body').animate({ scrollTop: target.offset().top }, 500);
+            return false;
+        });
+    });
 </script>
 <!--------------------------------------------------scrollToTop------------------------------------------------------------------------>
 в код добавить:
 <a href="#" class="scrollup">Scroll</a>
 в шапку добавить жс:
 <script type="text/javascript">
-	$(document).ready(function () {
+    $(document).ready(function () {
 
-    $(window).scroll(function () {
-        if ($(this).scrollTop() > 100) {
-            $('.scrollup').fadeIn();
-        } else {
-            $('.scrollup').fadeOut();
-        }
+        $(window).scroll(function () {
+            if ($(this).scrollTop() > 100) {
+                $('.scrollup').fadeIn();
+            } else {
+                $('.scrollup').fadeOut();
+            }
+        });
+
+        $('.scrollup').click(function () {
+            $("html, body").animate({
+                scrollTop: 0
+            }, 600);
+            return false;
+        });
+
     });
-
-    $('.scrollup').click(function () {
-        $("html, body").animate({
-            scrollTop: 0
-        }, 600);
-        return false;
-    });
-
-});
 </script>
 ------css------
 .scrollup {
-    width: 40px;
-    height: 40px;
-    position: fixed;
-    bottom: 50px;
-    right: 100px;
-    display: none;
-    text-indent: -9999px;
-    background: url('icon_top.png') no-repeat;
-    background-color: #000;
+width: 40px;
+height: 40px;
+position: fixed;
+bottom: 50px;
+right: 100px;
+display: none;
+text-indent: -9999px;
+background: url('icon_top.png') no-repeat;
+background-color: #000;
 }
 <-------------------------------------------------------------spoiler show-hidden-------------------------------------------------------------->
 <p>какой-то который не скрывается  ---- Hormiturvamies on keskittynyt savu-ja ilmahormien käyttöiän ja- turvallisuuden parantamiseen. Teemme veloituksettomia tarkastuskäyntejä toiminta-alueillamme ja raportoimme asiakkaille piipun kunnosta ja mahdollisista korjaustoimenpiteistä.</p>
@@ -2061,107 +2187,107 @@ return false;
 
 
 <div class="spoiler" style="display:none;">
-<p>текст под спойлером ---- Palvelemme valtakunnallisesti yrityksiä monelta eri toimialalta ja asiakkaanamme on useita tunnettuja ja oman alansa johtavia yrityksiä Suomessa.</p>
+    <p>текст под спойлером ---- Palvelemme valtakunnallisesti yrityksiä monelta eri toimialalta ja asiakkaanamme on useita tunnettuja ja oman alansa johtavia yrityksiä Suomessa.</p>
 </div>
 <button id="show-more-btn">Lue lisää </button>
 JS:
 <script>
-$('#show-more-btn').click(function(){
-var link = $(this);
-$('.spoiler').slideToggle('slow', function() {
-if ($(this).is(":visible")) {
-link.text('Sulje');
-} else {
-link.text('Lue lisää');
-}
-});
-});
+    $('#show-more-btn').click(function(){
+        var link = $(this);
+        $('.spoiler').slideToggle('slow', function() {
+            if ($(this).is(":visible")) {
+                link.text('Sulje');
+            } else {
+                link.text('Lue lisää');
+            }
+        });
+    });
 </script>
 <!------------------------------------------------------------------hover---------------------------------------------------------------------->
-  <script>
-  $(document).ready(function(){F
-$("#pol1").hover(function(){
-        $('#polb1').show();
-},function(){
-    $('#polb1').hide();
-});
-$("#pol2").hover(function(){
-        $('#polb2').show();
-},function(){
-    $('#polb2').hide();
-});
-$("#pol3").hover(function(){
-        $('#polb3').show();
-},function(){
-    $('#polb3').hide();
-	$('.un').css('z-index','-1');
-});
-});
-  </script>
-  -------------------------------------------------------------------редирект-------------------------------------------------------------------------------
-  <script type="text/javascript">
-$(document).ready(function(){
-var a = location.pathname;
-var b = "/sobstvennyj-sovremennyj-avtopark.html";
-if ( a == b ){
-document.location.href = "/category/sotrudniki";
-} 
-});
+<script>
+    $(document).ready(function(){F
+        $("#pol1").hover(function(){
+            $('#polb1').show();
+        },function(){
+            $('#polb1').hide();
+        });
+        $("#pol2").hover(function(){
+            $('#polb2').show();
+        },function(){
+            $('#polb2').hide();
+        });
+        $("#pol3").hover(function(){
+            $('#polb3').show();
+        },function(){
+            $('#polb3').hide();
+            $('.un').css('z-index','-1');
+        });
+    });
+</script>
+-------------------------------------------------------------------редирект-------------------------------------------------------------------------------
+<script type="text/javascript">
+    $(document).ready(function(){
+        var a = location.pathname;
+        var b = "/sobstvennyj-sovremennyj-avtopark.html";
+        if ( a == b ){
+            document.location.href = "/category/sotrudniki";
+        }
+    });
 </script>
 <!----------------------------------------------------скрипт для времени суток------------------------------------------------------->
 <script type="text/javascript">
-	$(document).ready(function() {
-var day = new Date();
-var h = day.getHours();
-var vih = day.getUTCDay(); 
+    $(document).ready(function() {
+        var day = new Date();
+        var h = day.getHours();
+        var vih = day.getUTCDay();
 
- if (vih>=1 && vih<=5) { 
-	if (h>=6 && h<=20) {
-		$('#akcihome').text('Акция!');
+        if (vih>=1 && vih<=5) {
+            if (h>=6 && h<=20) {
+                $('#akcihome').text('Акция!');
 //		$('#s19').text('');
-		$('#poluchhome').text('Получите скидку сейчас!');
-		$('#pformhome').text('Получите скидку 38%. Предложение ограничено!');
-		$('#p2formhome').text('Осталось 3 дня');
-	} else   if (h<=6 || h>=20) {
-		$('#akcihome').text('Ночная скидка 38%');
-		$('#s19').text('');
-		$('#poluchhome').text('Получите ночную скидку');
-		$('#pformhome').text('Для фиксации Вашей скидки 38%');
-		$('#p2formhome').text('Заполните форму сейчас');
-	}
-} else if (vih==0 || vih==6) { 
-	$('#akcihome').text('Скидка выходного дня 38%');
-	$('#s19').text('');
-	$('#poluchhome').text('Получите Вашу скидку!');
-	$('#pformhome').text('Для фиксации Вашей скидки 38%');
-	$('#p2formhome').text('Заполните форму сейчас');
-} 
-	});
-</script> 
+                $('#poluchhome').text('Получите скидку сейчас!');
+                $('#pformhome').text('Получите скидку 38%. Предложение ограничено!');
+                $('#p2formhome').text('Осталось 3 дня');
+            } else   if (h<=6 || h>=20) {
+                $('#akcihome').text('Ночная скидка 38%');
+                $('#s19').text('');
+                $('#poluchhome').text('Получите ночную скидку');
+                $('#pformhome').text('Для фиксации Вашей скидки 38%');
+                $('#p2formhome').text('Заполните форму сейчас');
+            }
+        } else if (vih==0 || vih==6) {
+            $('#akcihome').text('Скидка выходного дня 38%');
+            $('#s19').text('');
+            $('#poluchhome').text('Получите Вашу скидку!');
+            $('#pformhome').text('Для фиксации Вашей скидки 38%');
+            $('#p2formhome').text('Заполните форму сейчас');
+        }
+    });
+</script>
 <!------------------------------------------------------затемнение картинок------------------------------------------>
-.grayscale { 
-  -webkit-filter: grayscale(100%);
-  -moz-filter: grayscale(100%);
-  -ms-filter: grayscale(100%);
-  -o-filter: grayscale(100%);
-  filter: grayscale(100%);
-  filter: url(grayscale.svg#greyscale); /* Firefox 4+ */
-  filter: gray; /* IE 6-9 */
+.grayscale {
+-webkit-filter: grayscale(100%);
+-moz-filter: grayscale(100%);
+-ms-filter: grayscale(100%);
+-o-filter: grayscale(100%);
+filter: grayscale(100%);
+filter: url(grayscale.svg#greyscale); /* Firefox 4+ */
+filter: gray; /* IE 6-9 */
 }
-Внимание! Возможно, Вы уже увидели строчку с 
+Внимание! Возможно, Вы уже увидели строчку с
 
 filter:  url(grayscale.svg#greyscale);
-В ней мы подключаем файл для того, чтобы обесцвечивание работало и в Firefox. 
+В ней мы подключаем файл для того, чтобы обесцвечивание работало и в Firefox.
 
 Достаточно просто создать файл grayscale.svg и добавить в него следующее:
 
 <svg version="1.1" xmlns="http://www.w3.org/2000/svg">
-<filter id="greyscale">
-<feColorMatrix type="matrix" values="0.3333 0.3333 0.3333 0 0
+    <filter id="greyscale">
+        <feColorMatrix type="matrix" values="0.3333 0.3333 0.3333 0 0
  0.3333 0.3333 0.3333 0 0
  0.3333 0.3333 0.3333 0 0
  0  0  0  1 0"/>
-</filter>
+    </filter>
 </svg>
 
 
@@ -2170,11 +2296,11 @@ filter:  url(grayscale.svg#greyscale);
 Код CSS
 
 .grayscale:hover {
-  -webkit-filter: grayscale(0%);
-  -moz-filter: grayscale(0%);
-  -ms-filter: grayscale(0%);
-  -o-filter: grayscale(0%);
-  filter: none;
+-webkit-filter: grayscale(0%);
+-moz-filter: grayscale(0%);
+-ms-filter: grayscale(0%);
+-o-filter: grayscale(0%);
+filter: none;
 }
 -----------------------------------инпут пропадает текст при нажатии---------------------------------------
 <input type="text" name="email" class="required email" value="Введите Ваш е-мейл" onfocus="this.value=''" onblur="if (this.value==''){this.value='Введите Ваш е-мейл'}">
@@ -2202,142 +2328,142 @@ filter:  url(grayscale.svg#greyscale);
 
 <?
 function dimox_breadcrumbs(){
-/* === OPTIONS === */
-$text['home']     = 'Etusivu'; // text for the 'Home' link
-$text['category'] = 'Archive by Category "%s"'; // text for a category page
-$text['tax'] 	  = 'Archive for "%s"'; // text for a taxonomy page
-$text['search']   = 'Search Results for "%s" Query'; // text for a search results page
-$text['tag']      = 'Posts Tagged "%s"'; // text for a tag page
-$text['author']   = 'Articles Posted by %s'; // text for an author page
-$text['404']      = 'Error 404'; // text for the 404 page
+    /* === OPTIONS === */
+    $text['home']     = 'Etusivu'; // text for the 'Home' link
+    $text['category'] = 'Archive by Category "%s"'; // text for a category page
+    $text['tax'] 	  = 'Archive for "%s"'; // text for a taxonomy page
+    $text['search']   = 'Search Results for "%s" Query'; // text for a search results page
+    $text['tag']      = 'Posts Tagged "%s"'; // text for a tag page
+    $text['author']   = 'Articles Posted by %s'; // text for an author page
+    $text['404']      = 'Error 404'; // text for the 404 page
 
-$showCurrent = 1; // 1 - show current post/page title in breadcrumbs, 0 - don't show
-$showOnHome  = 0; // 1 - show breadcrumbs on the homepage, 0 - don't show
-$delimiter   = '  /  '; // delimiter between crumbs
-$before      = '<span class="current">'; // tag before the current crumb
+    $showCurrent = 1; // 1 - show current post/page title in breadcrumbs, 0 - don't show
+    $showOnHome  = 0; // 1 - show breadcrumbs on the homepage, 0 - don't show
+    $delimiter   = '  /  '; // delimiter between crumbs
+    $before      = '<span class="current">'; // tag before the current crumb
     $after       = '</span>'; // tag after the current crumb
-/* === END OF OPTIONS === */
+    /* === END OF OPTIONS === */
 
-global $post;
-$homeLink = get_bloginfo('url') . '/';
-$linkBefore = '<span typeof="v:Breadcrumb">';
+    global $post;
+    $homeLink = get_bloginfo('url') . '/';
+    $linkBefore = '<span typeof="v:Breadcrumb">';
     $linkAfter = '</span>';
-$linkAttr = ' rel="v:url" property="v:title"';
-$link = $linkBefore . '<a' . $linkAttr . ' href="%1$s">%2$s</a>' . $linkAfter;
+    $linkAttr = ' rel="v:url" property="v:title"';
+    $link = $linkBefore . '<a' . $linkAttr . ' href="%1$s">%2$s</a>' . $linkAfter;
 
-if (is_home() || is_front_page()) {
+    if (is_home() || is_front_page()) {
 
-if ($showOnHome == 1) echo '<div id="breadcrumbs" class="breadcrumb"><a href="' . $homeLink . '">' . $text['home'] . '</a></div>';
+        if ($showOnHome == 1) echo '<div id="breadcrumbs" class="breadcrumb"><a href="' . $homeLink . '">' . $text['home'] . '</a></div>';
 
-} else {
+    } else {
 
-echo '<div id="breadcrumbs" class="breadcrumb"" xmlns:v="http://rdf.data-vocabulary.org/#">' . sprintf($link, $homeLink, $text['home']) . $delimiter;
+        echo '<div id="breadcrumbs" class="breadcrumb"" xmlns:v="http://rdf.data-vocabulary.org/#">' . sprintf($link, $homeLink, $text['home']) . $delimiter;
 
 
-if ( is_category() ) {
-$thisCat = get_category(get_query_var('cat'), false);
-if ($thisCat->parent != 0) {
-$cats = get_category_parents($thisCat->parent, TRUE, $delimiter);
-$cats = str_replace('<a', $linkBefore . '<a' . $linkAttr, $cats);
-$cats = str_replace('</a>', '</a>' . $linkAfter, $cats);
-echo $cats;
-}
-echo $before . sprintf($text['category'], single_cat_title('', false)) . $after;
+        if ( is_category() ) {
+            $thisCat = get_category(get_query_var('cat'), false);
+            if ($thisCat->parent != 0) {
+                $cats = get_category_parents($thisCat->parent, TRUE, $delimiter);
+                $cats = str_replace('<a', $linkBefore . '<a' . $linkAttr, $cats);
+                $cats = str_replace('</a>', '</a>' . $linkAfter, $cats);
+                echo $cats;
+            }
+            echo $before . sprintf($text['category'], single_cat_title('', false)) . $after;
 
-} elseif( is_tax() ){
-$thisCat = get_category(get_query_var('cat'), false);
-if ($thisCat->parent != 0) {
-$cats = get_category_parents($thisCat->parent, TRUE, $delimiter);
-$cats = str_replace('<a', $linkBefore . '<a' . $linkAttr, $cats);
-$cats = str_replace('</a>', '</a>' . $linkAfter, $cats);
-echo $cats;
-}
-echo $before . sprintf($text['tax'], single_cat_title('', false)) . $after;
+        } elseif( is_tax() ){
+            $thisCat = get_category(get_query_var('cat'), false);
+            if ($thisCat->parent != 0) {
+                $cats = get_category_parents($thisCat->parent, TRUE, $delimiter);
+                $cats = str_replace('<a', $linkBefore . '<a' . $linkAttr, $cats);
+                $cats = str_replace('</a>', '</a>' . $linkAfter, $cats);
+                echo $cats;
+            }
+            echo $before . sprintf($text['tax'], single_cat_title('', false)) . $after;
 
-}elseif ( is_search() ) {
-echo $before . sprintf($text['search'], get_search_query()) . $after;
+        }elseif ( is_search() ) {
+            echo $before . sprintf($text['search'], get_search_query()) . $after;
 
-} elseif ( is_day() ) {
-echo sprintf($link, get_year_link(get_the_time('Y')), get_the_time('Y')) . $delimiter;
-echo sprintf($link, get_month_link(get_the_time('Y'),get_the_time('m')), get_the_time('F')) . $delimiter;
-echo $before . get_the_time('d') . $after;
+        } elseif ( is_day() ) {
+            echo sprintf($link, get_year_link(get_the_time('Y')), get_the_time('Y')) . $delimiter;
+            echo sprintf($link, get_month_link(get_the_time('Y'),get_the_time('m')), get_the_time('F')) . $delimiter;
+            echo $before . get_the_time('d') . $after;
 
-} elseif ( is_month() ) {
-echo sprintf($link, get_year_link(get_the_time('Y')), get_the_time('Y')) . $delimiter;
-echo $before . get_the_time('F') . $after;
+        } elseif ( is_month() ) {
+            echo sprintf($link, get_year_link(get_the_time('Y')), get_the_time('Y')) . $delimiter;
+            echo $before . get_the_time('F') . $after;
 
-} elseif ( is_year() ) {
-echo $before . get_the_time('Y') . $after;
+        } elseif ( is_year() ) {
+            echo $before . get_the_time('Y') . $after;
 
-} elseif ( is_single() && !is_attachment() ) {
-if ( get_post_type() != 'post' ) {
-$post_type = get_post_type_object(get_post_type());
-$slug = $post_type->rewrite;
-printf($link, $homeLink . '/' . $slug['slug'] . '/', $post_type->labels->singular_name);
-if ($showCurrent == 1) echo $delimiter . $before . get_the_title() . $after;
-} else {
-$cat = get_the_category(); $cat = $cat[0];
-$cats = get_category_parents($cat, TRUE, $delimiter);
-if ($showCurrent == 0) $cats = preg_replace("#^(.+)$delimiter$#", "$1", $cats);
-$cats = str_replace('<a', $linkBefore . '<a' . $linkAttr, $cats);
-$cats = str_replace('</a>', '</a>' . $linkAfter, $cats);
-echo $cats;
-if ($showCurrent == 1) echo $before . get_the_title() . $after;
-}
+        } elseif ( is_single() && !is_attachment() ) {
+            if ( get_post_type() != 'post' ) {
+                $post_type = get_post_type_object(get_post_type());
+                $slug = $post_type->rewrite;
+                printf($link, $homeLink . '/' . $slug['slug'] . '/', $post_type->labels->singular_name);
+                if ($showCurrent == 1) echo $delimiter . $before . get_the_title() . $after;
+            } else {
+                $cat = get_the_category(); $cat = $cat[0];
+                $cats = get_category_parents($cat, TRUE, $delimiter);
+                if ($showCurrent == 0) $cats = preg_replace("#^(.+)$delimiter$#", "$1", $cats);
+                $cats = str_replace('<a', $linkBefore . '<a' . $linkAttr, $cats);
+                $cats = str_replace('</a>', '</a>' . $linkAfter, $cats);
+                echo $cats;
+                if ($showCurrent == 1) echo $before . get_the_title() . $after;
+            }
 
-} elseif ( !is_single() && !is_page() && get_post_type() != 'post' && !is_404() ) {
-$post_type = get_post_type_object(get_post_type());
-echo $before . $post_type->labels->singular_name . $after;
+        } elseif ( !is_single() && !is_page() && get_post_type() != 'post' && !is_404() ) {
+            $post_type = get_post_type_object(get_post_type());
+            echo $before . $post_type->labels->singular_name . $after;
 
-} elseif ( is_attachment() ) {
-$parent = get_post($post->post_parent);
-$cat = get_the_category($parent->ID); $cat = $cat[0];
-$cats = get_category_parents($cat, TRUE, $delimiter);
-$cats = str_replace('<a', $linkBefore . '<a' . $linkAttr, $cats);
-$cats = str_replace('</a>', '</a>' . $linkAfter, $cats);
-echo $cats;
-printf($link, get_permalink($parent), $parent->post_title);
-if ($showCurrent == 1) echo $delimiter . $before . get_the_title() . $after;
+        } elseif ( is_attachment() ) {
+            $parent = get_post($post->post_parent);
+            $cat = get_the_category($parent->ID); $cat = $cat[0];
+            $cats = get_category_parents($cat, TRUE, $delimiter);
+            $cats = str_replace('<a', $linkBefore . '<a' . $linkAttr, $cats);
+            $cats = str_replace('</a>', '</a>' . $linkAfter, $cats);
+            echo $cats;
+            printf($link, get_permalink($parent), $parent->post_title);
+            if ($showCurrent == 1) echo $delimiter . $before . get_the_title() . $after;
 
-} elseif ( is_page() && !$post->post_parent ) {
-if ($showCurrent == 1) echo $before . get_the_title() . $after;
+        } elseif ( is_page() && !$post->post_parent ) {
+            if ($showCurrent == 1) echo $before . get_the_title() . $after;
 
-} elseif ( is_page() && $post->post_parent ) {
-$parent_id  = $post->post_parent;
-$breadcrumbs = array();
-while ($parent_id) {
-$page = get_page($parent_id);
-$breadcrumbs[] = sprintf($link, get_permalink($page->ID), get_the_title($page->ID));
-$parent_id  = $page->post_parent;
-}
-$breadcrumbs = array_reverse($breadcrumbs);
-for ($i = 0; $i < count($breadcrumbs); $i++) {
-echo $breadcrumbs[$i];
-if ($i != count($breadcrumbs)-1) echo $delimiter;
-}
-if ($showCurrent == 1) echo $delimiter . $before . get_the_title() . $after;
+        } elseif ( is_page() && $post->post_parent ) {
+            $parent_id  = $post->post_parent;
+            $breadcrumbs = array();
+            while ($parent_id) {
+                $page = get_page($parent_id);
+                $breadcrumbs[] = sprintf($link, get_permalink($page->ID), get_the_title($page->ID));
+                $parent_id  = $page->post_parent;
+            }
+            $breadcrumbs = array_reverse($breadcrumbs);
+            for ($i = 0; $i < count($breadcrumbs); $i++) {
+                echo $breadcrumbs[$i];
+                if ($i != count($breadcrumbs)-1) echo $delimiter;
+            }
+            if ($showCurrent == 1) echo $delimiter . $before . get_the_title() . $after;
 
-} elseif ( is_tag() ) {
-echo $before . sprintf($text['tag'], single_tag_title('', false)) . $after;
+        } elseif ( is_tag() ) {
+            echo $before . sprintf($text['tag'], single_tag_title('', false)) . $after;
 
-} elseif ( is_author() ) {
-global $author;
-$userdata = get_userdata($author);
-echo $before . sprintf($text['author'], $userdata->display_name) . $after;
+        } elseif ( is_author() ) {
+            global $author;
+            $userdata = get_userdata($author);
+            echo $before . sprintf($text['author'], $userdata->display_name) . $after;
 
-} elseif ( is_404() ) {
-echo $before . $text['404'] . $after;
-}
+        } elseif ( is_404() ) {
+            echo $before . $text['404'] . $after;
+        }
 
-if ( get_query_var('paged') ) {
-if ( is_category() || is_day() || is_month() || is_year() || is_search() || is_tag() || is_author() ) echo ' (';
-echo __('Page') . ' ' . get_query_var('paged');
-if ( is_category() || is_day() || is_month() || is_year() || is_search() || is_tag() || is_author() ) echo ')';
-}
+        if ( get_query_var('paged') ) {
+            if ( is_category() || is_day() || is_month() || is_year() || is_search() || is_tag() || is_author() ) echo ' (';
+            echo __('Page') . ' ' . get_query_var('paged');
+            if ( is_category() || is_day() || is_month() || is_year() || is_search() || is_tag() || is_author() ) echo ')';
+        }
 
-echo '</div>';
+        echo '</div>';
 
-}
+    }
 } // end dimox_breadcrumbs()
 ?>
 ---------------------------------------------------------------------carousel item(bootstrap)----------------------------------
@@ -2396,11 +2522,11 @@ echo '</div>';
 
 function add_to_author_profile( $contactmethods ) {
 
-$contactmethods['twitter_profile'] = 'Twitter Profile URL';
-$contactmethods['linkedin_profile'] = 'Linkedin Profile URL';
-$contactmethods['googlePlus_profile'] = 'GooglePlus Profile URL';
+    $contactmethods['twitter_profile'] = 'Twitter Profile URL';
+    $contactmethods['linkedin_profile'] = 'Linkedin Profile URL';
+    $contactmethods['googlePlus_profile'] = 'GooglePlus Profile URL';
 
-return $contactmethods;
+    return $contactmethods;
 }
 add_filter( 'user_contactmethods', 'add_to_author_profile', 10, 1);
 
@@ -2410,59 +2536,59 @@ add_action( 'edit_user_profile', 'my_show_extra_profile_fields' );
 
 function my_show_extra_profile_fields( $user )
 {
-?>
+    ?>
 
-<h3>Profile Images</h3>
+    <h3>Profile Images</h3>
 
-<style type="text/css">
-    .fh-profile-upload-options th,
-    .fh-profile-upload-options td,
-    .fh-profile-upload-options input {
-        vertical-align: top;
-    }
+    <style type="text/css">
+        .fh-profile-upload-options th,
+        .fh-profile-upload-options td,
+        .fh-profile-upload-options input {
+            vertical-align: top;
+        }
 
-    .user-preview-image {
-        display: block;
-        height: auto;
-        width: 300px;
-    }
+        .user-preview-image {
+            display: block;
+            height: auto;
+            width: 300px;
+        }
 
-</style>
+    </style>
 
-<table class="form-table fh-profile-upload-options">
-    <tr>
-        <th>
-            <label for="image">Main Profile Image</label>
-        </th>
+    <table class="form-table fh-profile-upload-options">
+        <tr>
+            <th>
+                <label for="image">Main Profile Image</label>
+            </th>
 
-        <td>
-            <img class="user-preview-image" src="<?php echo esc_attr( get_the_author_meta( 'image', $user->ID ) ); ?>">
+            <td>
+                <img class="user-preview-image" src="<?php echo esc_attr( get_the_author_meta( 'image', $user->ID ) ); ?>">
 
-            <input type="text" name="image" id="image" value="<?php echo esc_attr( get_the_author_meta( 'image', $user->ID ) ); ?>" class="regular-text" />
-            <input type='button' class="button-primary" value="Upload Image" id="uploadimage"/><br />
+                <input type="text" name="image" id="image" value="<?php echo esc_attr( get_the_author_meta( 'image', $user->ID ) ); ?>" class="regular-text" />
+                <input type='button' class="button-primary" value="Upload Image" id="uploadimage"/><br />
 
-            <span class="description">Please upload an image for your profile.</span>
-        </td>
-    </tr>
-</table>
+                <span class="description">Please upload an image for your profile.</span>
+            </td>
+        </tr>
+    </table>
 
-<script type="text/javascript">
-    (function( $ ) {
-        $( '#uploadimage' ).on( 'click', function() {
-            tb_show('test', 'media-upload.php?type=image&TB_iframe=1');
+    <script type="text/javascript">
+        (function( $ ) {
+            $( '#uploadimage' ).on( 'click', function() {
+                tb_show('test', 'media-upload.php?type=image&TB_iframe=1');
 
-            window.send_to_editor = function( html )
-            {
-                imgurl = $( 'img',html ).attr( 'src' );
-                $( '#image' ).val(imgurl);
-                tb_remove();
-            }
+                window.send_to_editor = function( html )
+                {
+                    imgurl = $( 'img',html ).attr( 'src' );
+                    $( '#image' ).val(imgurl);
+                    tb_remove();
+                }
 
-            return false;
-        });
+                return false;
+            });
 
-    })(jQuery);
-</script>
+        })(jQuery);
+    </script>
 
 <?php
 }
@@ -2577,27 +2703,27 @@ endif;
 <?php
 //add view date to post
 function wpb_set_post_views($postID) {
-$count_key = 'wpb_post_views_count';
-$count = get_post_meta($postID, $count_key, true);
-if($count==''){
-$count = 0;
-delete_post_meta($postID, $count_key);
-add_post_meta($postID, $count_key, '0');
-}else{
-$count++;
-update_post_meta($postID, $count_key, $count);
-}
+    $count_key = 'wpb_post_views_count';
+    $count = get_post_meta($postID, $count_key, true);
+    if($count==''){
+        $count = 0;
+        delete_post_meta($postID, $count_key);
+        add_post_meta($postID, $count_key, '0');
+    }else{
+        $count++;
+        update_post_meta($postID, $count_key, $count);
+    }
 }
 //To keep the count accurate, lets get rid of prefetching
 remove_action( 'wp_head', 'adjacent_posts_rel_link_wp_head', 10, 0);
 
 function wpb_track_post_views ($post_id) {
-if ( !is_single() ) return;
-if ( empty ( $post_id) ) {
-global $post;
-$post_id = $post->ID;
-}
-wpb_set_post_views($post_id);
+    if ( !is_single() ) return;
+    if ( empty ( $post_id) ) {
+        global $post;
+        $post_id = $post->ID;
+    }
+    wpb_set_post_views($post_id);
 }
 add_action( 'wp_head', 'wpb_track_post_views');
 ?>
@@ -2638,34 +2764,34 @@ put in loop of your posts
 </script>
 -----------------------------------------------------------media-----------------------------------------------------------------
 <style type="text/css">
-@media screen and (max-width:480px) {
-@-ms-viewport{
-width:480px;
-}
-@viewport {
-width: 480px;
-}
-@-o-viewport {
-width: 480px;
-}
+    @media screen and (max-width:480px) {
+        @-ms-viewport{
+            width:480px;
+        }
+        @viewport {
+            width: 480px;
+        }
+        @-o-viewport {
+            width: 480px;
+        }
 
-}
-    </style>
+    }
+</style>
 ----------------------------------------------------------paralax-------------------------------------------------------------
 <div data-type="background" data-speed="10"></div>
 <script>
-$('[data-type="background"]').each(function(){
+    $('[data-type="background"]').each(function(){
 
-var $bgobj = $(this); // assigning the object
+        var $bgobj = $(this); // assigning the object
 
-$(window).scroll(function() {
-var yPos = -( ($window.scrollTop() - $bgobj.offset().top) / $bgobj.data('speed'));
-var coords = '50% '+ yPos + 'px';
+        $(window).scroll(function() {
+            var yPos = -( ($window.scrollTop() - $bgobj.offset().top) / $bgobj.data('speed'));
+            var coords = '50% '+ yPos + 'px';
 
-$bgobj.css({ backgroundPosition: coords });
-});
+            $bgobj.css({ backgroundPosition: coords });
+        });
 
-});
+    });
 </script>
 ----------------------------------------------------my multi horizontal slider----------------------------------
 ---html---
