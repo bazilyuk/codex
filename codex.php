@@ -622,7 +622,7 @@ function show_referenssit_meta_box() {
                 echo '<input type="checkbox" name="', $field['id'], '" id="', $field['id'], '"', $meta ? ' checked="checked"' : '', ' />';
                 break;
             case 'upload':
-                echo '<p class="image-upload"><img src="'.$meta.'" name="'.$field['id'].'" style="max-width: 300px; max-height: 200px;" /><input type="text" class="custom_media_url hidden" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$meta.'" style="width: 100%; height: 40px;" /><br />
+                echo '<p class="image-upload"><img src="'.$meta.'" name="'.$field['id'].'" style="max-width: 300px; max-height: 200px;" class="custom_media_url" /><input type="text" class="custom_media_url hidden" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$meta.'" style="width: 100%; height: 40px;" /><br />
         <input type="button" class="button button-primary custom_media_button" name="'. $field['id'] .'" value="Upload Image" style="margin-top:5px;" /></p>';
                 break;
             case 'editor':
