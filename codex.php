@@ -3489,3 +3489,42 @@ function maybe_unserialize( $original ) {
 }
 function serialize_fix_callback($match) { return 's:' . strlen($match[2]); }
 ?>
+------------make word smaller-----
+<script>
+    /**
+     * font-size
+     */
+    $('.bigWord').each(function(){
+        $(this).wrapInner('<span></span>');
+        var i = 0;
+        var word = $(this).find('span');
+        var wordFont = word.css('font-size').replace(/px/,"");
+        var wordWidth = word.width();
+        var parentWidth = word.parent().parent().width();
+
+        while (wordWidth > parentWidth) {
+            wordFont--;
+            word.css({'font-size':wordFont + 'px','line-height':wordFont + 10 + 'px'});
+            i++;
+            wordWidth = word.width();
+            if (i>40){
+                wordWidth = parentWidth;
+            }
+        }
+        $( window ).resize(function() {
+            var i = 0;
+            var wordFont = word.css('font-size').replace(/px/,"");
+            var wordWidth = word.width();
+            var parentWidth = word.parent().parent().width();
+            while (wordWidth > parentWidth) {
+                wordFont--;
+                word.css({'font-size':wordFont + 'px','line-height':wordFont + 10 + 'px'});
+                i++;
+                wordWidth = word.width();
+                if (i>40){
+                    wordWidth = parentWidth;
+                }
+            }
+        });
+    });
+</script>
