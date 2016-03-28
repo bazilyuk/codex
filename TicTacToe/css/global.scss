@@ -128,19 +128,26 @@ body {
       text-align: center;
       display: block;
       line-height: 100%;
-      width: 100%;
-      height: 100%;
-      left: 0;
-      top: 0;
+      width: 0%;
+      height: 0%;
+      top: 50%;
+      left: 50%;
+      overflow: hidden;
+      @include crossBrowser(transform,translate(-50%, -50%));
+      @include crossBrowser(transition, .3s);
       @include crossBrowser(transition, .3s);
     }
     &[data-figure~="noughts"]:before {
       content: "";
+      width: 100%;
+      height: 100%;
       background: url(../img/noughts.png) no-repeat;
       background-size: contain;
     }
     &[data-figure~="crosses"]:before {
       content: "";
+      width: 100%;
+      height: 100%;
       background: url(../img/crosses.png) no-repeat;
       background-size: contain;
     }
