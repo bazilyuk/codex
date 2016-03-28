@@ -1,0 +1,85 @@
+input, textarea, select, button {
+  outline: none !important;
+}
+
+@mixin crossBrowser($property, $css) {
+  -webkit-#{$property} : $css;
+  -moz-#{$property} : $css;
+  -o-#{$property} : $css;
+  #{$property} : $css;
+}
+
+@mixin crossBrowserDouble($property, $css, $css2) {
+  -webkit-#{$property} : $css, $css2;
+  -moz-#{$property} : $css, $css2;
+  -o-#{$property} : $css, $css2;
+  #{$property} : $css, $css2;
+}
+/*style*/
+*, :after, :before {
+  @include crossBrowser(box-sizing, border-box);
+  outline: none !important;
+}
+body, html, .container {
+  height: 100%;
+  margin: 0px;
+}
+body {
+  display: table;
+  width: 100%;
+}
+.container {
+  text-align: center;
+  display: table-cell;
+  width: 100%;
+  vertical-align: middle;
+}
+#TicTacToe {
+  display: inline-block;
+  &[data-cursor~="noughts"] {
+    cursor: url(http://www.oaa-accessibility.org/media/examples/images/game-piece-oh.png), auto;
+  }
+  &[data-cursor~="crosses"] {
+    cursor: url(http://www.myiconfinder.com/uploads/iconsets/128-128-b2ac7e8ecf0902ee39895793ad4003fe-cross.png), auto;
+  }
+  .row {
+    font-size: 0px;
+    float: left;
+    clear: both;
+    &:not(:last-child) {
+      .box {
+        border-bottom: 1px solid #1b6d85;
+      }
+    }
+  }
+  .box {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    display: inline-block;
+    //cursor: pointer;
+    &:not(:last-child) {
+      border-right: 1px solid #1b6d85;
+    }
+    &:before {
+      content: "";
+      position: absolute;
+      text-align: center;
+      font-size: 0px;
+      line-height: 200px;
+      width: 100%;
+      height: 100%;
+      left: 0;
+      top: 0;
+      @include crossBrowser(transition, .3s);
+    }
+    &[data-figure~="noughts"]:before {
+      content: "X";
+      font-size: 160px;
+    }
+    &[data-figure~="crosses"]:before {
+      content: "O";
+      font-size: 160px;
+    }
+  }
+}
