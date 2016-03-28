@@ -20,7 +20,7 @@ input, textarea, select, button {
   @include crossBrowser(box-sizing, border-box);
   outline: none !important;
 }
-body, html, .container {
+body, html {
   height: 100%;
   margin: 0px;
 }
@@ -28,24 +28,86 @@ body {
   display: table;
   width: 100%;
 }
-.container {
-  text-align: center;
+.wrap-all {
   display: table-cell;
-  width: 100%;
   vertical-align: middle;
 }
+#popup {
+  position: fixed;
+  width: 0px;
+  height: 0px;
+  background: rgba(0, 0, 0, 0.66);
+  z-index: 10;
+  top: 50%;
+  left: 50%;
+  overflow: hidden;
+  @include crossBrowser(transform,translate(-50%, -50%));
+  @include crossBrowser(transition, .3s);
+  &.active {
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.66);
+  }
+  .content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    @include crossBrowser(transform,translate(-50%, -50%));
+    h5 {
+      font-size: 60px;
+      color: #9480FF;
+      margin: 0px;
+      text-align: center;
+    }
+    button#start {
+      margin: 20px auto 0;
+      display: block;
+      padding: 5px 30px;
+      border-radius: 5px;
+      font-size: 20px;
+      cursor: pointer;
+      box-shadow: 0px 0px 10px 1px #9480FF;
+      border: none;
+    }
+  }
+}
+#restart {
+  display: block;
+  padding: 5px 30px;
+  border-radius: 5px;
+  font-size: 20px;
+  cursor: pointer;
+  box-shadow: 0px 0px 10px 1px #9480FF;
+  border: none;
+}
+.information {
+  position: absolute;
+  left: 0;
+  width: 100px;
+  height: 100%;
+}
+.container {
+  display: block;
+  width: 100%;
+  max-width: 840px;
+  max-height: 600px;
+  padding: 0 120px;
+  margin: 0 auto;
+  position: relative;
+}
 #TicTacToe {
-  display: inline-block;
+  width: 100%;
   &[data-cursor~="noughts"] {
-    cursor: url(http://www.oaa-accessibility.org/media/examples/images/game-piece-oh.png), auto;
+    cursor: url(../img/noughts_small.png), auto;
   }
   &[data-cursor~="crosses"] {
-    cursor: url(http://www.myiconfinder.com/uploads/iconsets/128-128-b2ac7e8ecf0902ee39895793ad4003fe-cross.png), auto;
+    cursor: url(../img/crosses_small.png), auto;
   }
   .row {
     font-size: 0px;
     float: left;
     clear: both;
+    width: 100%;
     &:not(:last-child) {
       .box {
         border-bottom: 1px solid #1b6d85;
@@ -54,10 +116,9 @@ body {
   }
   .box {
     position: relative;
-    width: 200px;
-    height: 200px;
+    width: 33.33%;
+    padding-top: 33.33%;
     display: inline-block;
-    //cursor: pointer;
     &:not(:last-child) {
       border-right: 1px solid #1b6d85;
     }
@@ -65,8 +126,8 @@ body {
       content: "";
       position: absolute;
       text-align: center;
-      font-size: 0px;
-      line-height: 200px;
+      display: block;
+      line-height: 100%;
       width: 100%;
       height: 100%;
       left: 0;
@@ -74,12 +135,14 @@ body {
       @include crossBrowser(transition, .3s);
     }
     &[data-figure~="noughts"]:before {
-      content: "X";
-      font-size: 160px;
+      content: "";
+      background: url(../img/noughts.png) no-repeat;
+      background-size: contain;
     }
     &[data-figure~="crosses"]:before {
-      content: "O";
-      font-size: 160px;
+      content: "";
+      background: url(../img/crosses.png) no-repeat;
+      background-size: contain;
     }
   }
 }
