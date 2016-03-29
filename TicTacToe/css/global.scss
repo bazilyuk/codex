@@ -1,0 +1,155 @@
+input, textarea, select, button {
+  outline: none !important;
+}
+
+@mixin crossBrowser($property, $css) {
+  -webkit-#{$property} : $css;
+  -moz-#{$property} : $css;
+  -o-#{$property} : $css;
+  #{$property} : $css;
+}
+
+@mixin crossBrowserDouble($property, $css, $css2) {
+  -webkit-#{$property} : $css, $css2;
+  -moz-#{$property} : $css, $css2;
+  -o-#{$property} : $css, $css2;
+  #{$property} : $css, $css2;
+}
+/*style*/
+*, :after, :before {
+  @include crossBrowser(box-sizing, border-box);
+  outline: none !important;
+}
+body, html {
+  height: 100%;
+  margin: 0px;
+}
+body {
+  display: table;
+  width: 100%;
+}
+.wrap-all {
+  display: table-cell;
+  vertical-align: middle;
+}
+#popup {
+  position: fixed;
+  width: 0px;
+  height: 0px;
+  background: rgba(0, 0, 0, 0.66);
+  z-index: 10;
+  top: 50%;
+  left: 50%;
+  overflow: hidden;
+  @include crossBrowser(transform,translate(-50%, -50%));
+  @include crossBrowser(transition, .3s);
+  &.active {
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.66);
+  }
+  .content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    @include crossBrowser(transform,translate(-50%, -50%));
+    h5 {
+      font-size: 60px;
+      color: #9480FF;
+      margin: 0px;
+      text-align: center;
+    }
+    button#start {
+      margin: 20px auto 0;
+      display: block;
+      padding: 5px 30px;
+      border-radius: 5px;
+      font-size: 20px;
+      cursor: pointer;
+      box-shadow: 0px 0px 10px 1px #9480FF;
+      border: none;
+    }
+  }
+}
+#restart {
+  display: block;
+  padding: 5px 30px;
+  border-radius: 5px;
+  font-size: 20px;
+  cursor: pointer;
+  box-shadow: 0px 0px 10px 1px #9480FF;
+  border: none;
+}
+.information {
+  position: absolute;
+  left: 0;
+  width: 100px;
+  height: 100%;
+}
+.container {
+  display: block;
+  width: 100%;
+  max-width: 840px;
+  max-height: 600px;
+  padding: 0 120px;
+  margin: 0 auto;
+  position: relative;
+}
+#TicTacToe {
+  width: 100%;
+  &[data-cursor~="noughts"] {
+    cursor: url(../img/noughts_small.png), auto;
+  }
+  &[data-cursor~="crosses"] {
+    cursor: url(../img/crosses_small.png), auto;
+  }
+  .row {
+    font-size: 0px;
+    float: left;
+    clear: both;
+    width: 100%;
+    &:not(:last-child) {
+      .box {
+        border-bottom: 1px solid #1b6d85;
+      }
+    }
+  }
+  .box {
+    position: relative;
+    width: 33.33%;
+    padding-top: 33.33%;
+    display: inline-block;
+    &:not(:last-child) {
+      border-right: 1px solid #1b6d85;
+    }
+    &:before {
+      content: "";
+      position: absolute;
+      text-align: center;
+      display: block;
+      line-height: 100%;
+      width: 0%;
+      height: 0%;
+      top: 50%;
+      left: 50%;
+      overflow: hidden;
+      @include crossBrowser(transform,translate(-50%, -50%));
+      @include crossBrowser(transition, .3s);
+      @include crossBrowser(transition, .3s);
+    }
+    &[data-figure~="noughts"]:before {
+      content: "";
+      width: 100%;
+      height: 100%;
+      background: url(../img/noughts.png) no-repeat;
+      background-size: contain;
+    }
+    &[data-figure~="crosses"]:before {
+      content: "";
+      width: 100%;
+      height: 100%;
+      background: url(../img/crosses.png) no-repeat;
+      background-size: contain;
+    }
+  }
+}
