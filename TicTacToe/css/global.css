@@ -109,6 +109,8 @@ body {
     display: inline-block; }
     #TicTacToe .box:not(:last-child) {
       border-right: 1px solid #1b6d85; }
+    #TicTacToe .box.win {
+      background: #00FFA3; }
     #TicTacToe .box:before {
       content: "";
       position: absolute;

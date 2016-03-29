@@ -122,6 +122,10 @@ body {
     &:not(:last-child) {
       border-right: 1px solid #1b6d85;
     }
+
+    &.win {
+      background: #00FFA3;
+    }
     &:before {
       content: "";
       position: absolute;
