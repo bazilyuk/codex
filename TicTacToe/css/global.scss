@@ -36,7 +36,7 @@ body {
   position: fixed;
   width: 0px;
   height: 0px;
-  background: rgba(0, 0, 0, 0.66);
+  background: transparent;
   z-index: 10;
   top: 50%;
   left: 50%;
@@ -55,29 +55,23 @@ body {
     @include crossBrowser(transform,translate(-50%, -50%));
     h5 {
       font-size: 60px;
-      color: #9480FF;
+      color: #898989;
       margin: 0px;
       text-align: center;
     }
     button#start {
       margin: 20px auto 0;
-      display: block;
-      padding: 5px 30px;
-      border-radius: 5px;
-      font-size: 20px;
-      cursor: pointer;
-      box-shadow: 0px 0px 10px 1px #9480FF;
-      border: none;
     }
   }
 }
-#restart {
+.btn {
+  margin: 20px auto;
   display: block;
   padding: 5px 30px;
   border-radius: 5px;
   font-size: 20px;
   cursor: pointer;
-  box-shadow: 0px 0px 10px 1px #9480FF;
+  box-shadow: 0px 0px 10px 1px #898989;
   border: none;
 }
 .information {
@@ -85,10 +79,72 @@ body {
   left: 0;
   width: 100px;
   height: 100%;
+  background: transparent;
+  @include crossBrowser(transition, .3s);
+  padding: 50px 20px;
+  &.active {
+    width: 100%;
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.66);
+  }
+}
+.input-wrap {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 30px;
+  & > label {
+    display: block;
+    pointer-events: none;
+    font-size: 15px;
+    line-height: 15px;
+    margin: -37px 0 37px;
+    &:before {
+      content: attr(placeholder);
+      display: inline-block;
+      margin: 0 12px;
+      padding: 0 2px;
+      color: #898989;
+      white-space: nowrap;
+      @include crossBrowser(transition, .3s ease-in-out);
+    }
+  }
+  & > input[required] {
+    height: 37px;
+    margin: 0 0 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 15px;
+    background: #fff;
+    resize: none;
+    outline: none;
+    &:invalid {
+      & + label {
+        &:before{
+          content: attr(alt);
+        }
+      }
+    }
+    &:focus, &:valid {
+      & + label {
+        &:before{
+          @include crossBrowser(transform, translate(0, -25px) scale(0.9, 0.9));
+        }
+      }
+    }
+    &:focus {
+      border-color: #00bafa;
+      & + label {
+        &:before {
+          color: #00bafa;
+        }
+      }
+    }
+  }
 }
 .container {
   display: block;
   width: 100%;
+  height: 100%;
   max-width: 840px;
   max-height: 600px;
   padding: 0 120px;
@@ -156,4 +212,7 @@ body {
       background-size: contain;
     }
   }
+}
+.hidden {
+  display: none !important;
 }

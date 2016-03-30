@@ -43,7 +43,7 @@ function removeClass(o, c){
      * Restart game
      */
     document.getElementById("restart").onclick = function() {restart()};
-    document.getElementById("start").onclick = function() {restart()};
+    document.getElementById("playmore").onclick = function() {restart()};
     function restart() {
         removeClass(popup, "active");
         click = 0; noughts = [], crosses = [];

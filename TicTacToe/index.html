@@ -9,13 +9,22 @@
 <div id="popup">
     <div class="content">
         <h5>Congratulate <span id="winner"></span> WIN!!!</h5>
-        <button type="button" id="start">Play again</button>
+        <button type="button" id="playmore" class="btn">Play again</button>
     </div>
 </div>
 <div class="wrap-all">
     <div class="container">
-        <div class="information">
-            <button type="button" id="restart">restart</button>
+        <div class="information active">
+            <div class="input-wrap">
+                <input id="player1" required type="text" />
+                <label alt="Crosse Player" placeholder="Crosse Player"></label>
+            </div>
+            <div class="input-wrap">
+                <input id="player2" required type="text" />
+                <label alt="Nought Player" placeholder="Nought Player"></label>
+            </div>
+            <button type="button" id="start" class="btn">Start Game</button>
+            <button type="button" id="restart" class="btn hidden">Restart</button>
         </div>
         <div id="TicTacToe" data-cursor="crosses">
             <div class="row">
