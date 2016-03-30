@@ -38,7 +38,7 @@ function removeClass(o, c){
     var popup = document.getElementById("popup");
     var click = 0;
     var wins = [7, 56, 448, 73, 146, 292, 273, 84];
-    var noughts = 0, crosses = 0;
+    var noughts = [], crosses = [];
     /**
      * Restart game
      */
@@ -46,7 +46,7 @@ function removeClass(o, c){
     document.getElementById("start").onclick = function() {restart()};
     function restart() {
         removeClass(popup, "active");
-        click = 0; noughts = 0; crosses = 0;
+        click = 0; noughts = [], crosses = [];
         TicTacToe.setAttribute("data-cursor", "crosses");
         for (var i = 0; i < deleteLink.length; i++) {
             deleteLink[i].setAttribute("data-figure", "");
@@ -78,10 +78,45 @@ function removeClass(o, c){
     }
 
     /**
-     * if someone win
+     * click to box
+     */
+    function boxClick(box,figure,click) {
+        var text = ["noughts","crosses"];
+        var turn = click%2;
+        var winner = text[turn];
+        figure.push(Number(box.getAttribute("data-number")));
+        box.setAttribute("data-figure", text[turn]);
+        if (turn==0) {
+            var text1 = text[1];
+        } else {
+            var text1 = text[0];
+        }
+        TicTacToe.setAttribute("data-cursor", text1);
+        if (click>=5) {
+            checkWin(figure,winner);
+        }
+    }
+
+    /**
+     * check if someone win
+     */
+    function checkWin(figure,turn) {
+        var result = 0;
+        for (var i=0;i<figure.length-2;i++){
+            for (var y=i+1;y<figure.length-1;y++){
+                for (var z=y+1;z<figure.length;z++){
+                    result = figure[i] + figure[y] +figure[z];
+                    if (wins.indexOf(result)>=0) {
+                        win(turn,wins.indexOf(crosses));
+                    }
+                }
+            }
+        }
+    }
+    /**
+     * When someone win
      */
     function win(figure,line) {
-        console.log(figure+" figure. "+line+" line");
         addClass(popup, "active");
         document.getElementById('winner').innerHTML = figure;
         switch(line) {
@@ -135,19 +170,9 @@ function removeClass(o, c){
             if (BoxEmpty(this)) {
                 click++;
                 if (!noughtsTurn(click)){
-                    crosses += Number(this.getAttribute("data-number"));
-                    this.setAttribute("data-figure", "crosses");
-                    TicTacToe.setAttribute("data-cursor", "noughts");
-                    if (wins.indexOf(crosses)>=0) {
-                        win("crosses",wins.indexOf(crosses));
-                    }
+                    boxClick(this,crosses,click);
                 } else {
-                    noughts += Number(this.getAttribute("data-number"));
-                    this.setAttribute("data-figure", "noughts");
-                    TicTacToe.setAttribute("data-cursor", "crosses");
-                    if (wins.indexOf(noughts)>=0) {
-                        win("crosses",wins.indexOf(crosses));
-                    }
+                    boxClick(this,noughts,click);
                 }
             }
         });
