@@ -36,9 +36,39 @@ function removeClass(o, c){
     var deleteLink = document.querySelectorAll('.box');
     var TicTacToe = document.getElementById("TicTacToe");
     var popup = document.getElementById("popup");
+    var information = document.getElementById("information");
     var click = 0;
     var wins = [7, 56, 448, 73, 146, 292, 273, 84];
     var noughts = [], crosses = [];
+    /**
+     * player info
+     */
+    var playername1 = document.getElementById("playername1");
+    var playername2 = document.getElementById("playername2");
+    var player1 = {
+        name: "crosses"
+    };
+    var player2 = {
+        name: "noughts"
+    };
+    document.getElementById("start").onclick = function() {start()};
+    function start() {
+        if (playername1.value) {
+            player1.name = playername1.value;
+        }
+        if (playername2.value) {
+            player2.name = playername2.value;
+        }
+        var st = document.getElementById("start");
+        var rest = document.getElementById("restart");
+
+        addClass(st,"hidden");
+        removeClass(rest,"hidden");
+        removeClass(information,"active");
+    }
+    document.getElementById("menu").onclick = function() {
+        information.className = (information.className != 'active' ? 'active' : '' );
+    };
     /**
      * Restart game
      */
@@ -46,7 +76,8 @@ function removeClass(o, c){
     document.getElementById("playmore").onclick = function() {restart()};
     function restart() {
         removeClass(popup, "active");
-        click = 0; noughts = [], crosses = [];
+        removeClass(information,"active");
+        click = 0; noughts = []; crosses = [];
         TicTacToe.setAttribute("data-cursor", "crosses");
         for (var i = 0; i < deleteLink.length; i++) {
             deleteLink[i].setAttribute("data-figure", "");
