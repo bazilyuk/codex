@@ -43,28 +43,33 @@ function removeClass(o, c){
     /**
      * player info
      */
-    var playername1 = document.getElementById("playername1");
-    var playername2 = document.getElementById("playername2");
     var player1 = {
+        figure : "crosses",
         name: "crosses"
     };
     var player2 = {
+        figure: "noughts",
         name: "noughts"
     };
+    var playername1 = document.getElementById("playername1");
+    playername1.onchange = function(){ addName(playername1)};
+    var playername2 = document.getElementById("playername2");
+    playername2.onchange = function(){ addName(playername2)};
+
     document.getElementById("start").onclick = function() {start()};
     function start() {
-        if (playername1.value) {
-            player1.name = playername1.value;
-        }
-        if (playername2.value) {
-            player2.name = playername2.value;
-        }
         var st = document.getElementById("start");
         var rest = document.getElementById("restart");
-
         addClass(st,"hidden");
         removeClass(rest,"hidden");
         removeClass(information,"active");
+    }
+    function addName(input) {
+        if (input.id=="playername1") {
+            player1.name = input.value;
+        } else {
+            player2.name = input.value;
+        }
     }
     document.getElementById("menu").onclick = function() {
         information.className = (information.className != 'active' ? 'active' : '' );
@@ -148,8 +153,14 @@ function removeClass(o, c){
      * When someone win
      */
     function win(figure,line) {
+        var winner = "";
         addClass(popup, "active");
-        document.getElementById('winner').innerHTML = figure;
+        if (figure=="crosses") {
+            winner = player1.name;
+        } else {
+            winner = player2.name;
+        }
+        document.getElementById('winner').innerHTML = winner;
         switch(line) {
             case 0 :
                 addClass(document.getElementById("box1"), "win");
