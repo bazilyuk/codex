@@ -33,42 +33,84 @@ function removeClass(o, c){
 }
 
 (function(){
-    var deleteLink = document.querySelectorAll('.box');
+    var Boxes = document.querySelectorAll('.box');
     var TicTacToe = document.getElementById("TicTacToe");
     var popup = document.getElementById("popup");
     var information = document.getElementById("information");
     var click = 0;
+    var BoxNumbers = new Array;
+    (function(){
+        for (var i=0;i<Boxes.length;i++) {
+            BoxNumbers[i] = Math.pow(2,i);
+        }
+    })();
     var wins = [7, 56, 448, 73, 146, 292, 273, 84];
     var noughts = [], crosses = [];
+    var GameField = {
+        id : 0,
+        number : "",
+        fill : false,
+        figure : ""
+    }
+    var GameFields = new Array();
+    function CreateFields(){
+        var box = GameField;
+        for (var i=0;i<BoxNumbers.length;i++) {
+            box.id = i;
+            box.number = BoxNumbers[i];
+            GameFields[i] = box;
+            box = {
+                id : 0,
+                number : "",
+                fill : false,
+                turn : 0,
+                figure : ""
+            }
+        }
+        console.log(GameFields);
+    }
+    CreateFields();
     /**
      * player info
      */
-    var playername1 = document.getElementById("playername1");
-    var playername2 = document.getElementById("playername2");
     var player1 = {
+        figure : "crosses",
         name: "crosses"
     };
     var player2 = {
+        figure: "noughts",
         name: "noughts"
     };
+    var playername1 = document.getElementById("playername1");
+    playername1.onchange = function(){ addName(playername1)};
+    var playername2 = document.getElementById("playername2");
+    playername2.onchange = function(){ addName(playername2)};
+
     document.getElementById("start").onclick = function() {start()};
     function start() {
-        if (playername1.value) {
-            player1.name = playername1.value;
-        }
-        if (playername2.value) {
-            player2.name = playername2.value;
-        }
         var st = document.getElementById("start");
         var rest = document.getElementById("restart");
-
         addClass(st,"hidden");
         removeClass(rest,"hidden");
         removeClass(information,"active");
     }
+    function addName(input) {
+        if (input.id=="playername1") {
+            player1.name = input.value;
+        } else {
+            player2.name = input.value;
+        }
+    }
     document.getElementById("menu").onclick = function() {
         information.className = (information.className != 'active' ? 'active' : '' );
     };
+    /**
+     * Play with computer
+     */
+    document.getElementById("computerPlay").onclick = function() {startBot()};
+    function startBot() {
+
+    }
     /**
      * Restart game
      */
@@ -79,10 +121,12 @@ function removeClass(o, c){
         removeClass(information,"active");
         click = 0; noughts = []; crosses = [];
         TicTacToe.setAttribute("data-cursor", "crosses");
-        for (var i = 0; i < deleteLink.length; i++) {
-            deleteLink[i].setAttribute("data-figure", "");
-            removeClass(deleteLink[i], "win");
+        for (var i = 0; i < Boxes.length; i++) {
+            Boxes[i].setAttribute("data-figure", "");
+            removeClass(Boxes[i], "win");
         }
+        GameField = [];
+        CreateFields();
     }
     /**
      * check if this box empty
@@ -107,7 +151,6 @@ function removeClass(o, c){
         }
         return noughtTurn;
     }
-
     /**
      * click to box
      */
@@ -127,7 +170,6 @@ function removeClass(o, c){
             checkWin(figure,winner);
         }
     }
-
     /**
      * check if someone win
      */
@@ -148,8 +190,14 @@ function removeClass(o, c){
      * When someone win
      */
     function win(figure,line) {
+        var winner = "";
         addClass(popup, "active");
-        document.getElementById('winner').innerHTML = figure;
+        if (figure=="crosses") {
+            winner = player1.name;
+        } else {
+            winner = player2.name;
+        }
+        document.getElementById('winner').innerHTML = winner;
         switch(line) {
             case 0 :
                 addClass(document.getElementById("box1"), "win");
@@ -194,10 +242,16 @@ function removeClass(o, c){
         }
     }
     /**
+     * Fill game field
+     */
+    function FillGameField(figure,turn) {
+
+    }
+    /**
      * Click to box
      */
-    for (var i = 0; i < deleteLink.length; i++) {
-        deleteLink[i].addEventListener('click', function(event) {
+    for (var i = 0; i < Boxes.length; i++) {
+        Boxes[i].addEventListener('click', function(event) {
             if (BoxEmpty(this)) {
                 click++;
                 if (!noughtsTurn(click)){
