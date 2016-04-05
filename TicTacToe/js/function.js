@@ -33,13 +33,43 @@ function removeClass(o, c){
 }
 
 (function(){
-    var deleteLink = document.querySelectorAll('.box');
+    var Boxes = document.querySelectorAll('.box');
     var TicTacToe = document.getElementById("TicTacToe");
     var popup = document.getElementById("popup");
     var information = document.getElementById("information");
     var click = 0;
+    var BoxNumbers = new Array;
+    (function(){
+        for (var i=0;i<Boxes.length;i++) {
+            BoxNumbers[i] = Math.pow(2,i);
+        }
+    })();
     var wins = [7, 56, 448, 73, 146, 292, 273, 84];
     var noughts = [], crosses = [];
+    var GameField = {
+        id : 0,
+        number : "",
+        fill : false,
+        figure : ""
+    }
+    var GameFields = new Array();
+    function CreateFields(){
+        var box = GameField;
+        for (var i=0;i<BoxNumbers.length;i++) {
+            box.id = i;
+            box.number = BoxNumbers[i];
+            GameFields[i] = box;
+            box = {
+                id : 0,
+                number : "",
+                fill : false,
+                turn : 0,
+                figure : ""
+            }
+        }
+        console.log(GameFields);
+    }
+    CreateFields();
     /**
      * player info
      */
@@ -75,6 +105,13 @@ function removeClass(o, c){
         information.className = (information.className != 'active' ? 'active' : '' );
     };
     /**
+     * Play with computer
+     */
+    document.getElementById("computerPlay").onclick = function() {startBot()};
+    function startBot() {
+
+    }
+    /**
      * Restart game
      */
     document.getElementById("restart").onclick = function() {restart()};
@@ -84,10 +121,12 @@ function removeClass(o, c){
         removeClass(information,"active");
         click = 0; noughts = []; crosses = [];
         TicTacToe.setAttribute("data-cursor", "crosses");
-        for (var i = 0; i < deleteLink.length; i++) {
-            deleteLink[i].setAttribute("data-figure", "");
-            removeClass(deleteLink[i], "win");
+        for (var i = 0; i < Boxes.length; i++) {
+            Boxes[i].setAttribute("data-figure", "");
+            removeClass(Boxes[i], "win");
         }
+        GameField = [];
+        CreateFields();
     }
     /**
      * check if this box empty
@@ -112,7 +151,6 @@ function removeClass(o, c){
         }
         return noughtTurn;
     }
-
     /**
      * click to box
      */
@@ -132,7 +170,6 @@ function removeClass(o, c){
             checkWin(figure,winner);
         }
     }
-
     /**
      * check if someone win
      */
@@ -205,10 +242,16 @@ function removeClass(o, c){
         }
     }
     /**
+     * Fill game field
+     */
+    function FillGameField(figure,turn) {
+
+    }
+    /**
      * Click to box
      */
-    for (var i = 0; i < deleteLink.length; i++) {
-        deleteLink[i].addEventListener('click', function(event) {
+    for (var i = 0; i < Boxes.length; i++) {
+        Boxes[i].addEventListener('click', function(event) {
             if (BoxEmpty(this)) {
                 click++;
                 if (!noughtsTurn(click)){
