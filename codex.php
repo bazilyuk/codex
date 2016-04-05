@@ -3489,42 +3489,64 @@ function maybe_unserialize( $original ) {
 }
 function serialize_fix_callback($match) { return 's:' . strlen($match[2]); }
 ?>
-------------make word smaller-----
+-------------------------------------------make word smaller---------------------------------
 <script>
     /**
      * font-size
      */
-    $('.bigWord').each(function(){
-        $(this).wrapInner('<span></span>');
-        var i = 0;
-        var word = $(this).find('span');
-        var wordFont = word.css('font-size').replace(/px/,"");
-        var wordWidth = word.width();
-        var parentWidth = word.parent().parent().width();
-
-        while (wordWidth > parentWidth) {
-            wordFont--;
-            word.css({'font-size':wordFont + 'px','line-height':wordFont + 10 + 'px'});
-            i++;
-            wordWidth = word.width();
-            if (i>40){
-                wordWidth = parentWidth;
-            }
-        }
-        $( window ).resize(function() {
-            var i = 0;
-            var wordFont = word.css('font-size').replace(/px/,"");
-            var wordWidth = word.width();
-            var parentWidth = word.parent().parent().width();
-            while (wordWidth > parentWidth) {
-                wordFont--;
-                word.css({'font-size':wordFont + 'px','line-height':wordFont + 10 + 'px'});
-                i++;
-                wordWidth = word.width();
-                if (i>40){
-                    wordWidth = parentWidth;
+    (function(){
+        function bigWord(){
+            $('.bigWord').each(function(){
+                var that = $(this);
+                var words = that.text().split(" ");
+                that.text("");
+                for (var y=0;y<words.length;y++) {
+                    if (y==words.length-1) {
+                        that.append('<span class="eachword">'+words[y]+'</span>');
+                    } else {
+                        that.append('<span class="eachword">'+words[y]+'</span> ');
+                    }
                 }
-            }
+                that.find('.eachword').each(function(){
+                    var thatWord = $(this);
+                    CheckWord(that,thatWord);
+                });
+                function CheckWord(bigWord,thatWord) {
+                    var i = 0;
+                    var wordFont = bigWord.css('font-size').replace(/px/,"");
+                    var wordWidth = thatWord.width();
+                    var parentWidth = thatWord.parent().parent().width();
+
+                    while (wordWidth > parentWidth) {
+                        wordFont--;
+                        $(bigWord).css({'font-size':wordFont + 'px','line-height':wordFont + 10 + 'px'});
+                        i++;
+                        wordWidth = thatWord.width();
+                        if (i>40){
+                            wordWidth = parentWidth;
+                        }
+                    }
+                }
+                var newS = that.find(".eachword").toArray();
+                var newString = new Array();
+                var string = "";
+                for(var z=0;z<newS.length;z++) {
+                    newString[z] = newS[z].innerText;
+                }
+                that.html("");
+                for (var y1=0;y1<newString.length;y1++) {
+                    if (y1==newString.length-1) {
+                        string = string.concat(newString[y1]);
+                    } else {
+                        string = string.concat(newString[y1]+' ');
+                    }
+                }
+                that.text(string);
+            });
+        }
+        bigWord();
+        $(window).resize(function() {
+            bigWord();
         });
-    });
+    })();
 </script>
