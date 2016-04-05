@@ -33,43 +33,13 @@ function removeClass(o, c){
 }
 
 (function(){
-    var Boxes = document.querySelectorAll('.box');
+    var deleteLink = document.querySelectorAll('.box');
     var TicTacToe = document.getElementById("TicTacToe");
     var popup = document.getElementById("popup");
     var information = document.getElementById("information");
     var click = 0;
-    var BoxNumbers = new Array;
-    (function(){
-        for (var i=0;i<Boxes.length;i++) {
-            BoxNumbers[i] = Math.pow(2,i);
-        }
-    })();
     var wins = [7, 56, 448, 73, 146, 292, 273, 84];
     var noughts = [], crosses = [];
-    var GameFields = new Array(); //Array with real boxes
-    function CreateFields(){
-        var box = {
-            id : 0,
-            number : "",
-            fill : false,
-            turn : "",
-            figure : ""
-        }
-        for (var i=0;i<BoxNumbers.length;i++) {
-            box.id = i;
-            box.number = BoxNumbers[i];
-            GameFields[i] = box;
-            box = {
-                id : 0,
-                number : "",
-                fill : false,
-                turn : "",
-                figure : ""
-            }
-        }
-        console.log(GameFields);
-    }
-    CreateFields();
     /**
      * player info
      */
@@ -105,13 +75,6 @@ function removeClass(o, c){
         information.className = (information.className != 'active' ? 'active' : '' );
     };
     /**
-     * Play with computer
-     */
-    document.getElementById("computerPlay").onclick = function() {startBot()};
-    function startBot() {
-
-    }
-    /**
      * Restart game
      */
     document.getElementById("restart").onclick = function() {restart()};
@@ -121,24 +84,21 @@ function removeClass(o, c){
         removeClass(information,"active");
         click = 0; noughts = []; crosses = [];
         TicTacToe.setAttribute("data-cursor", "crosses");
-        for (var i = 0; i < Boxes.length; i++) {
-            Boxes[i].setAttribute("data-figure", "");
-            removeClass(Boxes[i], "win");
+        for (var i = 0; i < deleteLink.length; i++) {
+            deleteLink[i].setAttribute("data-figure", "");
+            removeClass(deleteLink[i], "win");
         }
-        CreateFields();
     }
     /**
      * check if this box empty
      */
     function BoxEmpty(item) {
-        var id = item.getAttribute("data-id");
-        for (var i=0;i<GameFields.length;i++) {
-            var boxId = GameFields[i].id;
-            var boxFill = GameFields[i].fill;
-            if (id == boxId) {
-                return GameFields[i].fill;
-            }
+        var full = false;
+        var figure = item.getAttribute("data-figure");
+        if (!figure){
+            full = true;
         }
+        return full;
     }
     /**
      * Check Whoose turn
@@ -146,30 +106,33 @@ function removeClass(o, c){
     function noughtsTurn(click) {
         var noughtTurn = true;
         if (click%2==0){
-            noughtTurn = false;
-        } else {
             noughtTurn = true;
+        } else {
+            noughtTurn = false;
         }
         return noughtTurn;
     }
+
     /**
      * click to box
      */
-    function boxClick(box,who,click) {
-        if (who=="crosses"){
-            var figure = crosses;
-            var next = "noughts";
-        } else {
-            var figure = noughts;
-            var next = "crosses";
-        }
+    function boxClick(box,figure,click) {
+        var text = ["noughts","crosses"];
+        var turn = click%2;
+        var winner = text[turn];
         figure.push(Number(box.getAttribute("data-number")));
-        box.setAttribute("data-figure", who);
-        TicTacToe.setAttribute("data-cursor", next);
-        if (click>=4) {
-            checkWin(figure,who);
+        box.setAttribute("data-figure", text[turn]);
+        if (turn==0) {
+            var text1 = text[1];
+        } else {
+            var text1 = text[0];
+        }
+        TicTacToe.setAttribute("data-cursor", text1);
+        if (click>=5) {
+            checkWin(figure,winner);
         }
     }
+
     /**
      * check if someone win
      */
@@ -242,36 +205,17 @@ function removeClass(o, c){
         }
     }
     /**
-     * Fill game field
-     */
-    function FillGameField(that,figure,turn) {
-        var number = that.getAttribute("data-number");
-        for (var i=0;i<GameFields.length;i++) {
-            var boxNumber = GameFields[i].number;
-            var boxFill = GameFields[i].fill;
-            if ((number == boxNumber)&&(!boxFill)) {
-                GameFields[i].figure = figure;
-                GameFields[i].turn = turn;
-                GameFields[i].fill = true;
-            }
-        }
-    }
-    /**
      * Click to box
      */
-    for (var i = 0; i < Boxes.length; i++) {
-        Boxes[i].addEventListener('click', function(event) {
-            /**
-             * crosses go first
-             */
-            var figure = "crosses";
-            if (!BoxEmpty(this)) {
-                if (noughtsTurn(click)){
-                    figure = "noughts";
-                }
-                FillGameField(this,figure,click);
-                boxClick(this,figure,click);
+    for (var i = 0; i < deleteLink.length; i++) {
+        deleteLink[i].addEventListener('click', function(event) {
+            if (BoxEmpty(this)) {
                 click++;
+                if (!noughtsTurn(click)){
+                    boxClick(this,crosses,click);
+                } else {
+                    boxClick(this,noughts,click);
+                }
             }
         });
     }
