@@ -38,38 +38,33 @@ function removeClass(o, c){
     var popup = document.getElementById("popup");
     var information = document.getElementById("information");
     var click = 0;
-    var BoxNumbers = new Array;
+    var BoxNumbers = [];
+    var GameFields = []; //Array with real boxes
     (function(){
         for (var i=0;i<Boxes.length;i++) {
             BoxNumbers[i] = Math.pow(2,i);
         }
     })();
+    function box(i) {
+        this.id = i;
+        this.number = BoxNumbers[i];
+        this.fill = false;
+        this.turn = "";
+        this.figure = "";
+    };
     var wins = [7, 56, 448, 73, 146, 292, 273, 84];
     var noughts = [], crosses = [];
-    var GameFields = new Array(); //Array with real boxes
     function CreateFields(){
-        var box = {
-            id : 0,
-            number : "",
-            fill : false,
-            turn : "",
-            figure : ""
+        function addToFields(i) {
+            var mybox = new box(i);
+            GameFields[i] = mybox;
         }
         for (var i=0;i<BoxNumbers.length;i++) {
-            box.id = i;
-            box.number = BoxNumbers[i];
-            GameFields[i] = box;
-            box = {
-                id : 0,
-                number : "",
-                fill : false,
-                turn : "",
-                figure : ""
-            }
+            addToFields(i);
         }
-        console.log(GameFields);
     }
     CreateFields();
+
     /**
      * player info
      */
@@ -125,6 +120,7 @@ function removeClass(o, c){
             Boxes[i].setAttribute("data-figure", "");
             removeClass(Boxes[i], "win");
         }
+        GameFields = [];
         CreateFields();
     }
     /**
