@@ -37,8 +37,11 @@ function removeClass(o, c){
     var TicTacToe = document.getElementById("TicTacToe");
     var popup = document.getElementById("popup");
     var information = document.getElementById("information");
+    var playername1 = document.getElementById("playername1");
+    var playername2 = document.getElementById("playername2");
+
     var click = 0;
-    var BoxNumbers = [];
+    var BoxNumbers = []; //Array of boxes number 1 2 4 8 16 ...
     var GameFields = []; //Array with real boxes
     (function(){
         for (var i=0;i<Boxes.length;i++) {
@@ -76,9 +79,7 @@ function removeClass(o, c){
         figure: "noughts",
         name: "noughts"
     };
-    var playername1 = document.getElementById("playername1");
     playername1.onchange = function(){ addName(playername1)};
-    var playername2 = document.getElementById("playername2");
     playername2.onchange = function(){ addName(playername2)};
 
     document.getElementById("start").onclick = function() {start()};
