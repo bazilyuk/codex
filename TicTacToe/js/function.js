@@ -39,35 +39,44 @@ function removeClass(o, c){
     var information = document.getElementById("information");
     var playername1 = document.getElementById("playername1");
     var playername2 = document.getElementById("playername2");
-
+    var firstTurn = "crosses";
+    var secondTurn;
+    if (firstTurn=="crosses") {
+        secondTurn = "noughts";
+    } else {
+        secondTurn = "crosses";
+    }
+    TicTacToe.setAttribute("data-cursor", firstTurn);
     var click = 0;
     var BoxNumbers = []; //Array of boxes number 1 2 4 8 16 ...
     var GameFields = []; //Array with real boxes
     (function(){
         for (var i=0;i<Boxes.length;i++) {
             BoxNumbers[i] = Math.pow(2,i);
+            addToFields(i);
         }
     })();
-    function box(i) {
-        this.id = i;
-        this.number = BoxNumbers[i];
-        this.fill = false;
+    function box() {
+        this.id = "";
+        this.number = "";
         this.turn = "";
         this.figure = "";
+        this.win = false;
+        this.fill = false;
     };
     var wins = [7, 56, 448, 73, 146, 292, 273, 84];
-    var noughts = [], crosses = [];
+    var noughts = [], crosses = []; //in this array add all object that we click
+    function addToFields(i) {
+        var mybox = new box();
+        mybox.id = i;
+        mybox.number = BoxNumbers[i];
+        GameFields[i] = mybox;
+    }
     function CreateFields(){
-        function addToFields(i) {
-            var mybox = new box(i);
-            GameFields[i] = mybox;
-        }
-        for (var i=0;i<BoxNumbers.length;i++) {
+        for (var i=0;i<Boxes.length;i++) {
             addToFields(i);
         }
     }
-    CreateFields();
-
     /**
      * player info
      */
@@ -116,7 +125,7 @@ function removeClass(o, c){
         removeClass(popup, "active");
         removeClass(information,"active");
         click = 0; noughts = []; crosses = [];
-        TicTacToe.setAttribute("data-cursor", "crosses");
+        TicTacToe.setAttribute("data-cursor", firstTurn);
         for (var i = 0; i < Boxes.length; i++) {
             Boxes[i].setAttribute("data-figure", "");
             removeClass(Boxes[i], "win");
@@ -128,7 +137,7 @@ function removeClass(o, c){
      * check if this box empty
      */
     function BoxEmpty(item) {
-        var id = item.getAttribute("data-id");
+        var id = item.getAttribute("name");
         for (var i=0;i<GameFields.length;i++) {
             var boxId = GameFields[i].id;
             var boxFill = GameFields[i].fill;
@@ -140,15 +149,15 @@ function removeClass(o, c){
     /**
      * Check Whoose turn
      */
-    function noughtsTurn(click) {
-        var noughtTurn = true;
-        if (click%2==0){
-            noughtTurn = false;
-        } else {
-            noughtTurn = true;
-        }
-        return noughtTurn;
-    }
+    //function noughtsTurn(click) {
+    //    var noughtTurn = true;
+    //    if (click%2==0){
+    //        noughtTurn = false;
+    //    } else {
+    //        noughtTurn = true;
+    //    }
+    //    return noughtTurn;
+    //}
     /**
      * click to box
      */
@@ -168,7 +177,8 @@ function removeClass(o, c){
         }
     }
     /**
-     * check if someone win
+     * Create all sum that we can get from array of numbers of this figure
+     * if sum equal one element from wins array, then this figure win.
      */
     function checkWin(figure,turn) {
         var result = 0;
@@ -177,7 +187,12 @@ function removeClass(o, c){
                 for (var z=y+1;z<figure.length;z++){
                     result = figure[i] + figure[y] +figure[z];
                     if (wins.indexOf(result)>=0) {
-                        win(turn,wins.indexOf(crosses));
+                        for (var a=0;a<GameFields.length;a++){
+                            if ((GameFields[a].number == figure[i])||(GameFields[a].number == figure[y])||(GameFields[a].number == figure[z])){
+                                GameFields[a].win = true;
+                            }
+                        }
+                        win(turn);
                     }
                 }
             }
@@ -186,7 +201,7 @@ function removeClass(o, c){
     /**
      * When someone win
      */
-    function win(figure,line) {
+    function win(figure) {
         var winner = "";
         addClass(popup, "active");
         if (figure=="crosses") {
@@ -195,47 +210,12 @@ function removeClass(o, c){
             winner = player2.name;
         }
         document.getElementById('winner').innerHTML = winner;
-        switch(line) {
-            case 0 :
-                addClass(document.getElementById("box1"), "win");
-                addClass(document.getElementById("box2"), "win");
-                addClass(document.getElementById("box4"), "win");
-                break;
-            case 1 :
-                addClass(document.getElementById("box8"), "win");
-                addClass(document.getElementById("box16"), "win");
-                addClass(document.getElementById("box32"), "win");
-                break;
-            case 2 :
-                addClass(document.getElementById("box64"), "win");
-                addClass(document.getElementById("box128"), "win");
-                addClass(document.getElementById("box256"), "win");
-                break;
-            case 3 :
-                addClass(document.getElementById("box1"), "win");
-                addClass(document.getElementById("box8"), "win");
-                addClass(document.getElementById("box64"), "win");
-                break;
-            case 4 :
-                addClass(document.getElementById("box2"), "win");
-                addClass(document.getElementById("box16"), "win");
-                addClass(document.getElementById("box128"), "win");
-                break;
-            case 5 :
-                addClass(document.getElementById("box4"), "win");
-                addClass(document.getElementById("box32"), "win");
-                addClass(document.getElementById("box256"), "win");
-                break;
-            case 6 :
-                addClass(document.getElementById("box1"), "win");
-                addClass(document.getElementById("box16"), "win");
-                addClass(document.getElementById("box256"), "win");
-                break;
-            case 7 :
-                addClass(document.getElementById("box4"), "win");
-                addClass(document.getElementById("box16"), "win");
-                addClass(document.getElementById("box64"), "win");
-                break;
+        for (var a=0;a<GameFields.length;a++){
+            if (GameFields[a].win) {
+                var id = "#box"+GameFields[a].number;
+                var elem = document.querySelector(id);
+                elem.classList.add("win");
+            }
         }
     }
     /**
@@ -261,10 +241,10 @@ function removeClass(o, c){
             /**
              * crosses go first
              */
-            var figure = "crosses";
+            var figure = firstTurn;
             if (!BoxEmpty(this)) {
-                if (noughtsTurn(click)){
-                    figure = "noughts";
+                if (click%2==1){
+                    figure = secondTurn;
                 }
                 FillGameField(this,figure,click);
                 boxClick(this,figure,click);

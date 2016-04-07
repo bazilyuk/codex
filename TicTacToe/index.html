@@ -28,6 +28,21 @@
                 <input id="playername2" required type="text" />
                 <label alt="Nought Player" placeholder="Nought Player"></label>
             </div>
+            <div class="who-first">
+                <label>Who goes first:</label>
+                <div class="radio">
+                    <span>Crosses: </span>
+                    <div class="checkbox-wrap">
+                        <input type="radio" id="crossesTurn" name="whoFirst" value="crosses"/>
+                    </div>
+                </div>
+                <div class="radio">
+                    <span>Noughts: </span>
+                    <div class="checkbox-wrap">
+                        <input type="radio" id="noughtsTurn" name="whoFirst" value="noughts"/>
+                    </div>
+                </div>
+            </div>
             <button type="button" id="start" class="btn">Start Game</button>
             <button type="button" id="restart" class="btn hidden">Restart</button>
 
@@ -35,19 +50,19 @@
         </div>
         <div id="TicTacToe" data-cursor="crosses">
             <div class="row">
-                <div id="box1" class="col-xs-4 box" data-figure="" data-number="1" data-id="0"></div>
-                <div id="box2" class="col-xs-4 box" data-figure="" data-number="2" data-id="1"></div>
-                <div id="box4" class="col-xs-4 box" data-figure="" data-number="4" data-id="2"></div>
+                <div id="box1" class="col-xs-4 box" data-figure="" data-number="1" name="0"></div>
+                <div id="box2" class="col-xs-4 box" data-figure="" data-number="2" name="1"></div>
+                <div id="box4" class="col-xs-4 box" data-figure="" data-number="4" name="2"></div>
             </div>
             <div class="row">
-                <div id="box8" class="col-xs-4 box" data-figure="" data-number="8" data-id="3"></div>
-                <div id="box16" class="col-xs-4 box" data-figure="" data-number="16" data-id="4"></div>
-                <div id="box32" class="col-xs-4 box" data-figure="" data-number="32" data-id="5"></div>
+                <div id="box8" class="col-xs-4 box" data-figure="" data-number="8" name="3"></div>
+                <div id="box16" class="col-xs-4 box" data-figure="" data-number="16" name="4"></div>
+                <div id="box32" class="col-xs-4 box" data-figure="" data-number="32" name="5"></div>
             </div>
             <div class="row">
-                <div id="box64" class="col-xs-4 box" data-figure="" data-number="64" data-id="6"></div>
-                <div id="box128" class="col-xs-4 box" data-figure="" data-number="128" data-id="7"></div>
-                <div id="box256" class="col-xs-4 box" data-figure="" data-number="256" data-id="8"></div>
+                <div id="box64" class="col-xs-4 box" data-figure="" data-number="64" name="6"></div>
+                <div id="box128" class="col-xs-4 box" data-figure="" data-number="128" name="7"></div>
+                <div id="box256" class="col-xs-4 box" data-figure="" data-number="256" name="8"></div>
             </div>
         </div>
     </div>
