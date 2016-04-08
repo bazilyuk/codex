@@ -33,6 +33,9 @@ body {
 .wrap-all {
   display: table-cell;
   vertical-align: middle;
+  height: 100%;
+  min-height: 100%;
+  text-align: center;
 }
 #popup {
   position: fixed;
@@ -130,6 +133,16 @@ body {
     }
   }
 }
+.container {
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+  max-width: 840px;
+  max-height: 602px;
+  padding: 0 120px;
+  margin: 0 auto;
+  position: relative;
+}
 #information {
   position: absolute;
   left: 0;
@@ -142,17 +155,36 @@ body {
     @include crossBrowser(transition, .3s);
     opacity: 0;
   }
+  .who-first {
+    color: white;
+    text-align: center;
+    label {
+      clear: both;
+      display: block;
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+    .checkbox-wrap {
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .radio {
+      display: inline-block;
+    }
+  }
   .navbar-toggle {
     padding: 0px;
-    display: inline-block;
     cursor: pointer;
     margin: 0px 10px 20px;
     width: 60px;
     height: 45px;
-    position: relative;
+    position: absolute;
     background: none;
     border: none;
     box-shadow: none;
+    left: 0;
+    top: 20px;
     span {
       @include crossBrowser(transition, .25s ease-in-out);
       @include crossBrowser(transform, rotate(0deg));
@@ -202,17 +234,6 @@ body {
       opacity: 1;
     }
   }
-}
-
-.container {
-  display: block;
-  width: 100%;
-  height: 100%;
-  max-width: 840px;
-  max-height: 602px;
-  padding: 0 120px;
-  margin: 0 auto;
-  position: relative;
 }
 #TicTacToe {
   width: 100%;

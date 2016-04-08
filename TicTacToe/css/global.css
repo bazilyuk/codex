@@ -21,7 +21,10 @@ body {
 
 .wrap-all {
   display: table-cell;
-  vertical-align: middle; }
+  vertical-align: middle;
+  height: 100%;
+  min-height: 100%;
+  text-align: center; }
 
 #popup {
   position: fixed;
@@ -113,6 +116,16 @@ body {
       .input-wrap > input[required]:focus + label:before {
         color: #00bafa; }
 
+.container {
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+  max-width: 840px;
+  max-height: 602px;
+  padding: 0 120px;
+  margin: 0 auto;
+  position: relative; }
+
 #information {
   position: absolute;
   left: 0;
@@ -130,17 +143,32 @@ body {
     -o-transition: 0.3s;
     transition: 0.3s;
     opacity: 0; }
+  #information .who-first {
+    color: white;
+    text-align: center; }
+    #information .who-first label {
+      clear: both;
+      display: block;
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 20px; }
+    #information .who-first .checkbox-wrap {
+      display: inline-block;
+      vertical-align: middle; }
+    #information .who-first .radio {
+      display: inline-block; }
   #information .navbar-toggle {
     padding: 0px;
-    display: inline-block;
     cursor: pointer;
     margin: 0px 10px 20px;
     width: 60px;
     height: 45px;
-    position: relative;
+    position: absolute;
     background: none;
     border: none;
-    box-shadow: none; }
+    box-shadow: none;
+    left: 0;
+    top: 20px; }
     #information .navbar-toggle span {
       -webkit-transition: 0.25s ease-in-out;
       -moz-transition: 0.25s ease-in-out;
@@ -191,16 +219,6 @@ body {
       transform: rotate(-45deg); }
     #information.active > *:not(.navbar-toggle) {
       opacity: 1; }
-
-.container {
-  display: block;
-  width: 100%;
-  height: 100%;
-  max-width: 840px;
-  max-height: 602px;
-  padding: 0 120px;
-  margin: 0 auto;
-  position: relative; }
 
 #TicTacToe {
   width: 100%; }
