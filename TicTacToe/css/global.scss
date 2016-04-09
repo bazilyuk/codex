@@ -185,6 +185,7 @@ body {
     box-shadow: none;
     left: 0;
     top: 20px;
+    z-index: 99999;
     span {
       @include crossBrowser(transition, .25s ease-in-out);
       @include crossBrowser(transform, rotate(0deg));
@@ -256,13 +257,16 @@ body {
   }
   .box {
     position: relative;
-    width: 33.33%;
-    padding-top: 33.33%;
     display: inline-block;
     &:not(:last-child) {
       border-right: 1px solid #1b6d85;
     }
-
+    @for $i from 1 to 20 {
+      &.col-#{$i} {
+        width: calc(100% / #{$i});
+        padding-top: calc(100% / #{$i});
+      }
+    }
     &.win {
       background: #00FFA3;
     }
