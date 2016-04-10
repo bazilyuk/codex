@@ -49,15 +49,26 @@ function removeClass(o, c){
     var EmptyFields = []; //Add fields that empty
     var BoxNumbers = []; //Array of boxes number 1 2 4 8 16 ...
     var GameFields = []; //Array with real boxes
+    var wins = []; //Array with wins combination
+    var noughts = [], crosses = []; //in this array add all object that we click
     var Bot = false, finish = false;
+    function addToFields(i) {
+        var mybox = new box();
+        mybox.id = i;
+        mybox.number = BoxNumbers[i];
+        GameFields[i] = mybox;
+    };
     function CreateFields(){
+        GameFields = [];
+        EmptyFields = [];
+        BoxNumbers = [];
         for (var i=0;i<Boxes*Boxes;i++) {
             BoxNumbers[i] = Math.pow(2,i);
             EmptyFields[i] = BoxNumbers[i];
             addToFields(i);
         }
     };
-    CreateFields();
+    //CreateFields();
     function box() {
         this.id = "";
         this.number = "";
@@ -66,20 +77,21 @@ function removeClass(o, c){
         this.win = false;
         this.fill = false;
     };
-    var wins = [];
     function generateWins() {
+        wins = [];
+        var BoxesNumber = Number(Boxes);
         var lineX = 0;
         var lineY = 0;
         var line1 = 0;
         var line2 = 0;
-        for (var i=0;i<Boxes;i++) {
+        for (var i=0;i<BoxesNumber;i++) {
             lineX = 0;
             lineY = 0;
-            line1 += BoxNumbers[((Boxes+1)*i)];
-            line2 += BoxNumbers[((Boxes-1)*(i+1))];
+            line1 += BoxNumbers[((BoxesNumber+1)*i)];
+            line2 += BoxNumbers[((BoxesNumber-1)*(i+1))];
             for (var y=0;y<Boxes;y++) {
-                lineX += BoxNumbers[i*Boxes+y];
-                lineY += BoxNumbers[i+Boxes*y];
+                lineX += BoxNumbers[i*BoxesNumber+y];
+                lineY += BoxNumbers[i+BoxesNumber*y];
             }
             wins.push(lineX);
             wins.push(lineY);
@@ -87,15 +99,7 @@ function removeClass(o, c){
         wins.push(line1);
         wins.push(line2);
     };
-    generateWins();
-    console.log(wins);
-    var noughts = [], crosses = []; //in this array add all object that we click
-    function addToFields(i) {
-        var mybox = new box();
-        mybox.id = i;
-        mybox.number = BoxNumbers[i];
-        GameFields[i] = mybox;
-    };
+    //generateWins();
     /**
      * Generete TicTacToe field with rows and cols
      * @param cols
@@ -133,7 +137,7 @@ function removeClass(o, c){
             TicTacToe.appendChild(addRow(i));
         }
     }
-    CreateHtml(Boxes);
+    //CreateHtml(Boxes);
     /**
      * player info
      */
@@ -147,8 +151,13 @@ function removeClass(o, c){
     };
     playername1.onchange = function(){ addName(playername1)};
     playername2.onchange = function(){ addName(playername2)};
-
-    document.getElementById("start").onclick = function() {start()};
+    function addName(input) {
+        if (input.id=="playername1") {
+            player1.name = input.value;
+        } else {
+            player2.name = input.value;
+        }
+    }
     function whoFirst() {
         if (document.getElementById("crossesTurn").checked) {
             firstTurn = "crosses";
@@ -159,40 +168,37 @@ function removeClass(o, c){
         }
         TicTacToe.setAttribute("data-cursor", firstTurn);
     }
-    function start() {
+    function GenerateAll() {
+        Boxes = chooseField.options[chooseField.selectedIndex].value;
+        CreateFields();
+        generateWins();
+        CreateHtml(Boxes);
+        BoxesElement = document.querySelectorAll('.box');
         whoFirst();
+    }
+    document.getElementById("start").onclick = function() {start()};
+    function start() {
+        GenerateAll();
         var st = document.getElementById("start");
         var rest = document.getElementById("restart");
         addClass(st,"hidden");
         removeClass(rest,"hidden");
         removeClass(information,"active");
-    }
-    function addName(input) {
-        if (input.id=="playername1") {
-            player1.name = input.value;
-        } else {
-            player2.name = input.value;
-        }
+        ClickToBox();
     }
     /**
      * Restart game
      */
-    document.getElementById("restart").onclick = function() {Bot = false;restart()};
-    document.getElementById("playmore").onclick = function() {restart()};
+    document.getElementById("restart").onclick = function() { Bot = false; restart() };
+    document.getElementById("playmore").onclick = function() { restart() };
     var BoxesElement = document.querySelectorAll('.box');
     function restart() {
-        whoFirst();
+        GenerateAll();
         removeClass(popup, "active");
         removeClass(information,"active");
         click = 0; noughts = []; crosses = [];
         finish = false;
-        for (var i = 0; i < Boxes*Boxes; i++) {
-            BoxesElement[i].setAttribute("data-figure", "");
-            removeClass(BoxesElement[i], "win");
-        }
-        GameFields = [];
-        EmptyFields = [];
-        CreateFields();
+        ClickToBox();
     }
     /**
      * Play with computer
@@ -261,7 +267,6 @@ function removeClass(o, c){
                         bin = "0"+bin;
                     }
                 }
-                console.log("array1: "+array1+"\n summ: "+summ+"\n bin: "+bin);
                 for (var b=0;b<array1.length;b++) {
                     var num = bin.substring(b, b+1);
                     if (num==1){
@@ -334,20 +339,22 @@ function removeClass(o, c){
     /**
      * Click to box
      */
-    for (var i = 0; i < Boxes*Boxes; i++) {
-        BoxesElement[i].addEventListener('click', function(event) {
-            var figure = firstTurn;
-            if (!BoxEmpty(this)) {
-                if (click%2==1){
-                    figure = secondTurn;
+    function ClickToBox() {
+        for (var i = 0; i < Boxes*Boxes; i++) {
+            BoxesElement[i].addEventListener('click', function(event) {
+                var figure = firstTurn;
+                if (!BoxEmpty(this)) {
+                    if (click%2==1){
+                        figure = secondTurn;
+                    }
+                    FillGameField(this,figure,click);
+                    boxClick(this,figure,click);
+                    click++;
                 }
-                FillGameField(this,figure,click);
-                boxClick(this,figure,click);
-                click++;
-            }
-            if ((Bot)&&(!finish)) {
-                startBot(figure);
-            }
-        });
+                if ((Bot)&&(!finish)) {
+                    startBot(figure);
+                }
+            });
+        }
     }
 })();
