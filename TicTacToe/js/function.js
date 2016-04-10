@@ -36,8 +36,9 @@ function removeClass(o, c){
     document.getElementById("menu").onclick = function() {
         information.className = (information.className != 'active' ? 'active' : '' );
     };
-
-    var Boxes = 3; //How many rows and cols in this row
+    var chooseField = document.getElementById("chooseField");
+    var Boxes = chooseField.options[chooseField.selectedIndex].value; //How many rows and cols in this row
+    Boxes = 3;
     var TicTacToe = document.getElementById("TicTacToe");
     var popup = document.getElementById("popup");
     var information = document.getElementById("information");
@@ -65,11 +66,7 @@ function removeClass(o, c){
         this.win = false;
         this.fill = false;
     };
-    console.log(BoxNumbers);
     var wins = [];
-    //var wins = [7, 56, 448, 73, 146, 292, 273, 84];
-    //2 4 6
-    //4 8 12 16 20
     function generateWins() {
         var lineX = 0;
         var lineY = 0;
@@ -82,7 +79,7 @@ function removeClass(o, c){
             line2 += BoxNumbers[((Boxes-1)*(i+1))];
             for (var y=0;y<Boxes;y++) {
                 lineX += BoxNumbers[i*Boxes+y];
-                lineY += BoxNumbers[i+Boxes*y];;
+                lineY += BoxNumbers[i+Boxes*y];
             }
             wins.push(lineX);
             wins.push(lineY);
@@ -105,6 +102,9 @@ function removeClass(o, c){
      * @constructor
      */
     function CreateHtml(cols) {
+        while (TicTacToe.firstChild) {
+            TicTacToe.removeChild(TicTacToe.firstChild);
+        }
         function addCol(i,y){
             var col = document.createElement('div');
             var number = i*cols+y;
@@ -236,22 +236,43 @@ function removeClass(o, c){
      * Create all sum that we can get from array of numbers of this figure
      * if sum equal one element from wins array, then this figure win.
      */
-    function checkWin(figure,turn) {
-        var result = 0;
-        for (var i=0;i<figure.length-2;i++){
-            for (var y=i+1;y<figure.length-1;y++){
-                for (var z=y+1;z<figure.length;z++){
-                    result = figure[i] + figure[y] +figure[z];
-                    if (wins.indexOf(result)>=0) {
-                        finish = true;
+    function checkWin(array1,turn) {
+//исходя из длины массива, собираем двоичное число из единиц, у которого разрядность = длине массива
+//к примеру, если array1.length=4, то bin=1111, если array1.length=6, то bin=111111
+        bin = "";
+        for (i=0; i<array1.length; i++) {
+            bin += "1";
+        }
+//при переводе двоичного числа в десятеричное, получим кол-во переборов всех возможных сумм элементов из исходного массива array1
+        dec = parseInt(bin, 2);
+        for (i=1; i<=dec; i++) {
+            bin = (i).toString(2);
+            raz = array1.length - bin.length;
+            summ = 0;
+            for (k=raz+1; k<=array1.length; k++) {
+                sub = bin.substring(k-raz-1, k-raz);
+                summ += array1[k-1] * sub;
+            }
+            if (wins.indexOf(summ)>=0) {
+                finish = true;
+                var razLength = array1.length - bin.length;
+                if (razLength!=0){
+                    while (array1.length!=bin.length) {
+                        bin = "0"+bin;
+                    }
+                }
+                console.log("array1: "+array1+"\n summ: "+summ+"\n bin: "+bin);
+                for (var b=0;b<array1.length;b++) {
+                    var num = bin.substring(b, b+1);
+                    if (num==1){
                         for (var a=0;a<GameFields.length;a++){
-                            if ((GameFields[a].number == figure[i])||(GameFields[a].number == figure[y])||(GameFields[a].number == figure[z])){
+                            if (GameFields[a].number == array1[b]){
                                 GameFields[a].win = true;
                             }
                         }
-                        win(turn);
                     }
                 }
+                win(turn);
             }
         }
     }
