@@ -77,6 +77,11 @@ function removeClass(o, c){
         this.win = false;
         this.fill = false;
     };
+    function line() {
+        this.id = "";
+        this.summ = "";
+        this.figure = [];
+    }
     function generateWins() {
         wins = [];
         var BoxesNumber = Number(Boxes);
