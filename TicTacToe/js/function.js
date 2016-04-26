@@ -85,6 +85,10 @@ function removeClass(o, c){
         this.boxesIds = [];
     }
     function generateLine(){
+        /**
+         * Create Array with all lines in Game field
+         * @type {Array}
+         */
         GameLines = [];
         var BoxesNumber = Number(Boxes);
         for(var i=0;i<(BoxesNumber*2+2);i++) {
@@ -95,22 +99,14 @@ function removeClass(o, c){
             myline.id = i;
             GameLines.push(myline);
         }
+        addBoxesToLine();
     }
-    function addInfoToLine(id,summ,name) {
-        for (var i=0;i<GameLines.length;i++) {
-            var lineId = GameLines[i].id;
-            if (lineId==id) {
-                GameLines[i].summ = summ;
-                GameLines[i].name = name;
-            }
-        }
-    }
-    function addBoxesIdsToLine() {
+    function addBoxesToLine() {
         /**
-         * Add to Lines GameField boxes
+         * Add boxes to Lines GameField
          * @param id
          */
-        function addBoxesToLine(id){
+        function addBoxesToLineIds(id){
             var BoxesNumber = Number(Boxes);
             var BoxesArray = [];
             var someNumber = 0;
@@ -143,7 +139,16 @@ function removeClass(o, c){
             GameLines[id].boxesIds = BoxesArray;
         }
         for (var i=0;i<GameLines.length;i++) {
-            addBoxesToLine(i);
+            addBoxesToLineIds(i);
+        }
+    }
+    function addInfoToLine(id,summ,name) {
+        for (var i=0;i<GameLines.length;i++) {
+            var lineId = GameLines[i].id;
+            if (lineId==id) {
+                GameLines[i].summ = summ;
+                GameLines[i].name = name;
+            }
         }
     }
     function generateWins() {
@@ -248,7 +253,6 @@ function removeClass(o, c){
         Boxes = chooseField.options[chooseField.selectedIndex].value;
         CreateFields();
         generateLine();
-        addBoxesIdsToLine();
         generateWins();
         CreateHtml(Boxes);
         BoxesElement = document.querySelectorAll('.box');
