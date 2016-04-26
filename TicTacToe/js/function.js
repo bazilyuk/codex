@@ -49,6 +49,7 @@ function removeClass(o, c){
     var EmptyFields = []; //Add fields that empty
     var BoxNumbers = []; //Array of boxes number 1 2 4 8 16 ...
     var GameFields = []; //Array with real boxes
+    var GameLines = []; //Array with lines
     var wins = []; //Array with wins combination
     var noughts = [], crosses = []; //in this array add all object that we click
     var Bot = false, finish = false;
@@ -68,7 +69,6 @@ function removeClass(o, c){
             addToFields(i);
         }
     };
-    //CreateFields();
     function box() {
         this.id = "";
         this.number = "";
@@ -81,9 +81,74 @@ function removeClass(o, c){
         this.id = "";
         this.summ = "";
         this.figure = [];
+        this.name = "";
+        this.boxesIds = [];
+    }
+    function generateLine(){
+        GameLines = [];
+        var BoxesNumber = Number(Boxes);
+        for(var i=0;i<(BoxesNumber*2+2);i++) {
+            createLine(i);
+        }
+        function createLine(i){
+            var myline = new line();
+            myline.id = i;
+            GameLines.push(myline);
+        }
+    }
+    function addInfoToLine(id,summ,name) {
+        for (var i=0;i<GameLines.length;i++) {
+            var lineId = GameLines[i].id;
+            if (lineId==id) {
+                GameLines[i].summ = summ;
+                GameLines[i].name = name;
+            }
+        }
+    }
+    function addBoxesIdsToLine() {
+        /**
+         * Add to Lines GameField boxes
+         * @param id
+         */
+        function addBoxesToLine(id){
+            var BoxesNumber = Number(Boxes);
+            var BoxesArray = [];
+            var someNumber = 0;
+            if (id<BoxesNumber){
+                /**
+                 * fill only Horizontal lines
+                 */
+                for (var i=(id*BoxesNumber);i<(BoxesNumber+(id*BoxesNumber));i++){
+                    BoxesArray.push(GameFields[i]);
+                }
+            } else if ((id>=BoxesNumber)&&(id<BoxesNumber*2)){
+                /**
+                 * fill only Vertical lines
+                 */
+                for (var i=0;i<BoxesNumber;i++){
+                    someNumber = (i*BoxesNumber)+(id-BoxesNumber);
+                    BoxesArray.push(GameFields[someNumber]);
+                }
+            } else if (id==BoxesNumber*2) {
+                for (var i=0;i<BoxesNumber;i++){
+                    someNumber = (BoxesNumber+1)*i;
+                    BoxesArray.push(GameFields[someNumber]);
+                }
+            } else {
+                for (var i=0;i<BoxesNumber;i++){
+                    someNumber = (BoxesNumber-1)*(i+1);
+                    BoxesArray.push(GameFields[someNumber]);
+                }
+            }
+            GameLines[id].boxesIds = BoxesArray;
+        }
+        for (var i=0;i<GameLines.length;i++) {
+            addBoxesToLine(i);
+        }
     }
     function generateWins() {
         wins = [];
+        var someNumber = 0;
         var BoxesNumber = Number(Boxes);
         var lineX = 0;
         var lineY = 0;
@@ -99,10 +164,16 @@ function removeClass(o, c){
                 lineY += BoxNumbers[i+BoxesNumber*y];
             }
             wins.push(lineX);
+            addInfoToLine(i,lineX,"Horizontal "+i);
+
             wins.push(lineY);
+            addInfoToLine(i+BoxesNumber,lineY,"Vertical "+i);
         }
         wins.push(line1);
+        addInfoToLine(BoxesNumber*2,line1,"Diagonal 1");
+
         wins.push(line2);
+        addInfoToLine(BoxesNumber*2+1,line2,"Diagonal 2");
     };
     //generateWins();
     /**
@@ -176,10 +247,14 @@ function removeClass(o, c){
     function GenerateAll() {
         Boxes = chooseField.options[chooseField.selectedIndex].value;
         CreateFields();
+        generateLine();
+        addBoxesIdsToLine();
         generateWins();
         CreateHtml(Boxes);
         BoxesElement = document.querySelectorAll('.box');
         whoFirst();
+        console.log(GameFields);
+        console.log(GameLines);
     }
     document.getElementById("start").onclick = function() {start()};
     function start() {
@@ -359,6 +434,7 @@ function removeClass(o, c){
                 if ((Bot)&&(!finish)) {
                     startBot(figure);
                 }
+                console.log(GameLines);
             });
         }
     }
