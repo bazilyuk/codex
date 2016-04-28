@@ -54,7 +54,8 @@ function removeClass(o, c){
     function line() {
         this.id = "";
         this.summ = "";
-        this.figure = [];
+        this.crosses = 0;
+        this.noughts = 0;
         this.name = "";
         this.boxesIds = [];
     }
@@ -266,18 +267,15 @@ function removeClass(o, c){
         }
         box.setAttribute("data-figure", who);
         TicTacToe.setAttribute("data-cursor", next);
-        if (click>=4) {
-            checkWin(figure);
-        }
+        checkWin(figure);
         if ((click==(Boxes*Boxes-1))&&(!finish)) {
             draw();
         }
     }
     /**
-     * Create all sum that we can get from array of numbers of this figure
-     * if sum equal one element from wins array, then this figure win.
+     * Check if in one line all figure of one kind, then whoose turn, that player win
      */
-    function checkWin(turn) {
+    function setLines() {
         for (var a=0;a<GameLines.length;a++){
             var noug = 0;
             var cross = 0;
@@ -288,14 +286,25 @@ function removeClass(o, c){
                     noug++;
                 }
             }
-            if ((cross==Number(Boxes))||(noug==Number(Boxes))) {
-                var boxID = -1;
-                for (var b1=0;b1<GameLines[a].boxesIds.length;b1++){
-                    boxID = GameLines[a].boxesIds[b1].id;
-                    GameFields[boxID].win = true;
+            GameLines[a].crosses = cross;
+            GameLines[a].noughts = noug;
+        }
+    }
+    function checkWin(turn) {
+        setLines();
+        if (click+1>((Number(Boxes)*2)-2)) {
+            for (var a = 0; a < GameLines.length; a++) {
+                var noug = GameLines[a].noughts;
+                var cross = GameLines[a].crosses;
+                if ((cross == Number(Boxes)) || (noug == Number(Boxes))) {
+                    var boxID = -1;
+                    for (var b1 = 0; b1 < GameLines[a].boxesIds.length; b1++) {
+                        boxID = GameLines[a].boxesIds[b1].id;
+                        GameFields[boxID].win = true;
+                    }
+                    finish = true;
+                    win(turn);
                 }
-                finish = true;
-                win(turn);
             }
         }
     }
@@ -345,25 +354,27 @@ function removeClass(o, c){
     /**
      * Bot Goes
      */
-    function BotCheckBoxes(){
+    function BotCheckBoxes(figure){
+        var nougArr = [];
+        var crossArr = [];
+        var noug = 0;
+        var cross = 0;
+        var nextBox = 5;
         for (var a=0;a<GameLines.length;a++){
-            var noug = 0;
-            var cross = 0;
-            for (var b=0;b<GameLines[a].boxesIds.length;b++){
-                if (GameLines[a].boxesIds[b].figure=="crosses") {
-                    cross++;
-                } else if (GameLines[a].boxesIds[b].figure=="noughts") {
-                    noug++;
+            nougArr[a] = GameLines[a].noughts;
+            crossArr[a] = GameLines[a].crosses;
+        }
+        noug = Math.max.apply(null, nougArr);
+        cross = Math.max.apply(null, crossArr);
+        if (figure=="crosses") {
+            //if can win
+            if ((cross>noug)||(cross==Number(Boxes)-1)) {
+                var lineIndex = crossArr.indexOf(cross);
+                for (var a1=0;a1<Number(Boxes);a1++){
+                    if (!GameLines[a1].boxesIds[a1].fill){
+                        nextBox = GameLines[a1].boxesIds[a1].id;
+                    }
                 }
-            }
-            if ((cross==Number(Boxes))||(noug==Number(Boxes))) {
-                var boxID = -1;
-                for (var b1=0;b1<GameLines[a].boxesIds.length;b1++){
-                    boxID = GameLines[a].boxesIds[b1].id;
-                    GameFields[boxID].win = true;
-                }
-                finish = true;
-                win(turn);
             }
         }
     }
@@ -374,6 +385,7 @@ function removeClass(o, c){
             var id = "#box"+rand;
             var that = document.querySelector(id);
         } else {
+            BotCheckBoxes(figure);
             var rand = EmptyFields[Math.floor(Math.random() * EmptyFields.length)];
             var id = "#box"+rand;
             var that = document.querySelector(id);
