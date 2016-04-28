@@ -1,26 +1,6 @@
 /**
  * Created by maksim on 28.03.2016.
  */
-/*
- * To determine a win condition, each square is "tagged" from left
- * to right, top to bottom, with successive powers of 2.  Each cell
- * thus represents an individual bit in a 9-bit string, and a
- * player's squares at any given time can be represented as a
- * unique 9-bit value. A winner can thus be easily determined by
- * checking whether the player's current 9 bits have covered any
- * of the eight "three-in-a-row" combinations.
- *
- *     273                 84
- *        \               /
- *          1 |   2 |   4  = 7
- *       -----+-----+-----
- *          8 |  16 |  32  = 56
- *       -----+-----+-----
- *         64 | 128 | 256  = 448
- *       =================
- *         73   146   292
- *
- */
 function addClass(o, c){
     var re = new RegExp("(^|\\s)" + c + "(\\s|$)", "g")
     if (re.test(o.className)) return
@@ -47,31 +27,24 @@ function removeClass(o, c){
     var secondTurn, firstTurn = "crosses";
     var click = 0;
     var EmptyFields = []; //Add fields that empty
-    var BoxNumbers = []; //Array of boxes number 1 2 4 8 16 ...
     var GameFields = []; //Array with real boxes
     var GameLines = []; //Array with lines
-    var wins = []; //Array with wins combination
-    var noughts = [], crosses = []; //in this array add all object that we click
     var Bot = false, finish = false;
     function addToFields(i) {
         var mybox = new box();
         mybox.id = i;
-        mybox.number = BoxNumbers[i];
         GameFields[i] = mybox;
     };
     function CreateFields(){
         GameFields = [];
         EmptyFields = [];
-        BoxNumbers = [];
         for (var i=0;i<Boxes*Boxes;i++) {
-            BoxNumbers[i] = Math.pow(2,i);
-            EmptyFields[i] = BoxNumbers[i];
+            EmptyFields[i] = i;
             addToFields(i);
         }
     };
     function box() {
         this.id = "";
-        this.number = "";
         this.turn = "";
         this.figure = "";
         this.win = false;
@@ -142,45 +115,23 @@ function removeClass(o, c){
             addBoxesToLineIds(i);
         }
     }
-    function addInfoToLine(id,summ,name) {
+    function addInfoToLine(id,name) {
         for (var i=0;i<GameLines.length;i++) {
             var lineId = GameLines[i].id;
             if (lineId==id) {
-                GameLines[i].summ = summ;
                 GameLines[i].name = name;
             }
         }
     }
-    function generateWins() {
-        wins = [];
-        var someNumber = 0;
+    function SetInfoToLines() {
         var BoxesNumber = Number(Boxes);
-        var lineX = 0;
-        var lineY = 0;
-        var line1 = 0;
-        var line2 = 0;
         for (var i=0;i<BoxesNumber;i++) {
-            lineX = 0;
-            lineY = 0;
-            line1 += BoxNumbers[((BoxesNumber+1)*i)];
-            line2 += BoxNumbers[((BoxesNumber-1)*(i+1))];
-            for (var y=0;y<Boxes;y++) {
-                lineX += BoxNumbers[i*BoxesNumber+y];
-                lineY += BoxNumbers[i+BoxesNumber*y];
-            }
-            wins.push(lineX);
-            addInfoToLine(i,lineX,"Horizontal "+i);
-
-            wins.push(lineY);
-            addInfoToLine(i+BoxesNumber,lineY,"Vertical "+i);
+            addInfoToLine(i,"Horizontal "+i);
+            addInfoToLine(i+BoxesNumber,"Vertical "+i);
         }
-        wins.push(line1);
-        addInfoToLine(BoxesNumber*2,line1,"Diagonal 1");
-
-        wins.push(line2);
-        addInfoToLine(BoxesNumber*2+1,line2,"Diagonal 2");
+        addInfoToLine(BoxesNumber*2,"Diagonal 1");
+        addInfoToLine(BoxesNumber*2+1,"Diagonal 2");
     };
-    //generateWins();
     /**
      * Generete TicTacToe field with rows and cols
      * @param cols
@@ -193,7 +144,7 @@ function removeClass(o, c){
         function addCol(i,y){
             var col = document.createElement('div');
             var number = i*cols+y;
-            var divId = "box"+BoxNumbers[number];
+            var divId = "box"+number;
             var divClass = "col-"+cols;
             var divClass1 = "box";
             col.setAttribute("name",number);
@@ -201,7 +152,7 @@ function removeClass(o, c){
             col.classList.add(divClass1);
             col.setAttribute("id", divId);
             col.setAttribute("data-figure", "");
-            col.setAttribute("data-number", BoxNumbers[number]);
+            col.setAttribute("data-number", number);
             return col;
         }
         function addRow(i){
@@ -253,7 +204,7 @@ function removeClass(o, c){
         Boxes = chooseField.options[chooseField.selectedIndex].value;
         CreateFields();
         generateLine();
-        generateWins();
+        SetInfoToLines();
         CreateHtml(Boxes);
         BoxesElement = document.querySelectorAll('.box');
         whoFirst();
@@ -280,7 +231,7 @@ function removeClass(o, c){
         GenerateAll();
         removeClass(popup, "active");
         removeClass(information,"active");
-        click = 0; noughts = []; crosses = [];
+        click = 0;
         finish = false;
         ClickToBox();
     }
@@ -306,17 +257,16 @@ function removeClass(o, c){
      */
     function boxClick(box,who,click) {
         if (who=="crosses"){
-            var figure = crosses;
+            var figure = "crosses";
             var next = "noughts";
         } else {
-            var figure = noughts;
+            var figure = "noughts";
             var next = "crosses";
         }
-        figure.push(Number(box.getAttribute("data-number")));
         box.setAttribute("data-figure", who);
         TicTacToe.setAttribute("data-cursor", next);
         if (click>=4) {
-            checkWin(figure,who);
+            checkWin(figure);
         }
         if ((click==(Boxes*Boxes-1))&&(!finish)) {
             draw();
@@ -326,44 +276,28 @@ function removeClass(o, c){
      * Create all sum that we can get from array of numbers of this figure
      * if sum equal one element from wins array, then this figure win.
      */
-    function checkWin(array1,turn) {
-//исходя из длины массива, собираем двоичное число из единиц, у которого разрядность = длине массива
-//к примеру, если array1.length=4, то bin=1111, если array1.length=6, то bin=111111
-        bin = "";
-        for (i=0; i<array1.length; i++) {
-            bin += "1";
-        }
-//при переводе двоичного числа в десятеричное, получим кол-во переборов всех возможных сумм элементов из исходного массива array1
-        dec = parseInt(bin, 2);
-        for (i=1; i<=dec; i++) {
-            bin = (i).toString(2);
-            raz = array1.length - bin.length;
-            summ = 0;
-            for (k=raz+1; k<=array1.length; k++) {
-                sub = bin.substring(k-raz-1, k-raz);
-                summ += array1[k-1] * sub;
+    function checkWin(turn) {
+        for (var a=0;a<GameLines.length;a++){
+            var noug = 0;
+            var cross = 0;
+            for (var b=0;b<GameLines[a].boxesIds.length;b++){
+                if (GameLines[a].boxesIds[b].figure=="crosses") {
+                    cross++;
+                } else if (GameLines[a].boxesIds[b].figure=="noughts") {
+                    noug++;
+                }
             }
-            if (wins.indexOf(summ)>=0) {
+            if ((cross==Number(Boxes))||(noug==Number(Boxes))) {
+                var boxID = -1;
+                for (var b1=0;b1<GameLines[a].boxesIds.length;b1++){
+                    boxID = GameLines[a].boxesIds[b1].id;
+                    GameFields[boxID].win = true;
+                }
                 finish = true;
-                var razLength = array1.length - bin.length;
-                if (razLength!=0){
-                    while (array1.length!=bin.length) {
-                        bin = "0"+bin;
-                    }
-                }
-                for (var b=0;b<array1.length;b++) {
-                    var num = bin.substring(b, b+1);
-                    if (num==1){
-                        for (var a=0;a<GameFields.length;a++){
-                            if (GameFields[a].number == array1[b]){
-                                GameFields[a].win = true;
-                            }
-                        }
-                    }
-                }
                 win(turn);
             }
         }
+        return true;
     }
     /**
      * When someone win
@@ -379,7 +313,7 @@ function removeClass(o, c){
         document.getElementById('winner').innerHTML = winner;
         for (var a=0;a<GameFields.length;a++){
             if (GameFields[a].win) {
-                var id = "#box"+GameFields[a].number;
+                var id = "#box"+GameFields[a].id;
                 var elem = document.querySelector(id);
                 elem.classList.add("win");
             }
@@ -395,7 +329,7 @@ function removeClass(o, c){
     function FillGameField(that,figure,turn) {
         var number = that.getAttribute("data-number");
         for (var i=0;i<GameFields.length;i++) {
-            var boxNumber = GameFields[i].number;
+            var boxNumber = GameFields[i].id;
             var boxFill = GameFields[i].fill;
             if ((number == boxNumber)&&(!boxFill)) {
                 GameFields[i].figure = figure;
@@ -439,6 +373,7 @@ function removeClass(o, c){
                     startBot(figure);
                 }
                 console.log(GameLines);
+                console.log(EmptyFields);
             });
         }
     }

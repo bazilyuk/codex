@@ -2205,7 +2205,7 @@ JS:
 </script>
 <!------------------------------------------------------------------hover---------------------------------------------------------------------->
 <script>
-    $(document).ready(function(){F
+    $(document).ready(function(){
         $("#pol1").hover(function(){
             $('#polb1').show();
         },function(){
