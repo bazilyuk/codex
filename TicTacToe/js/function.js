@@ -30,6 +30,7 @@ function removeClass(o, c){
     var GameFields = []; //Array with real boxes
     var GameLines = []; //Array with lines
     var Bot = false, finish = false;
+    var SmartBot = true;
     function addToFields(i) {
         var mybox = new box();
         mybox.id = i;
@@ -297,7 +298,6 @@ function removeClass(o, c){
                 win(turn);
             }
         }
-        return true;
     }
     /**
      * When someone win
@@ -345,11 +345,40 @@ function removeClass(o, c){
     /**
      * Bot Goes
      */
+    function BotCheckBoxes(){
+        for (var a=0;a<GameLines.length;a++){
+            var noug = 0;
+            var cross = 0;
+            for (var b=0;b<GameLines[a].boxesIds.length;b++){
+                if (GameLines[a].boxesIds[b].figure=="crosses") {
+                    cross++;
+                } else if (GameLines[a].boxesIds[b].figure=="noughts") {
+                    noug++;
+                }
+            }
+            if ((cross==Number(Boxes))||(noug==Number(Boxes))) {
+                var boxID = -1;
+                for (var b1=0;b1<GameLines[a].boxesIds.length;b1++){
+                    boxID = GameLines[a].boxesIds[b1].id;
+                    GameFields[boxID].win = true;
+                }
+                finish = true;
+                win(turn);
+            }
+        }
+    }
     function startBot(figure) {
         figure = figure == "crosses" ? "noughts" : "crosses";
-        var rand = EmptyFields[Math.floor(Math.random() * EmptyFields.length)];
-        var id = "#box"+rand;
-        var that = document.querySelector(id);
+        if (!SmartBot) {
+            var rand = EmptyFields[Math.floor(Math.random() * EmptyFields.length)];
+            var id = "#box"+rand;
+            var that = document.querySelector(id);
+        } else {
+            var rand = EmptyFields[Math.floor(Math.random() * EmptyFields.length)];
+            var id = "#box"+rand;
+            var that = document.querySelector(id);
+        }
+
         FillGameField(that,figure,click);
         boxClick(that,figure,click);
         click++;
