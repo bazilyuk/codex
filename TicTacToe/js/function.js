@@ -1,17 +1,6 @@
 /**
  * Created by maksim on 28.03.2016.
  */
-function addClass(o, c){
-    var re = new RegExp("(^|\\s)" + c + "(\\s|$)", "g")
-    if (re.test(o.className)) return
-    o.className = (o.className + " " + c).replace(/\s+/g, " ").replace(/(^ | $)/g, "")
-}
-
-function removeClass(o, c){
-    var re = new RegExp("(^|\\s)" + c + "(\\s|$)", "g")
-    o.className = o.className.replace(re, "$1").replace(/\s+/g, " ").replace(/(^ | $)/g, "")
-}
-
 (function(){
     document.getElementById("menu").onclick = function() {
         information.className = (information.className != 'active' ? 'active' : '' );
@@ -219,9 +208,12 @@ function removeClass(o, c){
         GenerateAll();
         var st = document.getElementById("start");
         var rest = document.getElementById("restart");
-        addClass(st,"hidden");
-        removeClass(rest,"hidden");
-        removeClass(information,"active");
+        st.classList.add("hidden");
+        //addClass(st,"hidden");
+        rest.classList.remove("hidden");
+        information.classList.remove("active");
+        //removeClass(rest,"hidden");
+        //removeClass(information,"active");
         ClickToBox();
     }
     /**
@@ -232,8 +224,10 @@ function removeClass(o, c){
     var BoxesElement = document.querySelectorAll('.box');
     function restart() {
         GenerateAll();
-        removeClass(popup, "active");
-        removeClass(information,"active");
+        popup.classList.remove("active");
+        information.classList.remove("active");
+        //removeClass(popup, "active");
+        //removeClass(information,"active");
         click = 0;
         finish = false;
         ClickToBox();
@@ -314,7 +308,8 @@ function removeClass(o, c){
      */
     function win(figure) {
         var winner = "";
-        addClass(popup, "active");
+        popup.classList.add("active");
+        //addClass(popup, "active");
         if (figure=="crosses") {
             winner = player1.name;
         } else {
@@ -331,7 +326,8 @@ function removeClass(o, c){
     }
     function draw(){
         finish = true;
-        addClass(popup, "active");
+        popup.classList.add("active");
+        //addClass(popup, "active");
         document.getElementById('winner').innerHTML = "Draw";
     }
     /**
