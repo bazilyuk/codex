@@ -20,7 +20,7 @@
     var GameFields = []; //Array with real boxes
     var GameLines = []; //Array with lines
     var Bot = false, finish = false;
-    var SmartBot = false;
+    var SmartBot = smartBotBtn.options[smartBotBtn.selectedIndex].value;
     function addToFields(i) {
         var mybox = new box();
         mybox.id = i;
@@ -194,6 +194,7 @@
     }
     function GenerateAll() {
         Boxes = chooseField.options[chooseField.selectedIndex].value;
+        SmartBot = smartBotBtn.options[smartBotBtn.selectedIndex].value;
         CreateFields();
         generateLine();
         SetInfoToLines();
@@ -363,6 +364,7 @@
         var middleBox = Math.floor(Number(Boxes)*Number(Boxes)/2);
         var nextBox = middleBox;
         var canWin = false;
+        var unfigure = "";
         for (var a=0;a<GameLines.length;a++){
             nougArr[a] = GameLines[a].noughts;
             crossArr[a] = GameLines[a].crosses;
@@ -370,8 +372,10 @@
         MaxNoug = Math.max.apply(null, nougArr);
         MaxCross = Math.max.apply(null, crossArr);
         if (figure=="crosses") {
+            unfigure = "noughts";
             BotTurns(MaxCross,crossArr,cross,MaxNoug,nougArr,nougs);
         } else {
+            unfigure = "crosses";
             BotTurns(MaxNoug,nougArr,nougs,MaxCross,crossArr,cross);
         }
         function BotTurns(MaxBot,botArr,bot,MaxPlayer,playerArr,player){
@@ -412,12 +416,30 @@
                         nextBox = middleBox;
                     } else {
                         var newPlayer = [];
-                        for (var i2=0;i2<player.length;i2++) {
-                            if (player[i2]%2==0) {
-                                newPlayer.push(player[i2]);
+                        if (SmartBot==2) {
+                            if (click==3){
+                                if (((GameFields[0].figure==unfigure)&&(GameFields[Number(Boxes)*Number(Boxes)-1].figure==unfigure))||((GameFields[Number(Boxes)-1].figure==unfigure)&&(GameFields[Number(Boxes)*Number(Boxes)-Number(Boxes)].figure==unfigure))) {
+                                    for (var i2=0;i2<player.length;i2++) {
+                                        if (player[i2]%2==1) {
+                                            newPlayer.push(player[i2]);
+                                        }
+                                    }
+                                } else {
+                                    for (var i2=0;i2<player.length;i2++) {
+                                        if (player[i2]%2==0) {
+                                            newPlayer.push(player[i2]);
+                                        }
+                                    }
+                                }
+                            } else {
+                                for (var i2=0;i2<player.length;i2++) {
+                                    if (player[i2]%2==0) {
+                                        newPlayer.push(player[i2]);
+                                    }
+                                }
                             }
                         }
-                        if(newPlayer.length>=1) {
+                        if((newPlayer.length>=1)&&(SmartBot==2)) {
                             nextBox = newPlayer[Math.floor(Math.random() * newPlayer.length)];
                         } else {
                             nextBox = player[Math.floor(Math.random() * player.length)];
@@ -435,7 +457,7 @@
         if (smartBotBtn.checked) {
             SmartBot = true;
         }
-        if (!SmartBot) {
+        if (SmartBot==0) {
             var rand = EmptyFields[Math.floor(Math.random() * EmptyFields.length)];
             var id = "#box"+rand;
             var that = document.querySelector(id);
