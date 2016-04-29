@@ -24,13 +24,14 @@ function removeClass(o, c){
     var information = document.getElementById("information");
     var playername1 = document.getElementById("playername1");
     var playername2 = document.getElementById("playername2");
+    var smartBotBtn = document.getElementById("smartBot");
     var secondTurn, firstTurn = "crosses";
     var click = 0;
     var EmptyFields = []; //Add fields that empty
     var GameFields = []; //Array with real boxes
     var GameLines = []; //Array with lines
     var Bot = false, finish = false;
-    var SmartBot = true;
+    var SmartBot = false;
     function addToFields(i) {
         var mybox = new box();
         mybox.id = i;
@@ -210,8 +211,8 @@ function removeClass(o, c){
         CreateHtml(Boxes);
         BoxesElement = document.querySelectorAll('.box');
         whoFirst();
-        console.log(GameFields);
-        console.log(GameLines);
+        //console.log(GameFields);
+        //console.log(GameLines);
     }
     document.getElementById("start").onclick = function() {start()};
     function start() {
@@ -329,6 +330,7 @@ function removeClass(o, c){
         }
     }
     function draw(){
+        finish = true;
         addClass(popup, "active");
         document.getElementById('winner').innerHTML = "Draw";
     }
@@ -355,38 +357,94 @@ function removeClass(o, c){
      * Bot Goes
      */
     function BotCheckBoxes(figure){
-        var nougArr = [];
-        var crossArr = [];
-        var noug = 0;
-        var cross = 0;
-        var nextBox = 5;
+        var MaxBot,MaxPlayer,bot,MaxPlayer,playerArr,player;
+        var nougArr = [];//playerArr
+        var crossArr = [];//botArr
+        var MaxNoug = 0;//MaxPlayer
+        var MaxCross = 0;//MaxBot
+        var nougs = [];//player
+        var cross = [];//bot
+        var middleBox = Math.floor(Number(Boxes)*Number(Boxes)/2);
+        var nextBox = middleBox;
+        var canWin = false;
         for (var a=0;a<GameLines.length;a++){
             nougArr[a] = GameLines[a].noughts;
             crossArr[a] = GameLines[a].crosses;
         }
-        noug = Math.max.apply(null, nougArr);
-        cross = Math.max.apply(null, crossArr);
+        MaxNoug = Math.max.apply(null, nougArr);
+        MaxCross = Math.max.apply(null, crossArr);
         if (figure=="crosses") {
-            //if can win
-            if ((cross>noug)||(cross==Number(Boxes)-1)) {
-                var lineIndex = crossArr.indexOf(cross);
-                for (var a1=0;a1<Number(Boxes);a1++){
-                    if (!GameLines[a1].boxesIds[a1].fill){
-                        nextBox = GameLines[a1].boxesIds[a1].id;
+            BotTurns(MaxCross,crossArr,cross,MaxNoug,nougArr,nougs);
+        } else {
+            BotTurns(MaxNoug,nougArr,nougs,MaxCross,crossArr,cross);
+        }
+        function BotTurns(MaxBot,botArr,bot,MaxPlayer,playerArr,player){
+            if ((MaxBot==Number(Boxes)-1)) {
+                //check if Bot can win
+                for (var i=0;i<botArr.length;i++){
+                    //check all lines with max number of figures
+                    if (MaxBot==botArr[i]){
+                        bot.push(i);
+                        for (var a1=0;a1<Number(Boxes);a1++){
+                            if (!GameLines[i].boxesIds[a1].fill){
+                                nextBox = GameLines[i].boxesIds[a1].id;
+                                canWin = true;
+                            }
+                        }
                     }
                 }
             }
+            if (!canWin) {
+                //if bot can`t win, then it will be defend
+                while (player.length==0) {
+                    for (var i1=0;i1<playerArr.length;i1++){
+                        //check all lines with max number of figures
+                        if (MaxPlayer==playerArr[i1]){
+                            for (var a2=0;a2<Number(Boxes);a2++){
+                                if (!GameLines[i1].boxesIds[a2].fill){
+                                    if (player.indexOf(GameLines[i1].boxesIds[a2].id)<0){
+                                        player.push(GameLines[i1].boxesIds[a2].id);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    MaxPlayer--;
+                }
+                if (player.length>1) {
+                    if (player.indexOf(middleBox)>=0) {
+                        nextBox = middleBox;
+                    } else {
+                        var newPlayer = [];
+                        for (var i2=0;i2<player.length;i2++) {
+                            if (player[i2]%2==0) {
+                                newPlayer.push(player[i2]);
+                            }
+                        }
+                        if(newPlayer.length>=1) {
+                            nextBox = newPlayer[Math.floor(Math.random() * newPlayer.length)];
+                        } else {
+                            nextBox = player[Math.floor(Math.random() * player.length)];
+                        }
+                    }
+                } else {
+                    nextBox = player[0];
+                }
+            }
         }
+        return nextBox;
     }
     function startBot(figure) {
         figure = figure == "crosses" ? "noughts" : "crosses";
+        if (smartBotBtn.checked) {
+            SmartBot = true;
+        }
         if (!SmartBot) {
             var rand = EmptyFields[Math.floor(Math.random() * EmptyFields.length)];
             var id = "#box"+rand;
             var that = document.querySelector(id);
         } else {
-            BotCheckBoxes(figure);
-            var rand = EmptyFields[Math.floor(Math.random() * EmptyFields.length)];
+            var rand = BotCheckBoxes(figure);
             var id = "#box"+rand;
             var that = document.querySelector(id);
         }
@@ -409,12 +467,10 @@ function removeClass(o, c){
                     FillGameField(this,figure,click);
                     boxClick(this,figure,click);
                     click++;
+                    if ((Bot)&&(!finish)) {
+                        startBot(figure);
+                    }
                 }
-                if ((Bot)&&(!finish)) {
-                    startBot(figure);
-                }
-                console.log(GameLines);
-                console.log(EmptyFields);
             });
         }
     }
