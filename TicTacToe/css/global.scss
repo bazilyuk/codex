@@ -155,6 +155,9 @@ body {
     @include crossBrowser(transition, .3s);
     opacity: 0;
   }
+  label {
+    color: #FFFFFF;
+  }
   .who-first {
     color: white;
     text-align: center;

@@ -14,23 +14,32 @@
     var playername1 = document.getElementById("playername1");
     var playername2 = document.getElementById("playername2");
     var smartBotBtn = document.getElementById("smartBot");
+    var saveGame = document.getElementById("saveGame");
+    var continueGame = document.getElementById("continueGame");
     var secondTurn, firstTurn = "crosses";
     var click = 0;
-    var EmptyFields = []; //Add fields that empty
-    var GameFields = []; //Array with real boxes
+    var EmptyBoxes = []; //Add fields that empty
+    var GameBoxes = []; //Array with real boxes
     var GameLines = []; //Array with lines
     var Bot = false, finish = false;
     var SmartBot = smartBotBtn.options[smartBotBtn.selectedIndex].value;
+    if (typeof(Storage) !== "undefined") {
+        // Store
+        if(localStorage.getItem("save")) {
+            continueGame.classList.remove("hidden");
+        }
+        // Retrieve
+    }
     function addToFields(i) {
         var mybox = new box();
         mybox.id = i;
-        GameFields[i] = mybox;
+        GameBoxes[i] = mybox;
     };
     function CreateFields(){
-        GameFields = [];
-        EmptyFields = [];
+        GameBoxes = [];
+        EmptyBoxes = [];
         for (var i=0;i<Boxes*Boxes;i++) {
-            EmptyFields[i] = i;
+            EmptyBoxes[i] = i;
             addToFields(i);
         }
     };
@@ -80,7 +89,7 @@
                  * fill only Horizontal lines
                  */
                 for (var i=(id*BoxesNumber);i<(BoxesNumber+(id*BoxesNumber));i++){
-                    BoxesArray.push(GameFields[i]);
+                    BoxesArray.push(GameBoxes[i]);
                 }
             } else if ((id>=BoxesNumber)&&(id<BoxesNumber*2)){
                 /**
@@ -88,17 +97,17 @@
                  */
                 for (var i=0;i<BoxesNumber;i++){
                     someNumber = (i*BoxesNumber)+(id-BoxesNumber);
-                    BoxesArray.push(GameFields[someNumber]);
+                    BoxesArray.push(GameBoxes[someNumber]);
                 }
             } else if (id==BoxesNumber*2) {
                 for (var i=0;i<BoxesNumber;i++){
                     someNumber = (BoxesNumber+1)*i;
-                    BoxesArray.push(GameFields[someNumber]);
+                    BoxesArray.push(GameBoxes[someNumber]);
                 }
             } else {
                 for (var i=0;i<BoxesNumber;i++){
                     someNumber = (BoxesNumber-1)*(i+1);
-                    BoxesArray.push(GameFields[someNumber]);
+                    BoxesArray.push(GameBoxes[someNumber]);
                 }
             }
             GameLines[id].boxesIds = BoxesArray;
@@ -143,7 +152,7 @@
             col.classList.add(divClass);
             col.classList.add(divClass1);
             col.setAttribute("id", divId);
-            col.setAttribute("data-figure", "");
+            col.setAttribute("data-figure", GameBoxes[number].figure);
             col.setAttribute("data-number", number);
             return col;
         }
@@ -190,6 +199,8 @@
             firstTurn = "noughts";
             secondTurn = "crosses";
         }
+        player1.figure = firstTurn;
+        player2.figure = secondTurn;
         TicTacToe.setAttribute("data-cursor", firstTurn);
     }
     function GenerateAll() {
@@ -201,8 +212,6 @@
         CreateHtml(Boxes);
         BoxesElement = document.querySelectorAll('.box');
         whoFirst();
-        //console.log(GameFields);
-        //console.log(GameLines);
     }
     document.getElementById("start").onclick = function() {start()};
     function start() {
@@ -210,11 +219,8 @@
         var st = document.getElementById("start");
         var rest = document.getElementById("restart");
         st.classList.add("hidden");
-        //addClass(st,"hidden");
         rest.classList.remove("hidden");
         information.classList.remove("active");
-        //removeClass(rest,"hidden");
-        //removeClass(information,"active");
         ClickToBox();
     }
     /**
@@ -227,11 +233,98 @@
         GenerateAll();
         popup.classList.remove("active");
         information.classList.remove("active");
-        //removeClass(popup, "active");
-        //removeClass(information,"active");
         click = 0;
         finish = false;
         ClickToBox();
+    }
+    /**
+     * what need to save:
+     * Boxes - number of box in one field
+     * player1, player2 - Objects where save name and figure of players
+     * click - number of turns
+     * secondTurn, firstTurn - string of who start first/second
+     * EmptyBoxes - array of empty boxes
+     * GameBoxes - array where store all boxes
+     * GameLines - array where store all lines
+     * Bot - boolean if we play with bot, then it true
+     * SmartBot - number of bot quality if 0-easy 2-smartest
+     */
+    /**
+     * Save Game
+     */
+    saveGame.onclick = function() {SaveData()};
+    function SaveData() {
+        continueGame.classList.remove("hidden");
+        if (typeof(Storage) !== "undefined") {
+            localStorage.setItem("save", true);
+            //game information
+            localStorage.setItem("Boxes", Boxes);
+            localStorage.setItem("player1", JSON.stringify(player1));
+            localStorage.setItem("player2", JSON.stringify(player2));
+            localStorage.setItem("click", click);
+            localStorage.setItem("secondTurn", secondTurn);
+            localStorage.setItem("firstTurn", firstTurn);
+            localStorage.setItem("EmptyBoxes", JSON.stringify(EmptyBoxes));
+            localStorage.setItem("GameBoxes", JSON.stringify(GameBoxes));
+            localStorage.setItem("GameLines", JSON.stringify(GameLines));
+            localStorage.setItem("Bot", Bot);
+            localStorage.setItem("SmartBot", SmartBot);
+            localStorage.setItem("WhoNext", TicTacToe.getAttribute("data-cursor"));
+        }
+    }
+    /**
+     * Continue Game
+     */
+    continueGame.onclick = function() {ContinueData()};
+    function ContinueData() {
+        if (typeof(Storage) !== "undefined") {
+            // Store
+            if(localStorage.getItem("save")) {
+                continueGame.classList.remove("hidden");
+            }
+            // get Data
+            Boxes = localStorage.getItem("Boxes");
+            player1 = JSON.parse(localStorage.getItem("player1"));
+            player2 = JSON.parse(localStorage.getItem("player2"));
+            click = localStorage.getItem("click");
+            secondTurn = localStorage.getItem("secondTurn");
+            firstTurn = localStorage.getItem("firstTurn");
+            EmptyBoxes = JSON.parse(localStorage.getItem("EmptyBoxes"));
+            GameBoxes = JSON.parse(localStorage.getItem("GameBoxes"));
+            //GameLines = JSON.parse(localStorage.getItem("GameLines"));
+            generateLine();
+            SetInfoToLines();
+            Bot = localStorage.getItem("Bot");
+            SmartBot = localStorage.getItem("SmartBot");
+            var WhoNext = localStorage.getItem("WhoNext");
+            //play
+            CreateHtml(Boxes);
+            BoxesElement = document.querySelectorAll('.box');
+            TicTacToe.setAttribute("data-cursor", WhoNext);
+            popup.classList.remove("active");
+            information.classList.remove("active");
+            ClickToBox();
+        }
+    }
+    /**
+     * Delete Local Storage info
+     */
+    function deleteStorage(){
+        if (typeof(Storage) !== "undefined") {
+            localStorage.removeItem("save");
+            continueGame.classList.add("hidden");
+            //game information
+            localStorage.removeItem("Boxes");
+            localStorage.removeItem("player1");
+            localStorage.removeItem("player2");
+            localStorage.removeItem("click");
+            localStorage.removeItem("secondTurn");
+            localStorage.removeItem("firstTurn");
+            localStorage.removeItem("EmptyBoxes");
+            localStorage.removeItem("GameBoxes");
+            localStorage.removeItem("Bot");
+            localStorage.removeItem("SmartBot");
+        }
     }
     /**
      * Play with computer
@@ -242,11 +335,11 @@
      */
     function BoxEmpty(item) {
         var id = item.getAttribute("name");
-        for (var i=0;i<GameFields.length;i++) {
-            var boxId = GameFields[i].id;
-            var boxFill = GameFields[i].fill;
+        for (var i=0;i<GameBoxes.length;i++) {
+            var boxId = GameBoxes[i].id;
+            var boxFill = GameBoxes[i].fill;
             if (id == boxId) {
-                return GameFields[i].fill;
+                return GameBoxes[i].fill;
             }
         }
     }
@@ -296,7 +389,7 @@
                     var boxID = -1;
                     for (var b1 = 0; b1 < GameLines[a].boxesIds.length; b1++) {
                         boxID = GameLines[a].boxesIds[b1].id;
-                        GameFields[boxID].win = true;
+                        GameBoxes[boxID].win = true;
                     }
                     finish = true;
                     win(turn);
@@ -308,27 +401,27 @@
      * When someone win
      */
     function win(figure) {
+        //deleteStorage();
         var winner = "";
         popup.classList.add("active");
-        //addClass(popup, "active");
-        if (figure=="crosses") {
+        if (player1.figure==figure) {
             winner = player1.name;
         } else {
             winner = player2.name;
         }
         document.getElementById('winner').innerHTML = winner;
-        for (var a=0;a<GameFields.length;a++){
-            if (GameFields[a].win) {
-                var id = "#box"+GameFields[a].id;
+        for (var a=0;a<GameBoxes.length;a++){
+            if (GameBoxes[a].win) {
+                var id = "#box"+GameBoxes[a].id;
                 var elem = document.querySelector(id);
                 elem.classList.add("win");
             }
         }
     }
     function draw(){
+        //deleteStorage();
         finish = true;
         popup.classList.add("active");
-        //addClass(popup, "active");
         document.getElementById('winner').innerHTML = "Draw";
     }
     /**
@@ -336,18 +429,18 @@
      */
     function FillGameField(that,figure,turn) {
         var number = that.getAttribute("data-number");
-        for (var i=0;i<GameFields.length;i++) {
-            var boxNumber = GameFields[i].id;
-            var boxFill = GameFields[i].fill;
+        for (var i=0;i<GameBoxes.length;i++) {
+            var boxNumber = GameBoxes[i].id;
+            var boxFill = GameBoxes[i].fill;
             if ((number == boxNumber)&&(!boxFill)) {
-                GameFields[i].figure = figure;
-                GameFields[i].turn = turn;
-                GameFields[i].fill = true;
+                GameBoxes[i].figure = figure;
+                GameBoxes[i].turn = turn;
+                GameBoxes[i].fill = true;
             }
         }
-        var y = EmptyFields.indexOf(Number(number));
+        var y = EmptyBoxes.indexOf(Number(number));
         if(y != -1) {
-            EmptyFields.splice(y, 1);
+            EmptyBoxes.splice(y, 1);
         }
     }
     /**
@@ -418,7 +511,7 @@
                         var newPlayer = [];
                         if (SmartBot==2) {
                             if (click==3){
-                                if (((GameFields[0].figure==unfigure)&&(GameFields[Number(Boxes)*Number(Boxes)-1].figure==unfigure))||((GameFields[Number(Boxes)-1].figure==unfigure)&&(GameFields[Number(Boxes)*Number(Boxes)-Number(Boxes)].figure==unfigure))) {
+                                if (((GameBoxes[0].figure==unfigure)&&(GameBoxes[Number(Boxes)*Number(Boxes)-1].figure==unfigure))||((GameBoxes[Number(Boxes)-1].figure==unfigure)&&(GameBoxes[Number(Boxes)*Number(Boxes)-Number(Boxes)].figure==unfigure))) {
                                     for (var i2=0;i2<player.length;i2++) {
                                         if (player[i2]%2==1) {
                                             newPlayer.push(player[i2]);
@@ -458,7 +551,7 @@
             SmartBot = true;
         }
         if (SmartBot==0) {
-            var rand = EmptyFields[Math.floor(Math.random() * EmptyFields.length)];
+            var rand = EmptyBoxes[Math.floor(Math.random() * EmptyBoxes.length)];
             var id = "#box"+rand;
             var that = document.querySelector(id);
         } else {
@@ -489,6 +582,10 @@
                         startBot(figure);
                     }
                 }
+                console.log("GameBoxes:");
+                console.log(GameBoxes);
+                console.log("GameLines:");
+                console.log(GameLines);
             });
         }
     }

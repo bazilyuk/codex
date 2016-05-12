@@ -143,6 +143,8 @@ body {
     -o-transition: 0.3s;
     transition: 0.3s;
     opacity: 0; }
+  #information label {
+    color: #FFFFFF; }
   #information .who-first {
     color: white;
     text-align: center; }
