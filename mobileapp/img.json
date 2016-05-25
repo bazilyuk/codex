@@ -1,0 +1,10 @@
+{
+    "images":[
+        {"name" : "wild","src" : "img/images/SYM1.png"},
+        {"name" : "blueberry","src" : "img/images/SYM2.png"},
+        {"name" : "strawberry","src" : "img/images/SYM3.png"},
+        {"name" : "pineapple","src" : "img/images/SYM4.png"},
+        {"name" : "lemon","src" : "img/images/SYM5.png"},
+        {"name" : "cucumber","src" : "img/images/SYM6.png"}
+    ]
+}
