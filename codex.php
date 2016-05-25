@@ -2759,7 +2759,6 @@ put in loop of your posts
 //    $('.main .inner.block.sixth > .content .facebook-part > .feed.blog-feed').removeClass('active');
 //}
         });
-
     });
 </script>
 -----------------------------------------------------------media-----------------------------------------------------------------
