@@ -6,39 +6,25 @@
     <link href="css/global.css" rel="stylesheet">
 </head>
 <body>
+<audio id="lose" src="sound/lose.mp3" preload="auto"></audio>
+<audio id="win" src="sound/win.mp3" preload="auto"></audio>
+<!--<embed src="sound/lose.mp3" autostart="false" width="0" height="0" id="lose" enablejavascript="true">-->
+<!--<embed src="sound/win.mp3" autostart="false" width="0" height="0" id="win" enablejavascript="true">-->
 <div class="wrap-all">
-    <div class="content">
-        <div class="game-field">
-            <div id="image-carousel">
-                <!--<div class="item">-->
-                    <!--<img src="img/images/SYM1.png" />-->
-                <!--</div>-->
-                <!--<div class="item">-->
-                    <!--<img src="img/images/SYM2.png" />-->
-                <!--</div>-->
-                <!--<div class="item">-->
-                    <!--<img src="img/images/SYM3.png" />-->
-                <!--</div>-->
-                <!--<div class="item">-->
-                    <!--<img src="img/images/SYM4.png" />-->
-                <!--</div>-->
-                <!--<div class="item">-->
-                    <!--<img src="img/images/SYM5.png" />-->
-                <!--</div>-->
-                <!--<div class="item">-->
-                    <!--<img src="img/images/SYM6.png" />-->
-                <!--</div>-->
-            <!--</div>-->
+    <div class="container">
+        <div id="carousel_inner" class="carousel_inner">
+            <div id="image-carousel" class="image-carousel"></div>
         </div>
         <div class="information">
-            <div class="result"></div>
-            <select class="select-field">
-                <option>select image</option>
+            <canvas id="result" width="260" height="100"></canvas>
+            <select id="select-field">
+                <option value="">select image</option>
             </select>
-            <button class="spin">Spin me!</button>
+            <button id="spin">Spin me!</button>
         </div>
     </div>
 </div>
-<script src="js/function.js"></script>
+<script src="js/function.js" defer></script>
+<script src="js/slider.js" defer></script>
 </body>
 </html>
