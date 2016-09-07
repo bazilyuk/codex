@@ -23,15 +23,26 @@ $(document).ready(function() {
      * "._5lote" - a where in href link to this follower
      * @type {Array}
      */
+    var DB_name = "AllUsers";
     var Users = [];
     var Users_count = 0;
     var User_current = 0;
     var NextUserLink = "";
     function GetFromLocalStorage() {
+        var current = "Last_User_" + DB_name;
         if (typeof(Storage) !== "undefined") {
-            Users = JSON.parse(localStorage.getItem("AllUsers"));
+            Users = JSON.parse(localStorage.getItem(DB_name));
+            User_current = localStorage.getItem(current);
         }
         Users_count = Users.length;
+        if (!User_current) { User_current = 0 };
+    }
+    function SaveCurrentUser() {
+        var current = "Last_User_" + DB_name;
+        var User_current_save = User_current + 1;
+        if (typeof(Storage) !== "undefined") {
+            localStorage.setItem(current, User_current_save);
+        }
     }
     function GetTime() {
         var day = new Date();
@@ -58,7 +69,7 @@ $(document).ready(function() {
         return rand;
     }
     function RepeatUser() {
-        var NextUserTime = (randSec()*15000)+60000;
+        var NextUserTime = (randSec()*5000)+50000;
         User_current++;
         console.log("User_current: "+User_current+" NextUserTime: "+NextUserTime);
         console.log(GetTime());
@@ -75,6 +86,7 @@ $(document).ready(function() {
         var UserLink = Users[User_current].link;
         NextUserLink = url+UserLink;
         // console.log(link);
+        SaveCurrentUser();
         setTimeout(function () {
             console.log(NextUserLink);
             window.open(

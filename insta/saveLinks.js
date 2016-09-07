@@ -23,6 +23,7 @@ $(document).ready(function() {
      * "._5lote" - a where in href link to this follower
      * @type {Array}
      */
+    var DB_name = "AllUsers";
     var UsersOld = [];
     var Users = [];
     var openFollows = false;
@@ -43,7 +44,7 @@ $(document).ready(function() {
     function SaveToLocalStorage() {
         ClosePopup();
         if (typeof(Storage) !== "undefined") {
-            localStorage.setItem("AllUsers", JSON.stringify(Users));
+            localStorage.setItem(DB_name, JSON.stringify(Users));
         }
         if (!openFollows) {
             OpenFollows();
@@ -53,7 +54,7 @@ $(document).ready(function() {
     }
     function GetFromLocalStorage() {
         if (typeof(Storage) !== "undefined") {
-            UsersOld = JSON.parse(localStorage.getItem("AllUsers"));
+            UsersOld = JSON.parse(localStorage.getItem(DB_name));
         }
     }
     function checkUser(myUser) {
@@ -102,7 +103,7 @@ $(document).ready(function() {
         return scrTop;
     }
     function ShowScrollUsers() {
-        var a = 0; var b = 1; var i = 0;
+        var a = 0; var b = 1; var i = 0; var y = 0;
         function repeat() {
             setTimeout(function () {
                 a = scrollUsers();
@@ -118,9 +119,15 @@ $(document).ready(function() {
                 i++;
                 console.log("a: "+a+" b: "+b+" i: "+i);
                 if (a != b) {
+                    y = 0;
                     setTimeout(go, 1500);
                 } else {
-                    setTimeout(saveFollowers(), 1800);
+                    y++;
+                    if (y>3) {
+                        setTimeout(saveFollowers(), 1800);
+                    } else {
+                        setTimeout(go, 1500);
+                    }
                 }
             }, 100);
         } else {
