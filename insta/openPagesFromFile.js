@@ -24,33 +24,107 @@ $(document).ready(function() {
      * "._5lote" - a where in href link to this follower
      * @type {Array}
      */
-    var DB_name = "AllUsers";
+    var DB_name = "testtest";
     var Users = [];
     var Users_count = 0;
     var User_current = 0;
     var NextUserLink = "";
-    function GetFromLocalStorage() {
-        var current = "Last_User_" + DB_name;
-        if (typeof(Storage) !== "undefined") {
-            Users = JSON.parse(localStorage.getItem(DB_name));
-            User_current = localStorage.getItem(current);
-        }
-        Users_count = Users.length;
-        if (!User_current) { User_current = 0; }
+    function GetFromFile() {
+        /**
+         * 1
+         * Get data from File
+         */
+        var current = DB_name + "_Last_User";
+        var data = "";
+        $.ajax ({
+            /**
+             * Get current user position from file
+             */
+            type: 'POST',
+            url: 'https://insta.bazar25.com.ua/',
+            data: {
+                file: current,
+                property: "read"
+            },
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            dataType: 'html',
+            success: function(e) {
+                User_current = parseInt(JSON.parse(e));
+                console.log("Last user: "+User_current);
+            },
+            error: function(xhr, ajaxOptions, thrownError) {
+                alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+            }
+        });
+        $.ajax ({
+            /**
+             * Get all data file
+             */
+            type: 'POST',
+            url: 'https://insta.bazar25.com.ua/',
+            data: {
+                file: DB_name,
+                property: "read"
+            },
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            dataType: 'html',
+            success: function(e) {
+                Users = JSON.parse(e);
+                console.log(Users);
+                Users_count = Users.length;
+                if (!User_current) { User_current = 0; }
+                console.log("Users: "+Users_count);
+                OpenUser();
+            },
+            error: function(xhr, ajaxOptions, thrownError) {
+                alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+            }
+        });
     }
     function SaveCurrentUser() {
-        var current = "Last_User_" + DB_name;
+        /**
+         * 3
+         * This function save current user to database
+         */
+        var current = DB_name + "_Last_User";
         var User_current_save = User_current + 1;
-        if (typeof(Storage) !== "undefined") {
-            localStorage.setItem(current, User_current_save);
-        }
+        $.ajax ({
+            /**
+             * Get current user position from file
+             */
+            type: 'POST',
+            url: 'https://insta.bazar25.com.ua/',
+            data: {
+                file: current,
+                property: "update",
+                data: User_current_save
+            },
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            dataType: 'html',
+            success: function(e) {
+                var save = JSON.parse(e);
+                console.log("Last user: "+save);
+            },
+            error: function(xhr, ajaxOptions, thrownError) {
+                alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+            }
+        });
     }
     function GetTime() {
+        /**
+         * Return current time
+         * @type {Date}
+         */
         var day = new Date();
         var min = day.getMinutes();
         var sec = day.getSeconds();
         var time = "Time at this moment: "+min+":"+sec;
-        // console.log("Time at this moment: "+min+":"+sec);
         return time;
     }
     function randSec() {
@@ -70,6 +144,10 @@ $(document).ready(function() {
         return rand;
     }
     function RepeatUser() {
+        /**
+         * 4
+         * Open one more user
+         */
         var NextUserTime = (randSec()*5000)+50000;
         User_current++;
         var minutes = Math.floor((NextUserTime % 3600000) / 60000);
@@ -85,10 +163,14 @@ $(document).ready(function() {
         }
     }
     function OpenUser() {
+        /**
+         * 2 5...
+         * This function prepear to open user
+         */
         var url = "https://www.instagram.com";
+        console.log(User_current);
         var UserLink = Users[User_current].link;
         NextUserLink = url+UserLink;
-        // console.log(link);
         SaveCurrentUser();
         setTimeout(function () {
             console.log(NextUserLink);
@@ -100,8 +182,12 @@ $(document).ready(function() {
         RepeatUser();
     }
     function start() {
-        GetFromLocalStorage();
-        OpenUser();
+        /**
+         * 0
+         * start script
+         */
+        // GetFromLocalStorage();
+        GetFromFile();
     }
     start();
 });

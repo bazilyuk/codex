@@ -11,7 +11,8 @@ $(document).ready(function() {
     var class_popup_close = '._a1rcs'; // Class of close button on popup
     var class_popup_follow_ul_wrap = class_popup + ' ._4gt3b'; // Class of ul wrapper in followers popup
     var class_popup_follow_description = '._2uju6'; // Class of div where write name of user
-    var class_popup_follow_link = '._5lote'; // Class of div where write name of user
+    var class_popup_follow_link = '._5lote'; // Class of div where write href of user
+    var class_popup_follow_name = '._4zhc5'; // Class of div where write name of user
     var class_click_like = '.coreSpriteHeartOpen'; // class to like if you don`t like it before
     var class_click_dislike = '.coreSpriteHeartFull'; // class to dislike if you like it before
     var class_btn_need_follow_on_user = '._2hpcs'; // Class on btn if you don`t follow on user
@@ -38,6 +39,11 @@ $(document).ready(function() {
          */
         for(var i=0;i<countPhoto;i++) {
             numberArray[i] = i;
+        }
+        if (countPhoto) {
+            return true;
+        } else {
+            return false;
         }
     }
 
@@ -158,16 +164,28 @@ $(document).ready(function() {
         if (Photo_increment<Photo_items) {
             start();
         } else {
-            console.log("Finish.")
+            console.log("Finish.");
+            setTimeout(function() {
+                closeWindow();
+            }, 1000);
         }
+    }
+    function closeWindow() {
+        window.close();
     }
     function startSesiion() {
         console.log("Move 1: Set all data");
-        _countPhoto();
-        setTime();
-        setTimeout(function() {
-            ChoosePhoto();
-        }, time_Start);
+        if (_countPhoto()) {
+            setTime();
+            setTimeout(function() {
+                ChoosePhoto();
+            }, time_Start);
+        } else {
+            console.log("Finish.");
+            setTimeout(function() {
+                closeWindow();
+            }, 1000);
+        }
     }
 
     function UserPage() {
@@ -180,6 +198,7 @@ $(document).ready(function() {
             startSesiion();
         } else {
             console.log("sorry, it`s not a profile page");
+            closeWindow();
         }
     }
     UserPage();

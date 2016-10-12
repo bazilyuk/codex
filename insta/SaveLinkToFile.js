@@ -24,10 +24,11 @@ $(document).ready(function() {
      * "._5lote" - a where in href link to this follower
      * @type {Array}
      */
-    var DB_name = "AllUsers";
+    var DB_name = "bazar25";
     var UsersOld = [];
     var Users = [];
     var openFollows = false;
+
     function user() {
         this.id = "";
         this.title = "";
@@ -42,21 +43,74 @@ $(document).ready(function() {
             $(class_popup_close).click();
         }
     }
-    function SaveToLocalStorage() {
-        ClosePopup();
-        if (typeof(Storage) !== "undefined") {
-            localStorage.setItem(DB_name, JSON.stringify(Users));
-        }
-        if (!openFollows) {
-            OpenFollows();
-        } else {
-            console.log("finish!");
-        }
+    function SaveToFile() {
+        console.log("Users: ");
+        console.log(Users);
+        console.log("DB: "+DB_name);
+        console.log("openFollows: "+openFollows);
+        /**
+         * 7 13
+         * This function save all data to file in our server
+         * name off database - this is name of this file
+         */
+        $.ajax({
+            type: 'POST',
+            url: 'https://insta.bazar25.com.ua/index.php',
+            data: {
+                file: DB_name,
+                property: "update",
+                data: JSON.stringify(Users)
+            },
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            dataType: 'html',
+            success: function(e){
+                console.log(e);
+                console.log("save to file.");
+                if (!openFollows) {
+                    OpenFollows();
+                } else {
+                    console.log("finish!");
+                }
+            },
+            error: function(xhr, ajaxOptions, thrownError){
+                alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+            }
+        });
     }
-    function GetFromLocalStorage() {
-        if (typeof(Storage) !== "undefined") {
-            UsersOld = JSON.parse(localStorage.getItem(DB_name));
-        }
+    function GetFromFilesData(link_class, count) {
+        /**
+         * 3 9
+         * This function Read file and get old data
+         */
+        var data = "";
+        $.ajax({
+            type: 'POST',
+            url: 'https://insta.bazar25.com.ua/index.php',
+            data: {
+                file: DB_name,
+                property: "read"
+            },
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            dataType: 'html',
+            success: function(e){
+                if (e) {
+                    data = JSON.parse(e);
+                    console.log("User from "+DB_name+" database: ");
+                    console.log(data);
+                    UsersOld = data;
+                } else {
+                    console.log(DB_name+" database is empty. Will create new database");
+                }
+                workWithFollowers(link_class, count);
+            },
+            error: function(xhr, ajaxOptions, thrownError){
+                alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+            }
+        });
     }
     function checkUser(myUser) {
         var inDB = false;
@@ -68,6 +122,10 @@ $(document).ready(function() {
         return inDB;
     }
     function saveFollowers() {
+        /**
+         * 6 12
+         * This function save all follovers that show in popup
+         */
         if (UsersOld) {
             var i = UsersOld.length;
         } else {
@@ -95,10 +153,12 @@ $(document).ready(function() {
         if (UsersOld) {
             Users = UsersOld;
         }
-        console.log(Users);
-        SaveToLocalStorage();
+        SaveToFile();
     }
     function scrollUsers() {
+        /**
+         * scroll down in popup
+         */
         $(class_popup_follow_ul_wrap).scrollTop(1000000000000000000000000);
         var scrTop = $(class_popup_follow_ul_wrap).scrollTop();
         return scrTop;
@@ -143,8 +203,12 @@ $(document).ready(function() {
         }
     }
     function workWithFollowers(tag, count) {
-        GetFromLocalStorage();
-        console.log(count);
+        /**
+         * 4 10
+         * This function open popups with followers or follows
+         */
+        // GetFromLocalStorage();
+        console.log("will save: "+count+" users.");
         if (count != "0") {
             $(tag).click();
             setTimeout(function () {
@@ -155,13 +219,24 @@ $(document).ready(function() {
         }
     }
     function OpenFollowers() {
+        /**
+         * 2
+         * Open popup with followers
+         */
+        console.log("Open Followers");
         var followersCount = $(class_user_followers).text();
-        workWithFollowers(class_user_followers, followersCount);
+        GetFromFilesData(class_user_followers, followersCount);
     }
     function OpenFollows() {
+        /**
+         * 8
+         * Open popup with follows
+         */
         openFollows = true;
+        console.log("Open Follows");
         var followsCount = $(class_user_follows).text();
-        workWithFollowers(class_user_follows, followsCount);
+        GetFromFilesData(class_user_follows, followsCount);
+        // workWithFollowers(class_user_follows, followsCount);
     }
     function FollowOnUser() {
         $(class_btn_need_follow_on_user).click();
@@ -169,10 +244,11 @@ $(document).ready(function() {
     function UserPage() {
         FollowOnUser();
         /**
+         * 1
          * Check if it Profile page
          */
         if ($(class_user_page)[0]) {
-            console.log("Move 0: Start");
+            console.log("Start");
             if ($(class_user_close)[0]) {
                 console.log("User close his account for you");
             } else {

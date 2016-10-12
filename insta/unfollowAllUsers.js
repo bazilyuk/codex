@@ -24,16 +24,14 @@ $(document).ready(function() {
      * "._5lote" - a where in href link to this follower
      * @type {Array}
      */
-    var DB_name = "AllUsers";
-    var UsersOld = [];
-    var Users = [];
-    var openFollows = false;
-    function user() {
-        this.id = "";
-        this.title = "";
-        this.name = "";
-        this.link = "";
-    };
+    function randSec() {
+        /**
+         * Return random number from 1 to 10
+         * @type {number}
+         */
+        var rand = Math.ceil(Math.random()*3);
+        return rand;
+    }
     function ClosePopup() {
         /**
          * Close popup
@@ -41,71 +39,86 @@ $(document).ready(function() {
         if ($(class_popup_close)) {
             $(class_popup_close).click();
         }
+        $('body').click();
+        setTimeout(function () {
+            $('body').click();
+        },100);
     }
-    function SaveToLocalStorage() {
+    function refreshPage() {
+        /**
+         * 6
+         * Unfollow on all user
+         */
         ClosePopup();
+        location.reload();
+    }
+    function clearStorage() {
         if (typeof(Storage) !== "undefined") {
-            localStorage.setItem(DB_name, JSON.stringify(Users));
-        }
-        if (!openFollows) {
-            OpenFollows();
-        } else {
-            console.log("finish!");
-        }
-    }
-    function GetFromLocalStorage() {
-        if (typeof(Storage) !== "undefined") {
-            UsersOld = JSON.parse(localStorage.getItem(DB_name));
-        }
-    }
-    function checkUser(myUser) {
-        var inDB = false;
-        for (var i=0;i<UsersOld.length;i++) {
-            if (UsersOld[i].link == myUser.link) {
-                inDB = true;
-            }
-        }
-        return inDB;
-    }
-    function saveFollowers() {
-        if (UsersOld) {
-            var i = UsersOld.length;
-        } else {
-            var i = 0;
-        }
-        $(class_popup_follow_ul_wrap).find('li').each(function () {
-            var name = $(this).find(class_popup_follow_description).text();
-            var title = $(this).find(class_popup_follow_name).text();
-            var link = $(this).find(class_popup_follow_link).attr("href");
-            var myUser = new user();
-            myUser.id = i;
-            myUser.title = title;
-            myUser.name = name;
-            myUser.link = link;
-            if (UsersOld) {
-                if (!checkUser(myUser)) {
-                    UsersOld.push(myUser);
-                    i++;
+            console.log("storage");
+            for (var i = 0, len = localStorage.length; i < len; i++) {
+                var key = localStorage.key(i);
+                var value = localStorage[key];
+                console.log(value);
+                var word = "bz";
+                if (key.indexOf(word) !== -1) {
+                    localStorage.setItem(key, "[]");
+                    console.log("Clear Storage");
                 }
-            } else {
-                Users.push(myUser);
-                i++;
             }
-        });
-        if (UsersOld) {
-            Users = UsersOld;
+            localStorage.clear();
         }
-        console.log(Users);
-        SaveToLocalStorage();
+    }
+    function unfollowUser(i) {
+        $(class_popup_follow_ul_wrap).find('li:nth-child('+i+')').each(function () {
+            var title = $(this).find(class_popup_follow_name).text();
+            i++;
+            console.log(i+")name: "+title);
+            $(this).find(class_btn_follow_on_user).click();
+            setTimeout(function () {
+                clearStorage();
+                ClosePopup();
+                clearStorage();
+            },800);
+            setTimeout(function () {
+                clearStorage();
+                $(class_user_follows).click();
+                clearStorage();
+            },1600);
+            setTimeout(function () {
+                clearStorage();
+            },8000);
+        });
+    }
+    function unfollowUsers() {
+        var i = 1;
+        var btnCount = $(class_btn_follow_on_user).length;
+        console.log("btnCount: "+btnCount);
+        function repeat() {
+            var time = (randSec()+3)*3000;
+            if (i <= btnCount) {
+                unfollowUser(i);
+                i++;
+                setTimeout(function () {
+                    repeat();
+                },time);
+            } else {
+                refreshPage();
+            }
+        }
+        repeat();
     }
     function scrollUsers() {
+        /**
+         * 4
+         * scroll down in popup
+         */
         $(class_popup_follow_ul_wrap).scrollTop(1000000000000000000000000);
         var scrTop = $(class_popup_follow_ul_wrap).scrollTop();
         return scrTop;
     }
     function ShowScrollUsers() {
         /**
-         * 5 11
+         * 3 5
          * This function Scroll popup to the end to show all users
          */
         var a = 0; var b = 1; var i = 0; var y = 0;
@@ -121,66 +134,66 @@ $(document).ready(function() {
                 repeat();
                 i++;
                 console.log("a: "+topArray[topArray.length-2]+" b: "+topArray[topArray.length-1]+" i: "+i);
-                if (i>2) {
-                    if (topArray[topArray.length-2] != topArray[topArray.length-1]) {
-                        y = 0;
-                        setTimeout(go, time1+200);
-                    } else {
-                        y++;
-                        if (y>3) {
-                            setTimeout(saveFollowers(), 1800);
-                        } else {
+                if (i<200) {
+                    if (i>2) {
+                        if (topArray[topArray.length-2] != topArray[topArray.length-1]) {
+                            y = 0;
                             setTimeout(go, time1+200);
+                        } else {
+                            y++;
+                            if (y>3) {
+                                setTimeout(deleteFollows(), 1800);
+                            } else {
+                                setTimeout(go, time1+200);
+                            }
                         }
+                    } else {
+                        setTimeout(go, time1+200);
                     }
+                    console.log(y);
                 } else {
-                    setTimeout(go, time1+200);
+                    deleteFollows();
                 }
-                console.log(y);
             }, 100);
         } else {
             console.log("popup not open");
         }
     }
     function workWithFollowers(tag, count) {
-        GetFromLocalStorage();
+        /**
+         * 2
+         * This function open popups with followers or follows
+         */
         console.log(count);
         if (count != "0") {
             $(tag).click();
             setTimeout(function () {
-                ShowScrollUsers();
-            },100);
+                // ShowScrollUsers();
+                unfollowUsers();
+            },500);
         } else {
             console.log("This user don`t have followers");
         }
     }
-    function OpenFollowers() {
-        var followersCount = $(class_user_followers).text();
-        workWithFollowers(class_user_followers, followersCount);
-    }
     function OpenFollows() {
-        openFollows = true;
+        /**
+         * 1
+         * Open popup with follows
+         */
         var followsCount = $(class_user_follows).text();
         workWithFollowers(class_user_follows, followsCount);
     }
     function FollowOnUser() {
         $(class_btn_need_follow_on_user).click();
     }
-    function UserPage() {
+    function StartUnfollow() {
         FollowOnUser();
         /**
-         * Check if it Profile page
+         * 0
+         * Start
          */
-        if ($(class_user_page)[0]) {
-            console.log("Move 0: Start");
-            if ($(class_user_close)[0]) {
-                console.log("User close his account for you");
-            } else {
-                OpenFollowers();
-            }
-        } else {
-            console.log("sorry, it`s not a profile page");
-        }
+        console.log("Move 0: Start");
+        OpenFollows();
     }
-    UserPage();
+    StartUnfollow();
 });
