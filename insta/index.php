@@ -14,7 +14,7 @@ if ($action == "update") {
     }
 
     if (is_array($data)) {
-        echo count($data);
+//        echo count($data);
         print_r($data);
         foreach ($data as $key => $value) {
             $json[$key] = $value;

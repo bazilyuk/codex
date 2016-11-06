@@ -24,6 +24,7 @@ $(document).ready(function() {
      * "._5lote" - a where in href link to this follower
      * @type {Array}
      */
+    var openPause = 500;
     function randSec() {
         /**
          * Return random number from 1 to 10
@@ -170,7 +171,7 @@ $(document).ready(function() {
             setTimeout(function () {
                 // ShowScrollUsers();
                 unfollowUsers();
-            },500);
+            },openPause);
         } else {
             console.log("This user don`t have followers");
         }

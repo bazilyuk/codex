@@ -43,7 +43,8 @@ $(document).ready(function() {
             $(class_popup_close).click();
         }
     }
-    function SaveToFile() {
+    function SaveToFile(count,user_in_popup) {
+        user_in_popup;
         console.log("Users: ");
         console.log(Users);
         console.log("DB: "+DB_name);
@@ -56,6 +57,7 @@ $(document).ready(function() {
         $.ajax({
             type: 'POST',
             url: 'https://insta.bazar25.com.ua/index.php',
+            crossDomain: true,
             data: {
                 file: DB_name,
                 property: "update",
@@ -68,10 +70,20 @@ $(document).ready(function() {
             success: function(e){
                 console.log(e);
                 console.log("save to file.");
-                if (!openFollows) {
-                    OpenFollows();
+                console.log("count: "+count);
+                console.log("Users: "+user_in_popup);
+                if (count == user_in_popup) {
+                    if (!openFollows) {
+                        ClosePopup();
+                        setTimeout(function () {
+                            OpenFollows();
+                        },100);
+
+                    } else {
+                        console.log("finish!");
+                    }
                 } else {
-                    console.log("finish!");
+                    ShowScrollUsers(count);
                 }
             },
             error: function(xhr, ajaxOptions, thrownError){
@@ -88,6 +100,7 @@ $(document).ready(function() {
         $.ajax({
             type: 'POST',
             url: 'https://insta.bazar25.com.ua/index.php',
+            crossDomain: true,
             data: {
                 file: DB_name,
                 property: "read"
@@ -121,11 +134,12 @@ $(document).ready(function() {
         }
         return inDB;
     }
-    function saveFollowers() {
+    function saveFollowers(count) {
         /**
          * 6 12
          * This function save all follovers that show in popup
          */
+        var user_in_popup = 0;
         if (UsersOld) {
             var i = UsersOld.length;
         } else {
@@ -149,11 +163,12 @@ $(document).ready(function() {
                 Users.push(myUser);
                 i++;
             }
+            user_in_popup++;
         });
         if (UsersOld) {
             Users = UsersOld;
         }
-        SaveToFile();
+        SaveToFile(count,user_in_popup);
     }
     function scrollUsers() {
         /**
@@ -163,7 +178,7 @@ $(document).ready(function() {
         var scrTop = $(class_popup_follow_ul_wrap).scrollTop();
         return scrTop;
     }
-    function ShowScrollUsers() {
+    function ShowScrollUsers(count) {
         /**
          * 5 11
          * This function Scroll popup to the end to show all users
@@ -188,7 +203,7 @@ $(document).ready(function() {
                     } else {
                         y++;
                         if (y>3) {
-                            setTimeout(saveFollowers(), 1800);
+                            setTimeout(saveFollowers(count), 1800);
                         } else {
                             setTimeout(go, time1+200);
                         }
@@ -212,7 +227,7 @@ $(document).ready(function() {
         if (count != "0") {
             $(tag).click();
             setTimeout(function () {
-                ShowScrollUsers();
+                ShowScrollUsers(count);
             },100);
         } else {
             console.log("This user don`t have followers");
