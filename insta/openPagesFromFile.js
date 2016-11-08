@@ -25,6 +25,7 @@ $(document).ready(function() {
      * @type {Array}
      */
     var DB_name = "testtest";
+    var What = "follow";
     var Users = [];
     var Users_count = 0;
     var User_current = 0;
@@ -34,7 +35,8 @@ $(document).ready(function() {
          * 1
          * Get data from File
          */
-        var current = DB_name + "_Last_User";
+        var current = DB_name + "_" + What +"_Last_User";
+        var work_file = (What == "follow") ? DB_name : DB_name + "_unfollow";
         var data = "";
         $.ajax ({
             /**
@@ -65,7 +67,7 @@ $(document).ready(function() {
             type: 'POST',
             url: 'https://insta.bazar25.com.ua/',
             data: {
-                file: DB_name,
+                file: work_file,
                 property: "read"
             },
             headers: {
@@ -90,7 +92,7 @@ $(document).ready(function() {
          * 3
          * This function save current user to database
          */
-        var current = DB_name + "_Last_User";
+        var current = DB_name + "_" + What +"_Last_User";
         var User_current_save = User_current + 1;
         $.ajax ({
             /**

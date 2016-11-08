@@ -68,7 +68,11 @@ $(document).ready(function() {
          * Return random number from 3 to 6
          * @type {number}
          */
-        var rand = Math.floor(Math.random()*3) + 3;
+        if (countPhoto>6) {
+            var rand = Math.floor(Math.random()*3) + 3;
+        } else {
+            var rand = Math.floor(Math.random()*countPhoto);
+        }
         console.log("Choose "+rand+" photo on this page;");
         return rand;
     }

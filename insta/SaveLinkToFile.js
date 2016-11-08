@@ -29,6 +29,8 @@ $(document).ready(function() {
     var Users = [];
     var openFollows = false;
 
+    var Try_Send_file = 0;
+
     function user() {
         this.id = "";
         this.title = "";
@@ -72,7 +74,7 @@ $(document).ready(function() {
                 console.log("save to file.");
                 console.log("count: "+count);
                 console.log("Users: "+user_in_popup);
-                if (count == user_in_popup) {
+                if (count <= user_in_popup) {
                     if (!openFollows) {
                         ClosePopup();
                         setTimeout(function () {
@@ -83,7 +85,20 @@ $(document).ready(function() {
                         console.log("finish!");
                     }
                 } else {
-                    ShowScrollUsers(count);
+                    if (Try_Send_file<4) {
+                        Try_Send_file++;
+                        ShowScrollUsers(count);
+                    } else {
+                        if (!openFollows) {
+                            ClosePopup();
+                            setTimeout(function () {
+                                OpenFollows();
+                            },100);
+
+                        } else {
+                            console.log("finish!");
+                        }
+                    }
                 }
             },
             error: function(xhr, ajaxOptions, thrownError){
@@ -199,6 +214,7 @@ $(document).ready(function() {
                 if (i>2) {
                     if (topArray[topArray.length-2] != topArray[topArray.length-1]) {
                         y = 0;
+                        Try_Send_file = 0;
                         setTimeout(go, time1+200);
                     } else {
                         y++;
